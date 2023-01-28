@@ -1,22 +1,17 @@
 <?php
 
-namespace App\Repository\PostsRepository;
+namespace Repository;
 
 use PDO;
+use DateTime;
 
 class PostsRepository
 {
     private $pdo;
 
-    public function __construct()
+    public function __construct(PDO $pdo)
     {
-        $dbConfig = require_once '../../config/database.php';
-
-        $this->pdo = new PDO(
-            $dbConfig['driver'] . ':host=' . $dbConfig['host'] . ';dbname=' . $dbConfig['database'],
-            $dbConfig['username'],
-            $dbConfig['password']
-        );
+        $this->pdo = $pdo;
     }
 
     public function getAllPosts()
@@ -36,20 +31,23 @@ class PostsRepository
         return $statement->fetch();
     }
 
-    public function addPost($title, $content)
+    public function addPost($title, $content, $user, DateTime $publishedAt )
     {
-        $statement = $this->pdo->prepare('INSERT INTO posts (title, content) VALUES (:title, :content)');
+        $statement = $this->pdo->prepare('INSERT INTO posts (title, content, created_by, published_at) VALUES (:title, :content, :user, :publishedAt)');
         $statement->bindValue(':title', $title);
         $statement->bindValue(':content', $content);
+        $statement->bindValue(':user', $user);
+        $statement->bindValue(':publishedAt', $publishedAt);
         $statement->execute();
     }
 
-    public function updatePost($id, $title, $content)
+    public function updatePost($id, $title, $content, DateTime $updatedAt)
     {
-        $statement = $this->pdo->prepare('UPDATE posts SET title = :title, content = :content WHERE id = :id');
+        $statement = $this->pdo->prepare('UPDATE posts SET title = :title, content = :content, updated_at = :updatedAt WHERE id = :id');
         $statement->bindValue(':id', $id);
         $statement->bindValue(':title', $title);
         $statement->bindValue(':content', $content);
+        $statement->bindValue(':updatedAt', $updatedAt);
         $statement->execute();
     }
 

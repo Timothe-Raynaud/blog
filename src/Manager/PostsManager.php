@@ -1,5 +1,11 @@
 <?php
 
-Namespace App\Manager\PostsManager;
+Namespace Manager;
 
-use App\Repository\PostsRepository;
+class PostsManager
+{
+    public function __construct()
+    {
+
+    }
+}
