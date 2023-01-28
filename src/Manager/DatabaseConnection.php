@@ -22,7 +22,7 @@ class DatabaseConnection
         try{
             $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASSWORD);
         } catch (Exception $exception){
-            if(IS_DEV){
+            if(DEV_ENVIRONMENT){
                 die('Error : ' .$exception->getMessage());
             }
         }
