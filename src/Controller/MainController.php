@@ -2,26 +2,28 @@
 
 namespace Controller;
 
-use Repository\PostsRepository;
-use Manager\PostsManager;
-use Twig\Environment;
+require_once ROOT.'config/config.php';
+
+use Repository;
 
 class MainController
 {
-    private $twig;
-    private $postsRepository;
-    private $postManager;
+    private \Twig\Environment $twig;
 
-    public function __construct(Environment $twig, PostsRepository $postsRepository, PostsManager $postManager)
+    public function __construct()
     {
+        $loader = new \Twig\Loader\FilesystemLoader(ROOT.'templates');
+        $twig = new \Twig\Environment($loader);
         $this->twig = $twig;
-        $this->postsRepository = $postsRepository;
-        $this->postManager = $postManager;
     }
 
     public function index()
     {
-        echo $this->twig->render('content/front/pages/home.html.twig', ['posts' => 'allPosts']);
+        $postsRepository = new Repository\PostsRepository();
+        $posts = $postsRepository->getAllPosts();
+        echo $this->twig->render('content/front/pages/home.html.twig', [
+            'posts' => $posts,
+        ]);
     }
 
     public function blog()

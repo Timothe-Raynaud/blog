@@ -2,21 +2,23 @@
 
 namespace Repository;
 
-use PDO;
+require_once ROOT.'config/config.php';
+
 use DateTime;
+use Manager;
 
 class PostsRepository
 {
-    private $pdo;
+    private Manager\DatabaseConnection $database;
 
-    public function __construct(PDO $pdo)
+    public function __construct()
     {
-        $this->pdo = $pdo;
+        $this->database = new Manager\DatabaseConnection();
     }
 
-    public function getAllPosts()
+    public function getAllPosts() : array
     {
-        $statement = $this->pdo->prepare('SELECT * FROM posts');
+        $statement = $this->database->pdo()->prepare('SELECT * FROM posts');
         $statement->execute();
 
         return $statement->fetchAll();
@@ -24,7 +26,7 @@ class PostsRepository
 
     public function getPostById($id)
     {
-        $statement = $this->pdo->prepare('SELECT * FROM posts WHERE id = :id');
+        $statement = $this->database->pdo->prepare('SELECT * FROM posts WHERE id = :id');
         $statement->bindValue(':id', $id);
         $statement->execute();
 
@@ -33,7 +35,7 @@ class PostsRepository
 
     public function addPost($title, $content, $user, DateTime $publishedAt )
     {
-        $statement = $this->pdo->prepare('INSERT INTO posts (title, content, created_by, published_at) VALUES (:title, :content, :user, :publishedAt)');
+        $statement = $this->database->pdo->prepare('INSERT INTO posts (title, content, created_by, published_at) VALUES (:title, :content, :user, :publishedAt)');
         $statement->bindValue(':title', $title);
         $statement->bindValue(':content', $content);
         $statement->bindValue(':user', $user);
@@ -43,7 +45,7 @@ class PostsRepository
 
     public function updatePost($id, $title, $content, DateTime $updatedAt)
     {
-        $statement = $this->pdo->prepare('UPDATE posts SET title = :title, content = :content, updated_at = :updatedAt WHERE id = :id');
+        $statement = $this->database->pdo->prepare('UPDATE posts SET title = :title, content = :content, updated_at = :updatedAt WHERE id = :id');
         $statement->bindValue(':id', $id);
         $statement->bindValue(':title', $title);
         $statement->bindValue(':content', $content);
@@ -53,7 +55,7 @@ class PostsRepository
 
     public function deletePost($id)
     {
-        $statement = $this->pdo->prepare('DELETE FROM posts WHERE id = :id');
+        $statement = $this->database->pdo->prepare('DELETE FROM posts WHERE id = :id');
         $statement->bindValue(':id', $id);
         $statement->execute();
     }
