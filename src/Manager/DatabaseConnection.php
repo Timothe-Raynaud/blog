@@ -6,9 +6,10 @@ require_once ROOT.'config/config.php';
 
 use PDO;
 use Exception;
+
 class DatabaseConnection
 {
-    private ?PDO $database;
+    private PDO $database;
 
     public function __construct()
     {
