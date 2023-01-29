@@ -21,13 +21,13 @@ class MainController
     {
         $postsRepository = new Repository\PostsRepository();
         $posts = $postsRepository->getAllPosts();
-        echo $this->twig->render('content/front/pages/home.html.twig', [
+        echo $this->twig->render('pages/home.html.twig', [
             'posts' => $posts,
         ]);
     }
 
     public function blog()
     {
-        echo $this->twig->render('content/front/pages/home.html.twig', ['posts' => 'This is a blog']);
+        echo $this->twig->render('pages/home.html.twig', ['posts' => 'This is a blog']);
     }
 }
