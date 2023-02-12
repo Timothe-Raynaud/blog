@@ -13,5 +13,10 @@ switch ($request) {
     case '/blog':
         $mainController->blog();
         break;
-
+    case '/post':
+        $mainController->post();
+        break;
+    case '/login':
+        $mainController->login();
+        break;
 }

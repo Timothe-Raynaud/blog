@@ -5,25 +5,21 @@
     <link rel="icon" type="image/x-icon" href="assets/front/favicon.ico" />
 {% endblock %}
 
-{% block body%}
+{% block nav %}
+    {% include 'front/layouts/_nav.html.twig' %}
+{% endblock %}
 
-    {% block nav %}
-        {% include 'front/layouts/_nav.html.twig' %}
-    {% endblock %}
+{% block header %}
+    {% include 'front/layouts/_header.html.twig' %}
+{% endblock %}
 
-    {% block header %}
-        {% include 'front/layouts/_header.html.twig' %}
-    {% endblock %}
+{% block main %}{% endblock %}
 
-    {% block main %}
+{% block footer %}
+    {% include 'front/layouts/_footer.html.twig' %}
+{% endblock %}
 
-    {% endblock %}
-
-    {% block footer %}
-        {% include 'front/layouts/_footer.html.twig' %}
-    {% endblock %}
-
+{% block js %}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Core theme JS-->
     <script src="js/front/scripts.js"></script>
 {% endblock %}

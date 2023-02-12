@@ -19,15 +19,28 @@ class MainController
 
     public function index()
     {
-        $postsRepository = new Repository\PostsRepository();
-        $posts = $postsRepository->getAllPosts();
         echo $this->twig->render('front/pages/home.html.twig', [
-            'posts' => $posts,
         ]);
     }
 
     public function blog()
     {
-        echo $this->twig->render('front/pages/home.html.twig', ['posts' => 'This is a blog']);
+        echo $this->twig->render('front/pages/blog.html.twig', [
+        ]);
+    }
+
+    public function post()
+    {
+        $postsRepository = new Repository\PostsRepository();
+        $posts = $postsRepository->getAllPosts();
+        echo $this->twig->render('front/pages/blog.html.twig', [
+            'posts' => $posts,
+        ]);
+    }
+
+    public function login()
+    {
+        echo $this->twig->render('front/pages/login.html.twig', [
+        ]);
     }
 }
