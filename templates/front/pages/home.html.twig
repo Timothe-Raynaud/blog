@@ -11,50 +11,68 @@
 {% endblock %}
 
 {% block main %}
-    <div class="row justify-content-center">
-        <div class="text-center pb-4 col-11 col-md-10 col-lg-6">
-            <div class="text-start mb-5">
-                <div class="row d-flex justify-content-between">
-                    <div class="col-lg-6 col-11">
-                        <h3 class="my-5">Présentation :</h3>
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. A, accusantium aliquid architecto blanditiis culpa cupiditate deleniti dicta distinctio dolores ducimus eius ex facilis in laborum, mollitia nam perferendis, sint voluptas!
-                        </p>
+    <div class="container">
+        <div class="row g-3 justify-content-center">
+            <div class="text-center pb-4 col-12 col-md-10 col-lg-8">
+                <div class="text-lg-start mb-5">
+                    <div class="row d-flex justify-content-between">
+                        <div class="col-lg-6 col-11">
+                            <h3 class="my-4">Présentation</h3>
+                            <p class="text-start">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. A, accusantium aliquid architecto blanditiis culpa cupiditate deleniti dicta distinctio dolores ducimus eius ex facilis in laborum, mollitia nam perferendis, sint voluptas!
+                            </p>
+                            <div class="mt-4">
+                                <a href="upload/CV_Raynaud_Timothe.pdf" class="btn btn-primary rounded shadow" target="_blank">Mon Curriculum Vitae</a>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-11 my-auto">
+                            <img src="img/front/moi.png" alt="" class="img-fluid">
+                        </div>
                     </div>
-                    <div class="col-lg-6 col-11">
-                        <img src="img/front/moi.png" alt="" class="img-fluid">
-                    </div>
-                    <div class="text-center mt-5">
-                        <a href="upload/CV_Raynaud_Timothe.pdf" class="btn btn-primary rounded shadow" target="_blank">Mon Curriculum Vitae</a>
+                    <div>
                     </div>
                 </div>
                 <div>
+                    <form action="/" class="pb-4 text-start" method="post">
+                        <h3 class="pb-4 text-lg-start text-center">Contactez moi</h3>
+                        <div class="d-flex row g-3">
+                            <div class="pb-2 col-lg-6 col-12">
+                                <label class="form-label d-block">Nom</label>
+                                <input name="lastname" type="text" class="w-100 form-control rounded" required>
+                            </div>
+                             <div class="pb-2 col-lg-6 col-12">
+                                <label for="" class="form-label d-block">Prénom</label>
+                                <input name="firstname" type="text" class="w-100 form-control rounded" required>
+                            </div>
+                        </div>
+                        <div class="pb-2">
+                            <label for="" class="form-label d-block">Email</label>
+                            <input name="email" type="email" class="w-100 form-control rounded" required>
+                        </div>
+                        <div class="pb-2">
+                            <label for="" class="form-label d-block">Sujet</label>
+                            <input name="subject" type="text" class="w-100 form-control rounded" required>
+                        </div>
+                        <div class="pb-3">
+                            <label for="" class="form-label d-block">Message</label>
+                            <textarea class="form-control rounded w-100" name="message" rows="5" cols="50" maxlength="200" required></textarea>
+                        </div>
+                        <div class="text-center">
+                            <input type="submit" VALUE="Envoyer" class="btn btn-primary rounded shadow">
+                        </div>
+                    </form>
                 </div>
-            </div>
-            <div>
-                <form action="" class="pb-4 text-start">
-                    <h3 class="pb-3">Contactez moi :</h3>
-                    <div class="pb-2">
-                        <label for="" class="d-block">Nom :</label>
-                        <input type="text" class="w-100">
-                    </div>
-                     <div class="pb-2">
-                        <label for="" class="d-block">Prénom :</label>
-                        <input type="text" class="w-100">
-                    </div>
-                    <div class="pb-2">
-                        <label for="" class="d-block">Email :</label>
-                        <input type="email" class="w-100">
-                    </div>
-                    <div class="pb-3">
-                        <label for="" class="d-block">Message :</label>
-                        <textarea class="w-100" name="message" rows="5" cols="50" maxlength="200"></textarea>
-                    </div>
-                    <div class="text-center">
-                        <input type="submit" VALUE="Envoyer" class="btn btn-primary rounded shadow">
-                    </div>
-                </form>
             </div>
         </div>
     </div>
+
+    <script>
+        {% if data is defined %}
+        {% if data == 'sendMail' %}
+        showFlashMessage('Le mail a bien été envoyé', 'success')
+        {% elseif data == 'errorMail' %}
+        showFlashMessage('Une erreur est survenue lors de l\'envoie du mail', 'danger')
+        {% endif %}
+        {% endif %}
+    </script>
 {% endblock %}
