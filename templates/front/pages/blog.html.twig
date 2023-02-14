@@ -1,5 +1,22 @@
 {% extends "front/layouts/layout.html.twig" %}
+{% import "front/layouts/_macros.html.twig" as frontend_macros %}
 
-{% block body %}
+{% block title %}Accueil{% endblock %}
+{% block header %}
+    {% include 'front/layouts/_header.html.twig' with {
+        'bandeau' : 'img/front/bandeau_blog.jpg',
+        'page_title' : ' ',
+        'subtitle_page' : '',
+        'meta_title' : ''
+    } %}
+{% endblock %}
 
+{% block main %}
+    <div class="container">
+        {% for post in posts %}
+            <div>
+                {{ frontend_macros.render_all_posts(post) }}
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

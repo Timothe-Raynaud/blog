@@ -17,7 +17,7 @@ class MainController
         $this->twig = $twig;
     }
 
-    public function index()
+    public function index($post)
     {
         $data = '';
         if (isset($post['submit'])) {
@@ -39,16 +39,18 @@ class MainController
 
     public function blog()
     {
+        $postsRepository = new Repository\PostsRepository();
+        $posts = $postsRepository->getAllPosts();
         echo $this->twig->render('front/pages/blog.html.twig', [
+            'posts' => $posts,
         ]);
     }
 
     public function post()
     {
-        $postsRepository = new Repository\PostsRepository();
-        $posts = $postsRepository->getAllPosts();
+
         echo $this->twig->render('front/pages/blog.html.twig', [
-            'posts' => $posts,
+
         ]);
     }
 

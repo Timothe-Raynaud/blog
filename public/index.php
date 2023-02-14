@@ -8,7 +8,7 @@ $mainController = new Controller\MainController();
 $request = $_SERVER['REQUEST_URI'];
 switch ($request) {
     case '/':
-        $mainController->index();
+        $mainController->index($_POST);
         break;
     case '/blog':
         $mainController->blog();
