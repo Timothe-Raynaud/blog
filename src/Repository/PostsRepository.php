@@ -26,7 +26,7 @@ class PostsRepository
 
     public function getPostById($id)
     {
-        $statement = $this->database->pdo->prepare('SELECT * FROM posts WHERE id = :id');
+        $statement = $this->database->pdo()->prepare('SELECT * FROM posts WHERE post_id = :id');
         $statement->bindValue(':id', $id);
         $statement->execute();
 
@@ -35,7 +35,7 @@ class PostsRepository
 
     public function addPost($title, $content, $user, DateTime $publishedAt )
     {
-        $statement = $this->database->pdo->prepare('INSERT INTO posts (title, content, created_by, published_at) VALUES (:title, :content, :user, :publishedAt)');
+        $statement = $this->database->pdo()->prepare('INSERT INTO posts (title, content, created_by, published_at) VALUES (:title, :content, :user, :publishedAt)');
         $statement->bindValue(':title', $title);
         $statement->bindValue(':content', $content);
         $statement->bindValue(':user', $user);
@@ -45,7 +45,7 @@ class PostsRepository
 
     public function updatePost($id, $title, $content, DateTime $updatedAt)
     {
-        $statement = $this->database->pdo->prepare('UPDATE posts SET title = :title, content = :content, updated_at = :updatedAt WHERE id = :id');
+        $statement = $this->database->pdo()->prepare('UPDATE posts SET title = :title, content = :content, updated_at = :updatedAt WHERE post_id = :id');
         $statement->bindValue(':id', $id);
         $statement->bindValue(':title', $title);
         $statement->bindValue(':content', $content);
@@ -55,7 +55,7 @@ class PostsRepository
 
     public function deletePost($id)
     {
-        $statement = $this->database->pdo->prepare('DELETE FROM posts WHERE id = :id');
+        $statement = $this->database->pdo()->prepare('DELETE FROM posts WHERE post_id = :id');
         $statement->bindValue(':id', $id);
         $statement->execute();
     }

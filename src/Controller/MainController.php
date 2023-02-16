@@ -46,11 +46,16 @@ class MainController
         ]);
     }
 
-    public function post()
+    public function post($id)
     {
+        $postsRepository = new Repository\PostsRepository();
+        $contactsRepository = new Repository\ContactRepository();
+        $post = $postsRepository->getPostById($id);
+        $createdBy = $contactsRepository->getContactsById($post['created_by']);
 
-        echo $this->twig->render('front/pages/blog.html.twig', [
-
+        echo $this->twig->render('front/pages/post.html.twig', [
+            'post' => $post,
+            'createdBy' => $createdBy,
         ]);
     }
 

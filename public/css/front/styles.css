@@ -77,8 +77,12 @@
 }
 
 body {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
   position: relative;
   margin: 0;
+  min-height: 100vh;
   font-family: var(--bs-body-font-family);
   font-size: var(--bs-body-font-size);
   font-weight: var(--bs-body-font-weight);
@@ -606,7 +610,6 @@ progress {
 
 .blockquote-footer {
   margin-top: -1rem;
-  margin-bottom: 1rem;
   font-size: 0.875em;
   color: #6c757d;
 }
@@ -11127,11 +11130,6 @@ blockquote {
     /* if the user changes the scrolling direction, we show the header */
     transform: translate3d(0, 100%, 0);
   }
-}
-
-footer {
-  padding-top: 0.8rem;
-  padding-bottom: 0.5rem;
 }
 
 header.masthead {

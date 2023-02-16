@@ -6,7 +6,8 @@ require_once ROOT.'config/config.php';
 $mainController = new Controller\MainController();
 
 $request = $_SERVER['REQUEST_URI'];
-switch ($request) {
+$url = explode('?' , $request);
+switch ($url[0]) {
     case '/':
         $mainController->index($_POST);
         break;
@@ -14,9 +15,9 @@ switch ($request) {
         $mainController->blog();
         break;
     case '/post':
-        $mainController->post();
+        $mainController->post($url[1]);
         break;
     case '/login':
-        $mainController->login();
+        $mainController->login($_POST);
         break;
 }
