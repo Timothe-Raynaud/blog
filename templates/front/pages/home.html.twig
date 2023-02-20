@@ -6,7 +6,7 @@
         'bandeau' : 'img/front/bandeau_home.jpg',
         'page_title' : 'Accueil',
         'subtitle_page' : '',
-        'meta_title' : 'Créer par Timothé Raynaud'
+        'meta_title' : 'Crée par Timothé Raynaud'
     } %}
 {% endblock %}
 
@@ -68,11 +68,11 @@
 
     <script>
         {% if data is defined %}
-        {% if data == 'sendMail' %}
-        showFlashMessage('Le mail a bien été envoyé', 'success')
-        {% elseif data == 'errorMail' %}
-        showFlashMessage('Une erreur est survenue lors de l\'envoie du mail', 'danger')
-        {% endif %}
+            {% if data == 'sendMail' %}
+                showFlashMessage('Le mail a bien été envoyé', 'success')
+            {% elseif data == 'errorMail' %}
+                showFlashMessage('Une erreur est survenue lors de l\'envoie du mail', 'danger')
+            {% endif %}
         {% endif %}
     </script>
 {% endblock %}

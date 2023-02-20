@@ -1,6 +1,6 @@
 <?php
 
-define('DB_HOST', 'local_dev_7-db');
-define('DB_NAME', 'my_blog');
-define('DB_USER', 'root');
-define('DB_PASSWORD', 'root');
+const DB_HOST = 'local_dev_8-db';
+const DB_NAME = 'my_blog';
+const DB_USER = 'root';
+const DB_PASSWORD = 'root';

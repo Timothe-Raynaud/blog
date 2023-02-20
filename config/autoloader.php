@@ -1,6 +1,7 @@
 <?php
 
-function loadClass($className) {
+function loadClass($className): void
+{
     $fileName = '';
     $namespace = '';
 

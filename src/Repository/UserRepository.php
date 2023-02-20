@@ -2,11 +2,11 @@
 
 namespace Repository;
 
-require_once ROOT.'config/config.php';
+require_once ROOT.'/config/config.php';
 
 use Manager;
 
-class userRepository
+class UserRepository
 {
     private Manager\DatabaseConnection $database;
 
@@ -23,18 +23,18 @@ class userRepository
         return $statement->fetchAll();
     }
 
-    public function getUserById($id)
+    public function getUserById($id) : array
     {
-        $statement = $this->database->pdo->prepare('SELECT * FROM users WHERE id = :id');
+        $statement = $this->database->pdo()->prepare('SELECT * FROM users WHERE id = :id');
         $statement->bindValue(':id', $id);
         $statement->execute();
 
         return $statement->fetch();
     }
 
-    public function createUser($login, $password, $mail, $firstname, $lastname )
+    public function createUser($login, $password, $mail, $firstname, $lastname ) : void
     {
-        $statement = $this->database->pdo->prepare('INSERT INTO users (login, password, mail, role, fistname, lastname) VALUES (:login, :password, :mail, subscriber, :firstname, :lastname )');
+        $statement = $this->database->pdo()->prepare('INSERT INTO users (login, password, mail, role, fistname, lastname) VALUES (:login, :password, :mail, subscriber, :firstname, :lastname )');
         $statement->bindValue(':login', $login);
         $statement->bindValue(':password', $password);
         $statement->bindValue(':mail', $mail);
@@ -44,7 +44,7 @@ class userRepository
     }
 
 
-    public function deleteUser($id)
+    public function deleteUser($id) : void
     {
         $statement = $this->database->pdo()->prepare('DELETE FROM users WHERE user_id = :id');
         $statement->bindValue(':id', $id);

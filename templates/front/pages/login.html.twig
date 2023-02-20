@@ -12,22 +12,7 @@
 
 {% block main %}
     <div class="container">
-        <div class="row">
-            <div id="login" class="col-lg-4 col-md-6 col-sm-8 col-10 m-auto mb-5 rounded px-5">
-                <form action="/login" method="post">
-                    <div class="pb-3">
-                        <label for="" class="form-label d-block">Login </label>
-                        <input name="login" type="text" class="w-100 form-control rounded" required>
-                    </div>
-                    <div class="pb-3">
-                        <label for="" class="form-label d-block">Password</label>
-                        <input type="password" class="form-control rounded w-100" name="password" rows="5" cols="50" maxlength="200" required></input>
-                    </div>
-                    <div class="text-center">
-                        <input type="submit" VALUE="Envoyer" class="btn btn-primary rounded shadow">
-                    </div>
-                </form>
-            </div>
-        </div>
+        {% include 'front/pages/login/_resetPassword.html.twig' %}
+        {% include 'front/pages/login/_login.html.twig' %}
     </div>
 {% endblock %}

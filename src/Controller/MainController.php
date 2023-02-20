@@ -2,66 +2,59 @@
 
 namespace Controller;
 
-require_once ROOT.'config/config.php';
+require_once ROOT.'/config/config.php';
 
+use Twig;
+use Manager;
 use Repository;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class MainController
 {
-    private \Twig\Environment $twig;
+    private Twig\Environment $twig;
+    private Manager\MailsManager $mailer;
 
     public function __construct()
     {
-        $loader = new \Twig\Loader\FilesystemLoader(ROOT.'templates');
-        $twig = new \Twig\Environment($loader);
-        $this->twig = $twig;
+        $loader = new Twig\Loader\FilesystemLoader(ROOT.'/templates');
+        $this->twig = new Twig\Environment($loader);
+        $this->mailer = new Manager\MailsManager();
     }
 
-    public function index($post)
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
+    public function index($post = null): void
     {
-        $data = '';
-        if (isset($post['submit'])) {
-            $to = "raynaud.timothe@gmail.com";
-            $subject = $post['subject'];
-            $message = $post['message'];
-            $headers = "From: (Email) " . $post['email'] . " (Firstname) " . $post['firstname'] . " (Lastname) " . $post['lastname'];
-
-            if (mail($to, $subject, $message, $headers)) {
-                $data = 'sendMail';
-            } else {
-                $data = 'errorMail';
-            }
-        }
+        $data = $this->mailer->sendMailToCreator($post);
         echo $this->twig->render('front/pages/home.html.twig', [
             'data' => $data,
         ]);
     }
 
-    public function blog()
-    {
-        $postsRepository = new Repository\PostsRepository();
-        $posts = $postsRepository->getAllPosts();
-        echo $this->twig->render('front/pages/blog.html.twig', [
-            'posts' => $posts,
-        ]);
-    }
-
-    public function post($id)
-    {
-        $postsRepository = new Repository\PostsRepository();
-        $contactsRepository = new Repository\ContactRepository();
-        $post = $postsRepository->getPostById($id);
-        $createdBy = $contactsRepository->getContactsById($post['created_by']);
-
-        echo $this->twig->render('front/pages/post.html.twig', [
-            'post' => $post,
-            'createdBy' => $createdBy,
-        ]);
-    }
-
-    public function login()
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
+    public function login(): void
     {
         echo $this->twig->render('front/pages/login.html.twig', [
+        ]);
+    }
+
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
+    public function error404(): void
+    {
+        echo $this->twig->render('layouts/error404.html.twig', [
         ]);
     }
 }

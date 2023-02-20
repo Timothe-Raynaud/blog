@@ -2,7 +2,7 @@
 
 namespace Repository;
 
-require_once ROOT.'config/config.php';
+require_once ROOT.'/config/config.php';
 
 use Manager;
 
@@ -15,9 +15,9 @@ class ContactRepository
         $this->database = new Manager\DatabaseConnection();
     }
 
-    public function getContactsName($id)
+    public function getContactsName($id) : array
     {
-        $statement = $this->database->pdo()->prepare('SELECT contact_id FROM contacts WHERE contact_id');
+        $statement = $this->database->pdo()->prepare('SELECT firstname, lastname FROM contacts WHERE contact_id = :id');
         $statement->bindValue(':id', $id);
 
         $statement->execute();
@@ -33,7 +33,7 @@ class ContactRepository
         return $statement->fetchAll();
     }
 
-    public function getContactsById($id)
+    public function getContactsById($id) : array
     {
         $statement = $this->database->pdo()->prepare('SELECT * FROM contacts WHERE contact_id = :id');
         $statement->bindValue(':id', $id);
@@ -42,7 +42,7 @@ class ContactRepository
         return $statement->fetch();
     }
 
-    public function createContacts($login, $password, $mail, $firstname, $lastname )
+    public function createContacts($login, $password, $mail, $firstname, $lastname ) : void
     {
         $statement = $this->database->pdo()->prepare('INSERT INTO contacts (login, password, mail, role, fistname, lastname) VALUES (:login, :password, :mail, subscriber, :firstname, :lastname )');
         $statement->bindValue(':login', $login);
@@ -54,7 +54,7 @@ class ContactRepository
     }
 
 
-    public function deleteContacts($id)
+    public function deleteContacts($id) : void
     {
         $statement = $this->database->pdo()->prepare('DELETE FROM contacts WHERE user_id = :id');
         $statement->bindValue(':id', $id);

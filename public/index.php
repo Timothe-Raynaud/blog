@@ -1,23 +1,23 @@
 <?php
 
-define('ROOT', dirname(__DIR__).DIRECTORY_SEPARATOR);
-require_once ROOT.'config/config.php';
+define('ROOT', dirname(__DIR__));
+require_once ROOT.'/config/config.php';
 
 $mainController = new Controller\MainController();
-
+$blogController = new Controller\BlogController();
 $request = $_SERVER['REQUEST_URI'];
 $url = explode('?' , $request);
-switch ($url[0]) {
-    case '/':
-        $mainController->index($_POST);
-        break;
-    case '/blog':
-        $mainController->blog();
-        break;
-    case '/post':
-        $mainController->post($url[1]);
-        break;
-    case '/login':
-        $mainController->login($_POST);
-        break;
+
+try {
+    match ($url[0]) {
+        '/' => $mainController->index($_POST),
+        '/blog' => $blogController->blog(),
+        '/post' => $blogController->post($url[1]),
+        '/login' => $mainController->login(),
+        default => $mainController->error404(),
+    };
+} catch (Exception $e) {
+    if(DEV_ENVIRONMENT){
+        var_dump($e);
+    }
 }

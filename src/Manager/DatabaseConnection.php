@@ -2,10 +2,9 @@
 
 namespace Manager;
 
-require_once ROOT.'config/config.php';
+require_once ROOT.'/config/config.php';
 
 use PDO;
-use Exception;
 
 class DatabaseConnection
 {
@@ -18,16 +17,7 @@ class DatabaseConnection
 
     public function getConnection() : PDO
     {
-        $pdo = null;
-        try{
-            $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASSWORD);
-        } catch (Exception $exception){
-            if(DEV_ENVIRONMENT){
-                die('Error : ' .$exception->getMessage());
-            }
-        }
-
-        return $pdo;
+        return new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASSWORD);
     }
 
     public function pdo() : PDO

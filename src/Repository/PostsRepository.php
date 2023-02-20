@@ -2,7 +2,7 @@
 
 namespace Repository;
 
-require_once ROOT.'config/config.php';
+require_once ROOT.'/config/config.php';
 
 use DateTime;
 use Manager;
@@ -24,7 +24,7 @@ class PostsRepository
         return $statement->fetchAll();
     }
 
-    public function getPostById($id)
+    public function getPostById($id) : array
     {
         $statement = $this->database->pdo()->prepare('SELECT * FROM posts WHERE post_id = :id');
         $statement->bindValue(':id', $id);
@@ -33,7 +33,7 @@ class PostsRepository
         return $statement->fetch();
     }
 
-    public function addPost($title, $content, $user, DateTime $publishedAt )
+    public function addPost($title, $content, $user, DateTime $publishedAt ) : void
     {
         $statement = $this->database->pdo()->prepare('INSERT INTO posts (title, content, created_by, published_at) VALUES (:title, :content, :user, :publishedAt)');
         $statement->bindValue(':title', $title);
@@ -43,7 +43,7 @@ class PostsRepository
         $statement->execute();
     }
 
-    public function updatePost($id, $title, $content, DateTime $updatedAt)
+    public function updatePost($id, $title, $content, DateTime $updatedAt) : void
     {
         $statement = $this->database->pdo()->prepare('UPDATE posts SET title = :title, content = :content, updated_at = :updatedAt WHERE post_id = :id');
         $statement->bindValue(':id', $id);
@@ -53,7 +53,7 @@ class PostsRepository
         $statement->execute();
     }
 
-    public function deletePost($id)
+    public function deletePost($id) : void
     {
         $statement = $this->database->pdo()->prepare('DELETE FROM posts WHERE post_id = :id');
         $statement->bindValue(':id', $id);
