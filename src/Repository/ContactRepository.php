@@ -15,19 +15,13 @@ class ContactRepository
         $this->database = new Manager\DatabaseConnection();
     }
 
-    public function getContactsName($id) : array
+    public function getContacts() : array
     {
-        $statement = $this->database->pdo()->prepare('SELECT firstname, lastname FROM contacts WHERE contact_id = :id');
-        $statement->bindValue(':id', $id);
-
-        $statement->execute();
-
-        return $statement->fetch();
-    }
-
-    public function getAllContacts() : array
-    {
-        $statement = $this->database->pdo()->prepare('SELECT * FROM contacts');
+        $sql = '
+            SELECT * 
+            FROM contacts
+        ';
+        $statement = $this->database->pdo()->prepare($sql);
         $statement->execute();
 
         return $statement->fetchAll();
@@ -35,28 +29,38 @@ class ContactRepository
 
     public function getContactsById($id) : array
     {
-        $statement = $this->database->pdo()->prepare('SELECT * FROM contacts WHERE contact_id = :id');
+        $sql = '
+            SELECT * 
+            FROM contacts 
+            WHERE contact_id = :id
+        ';
+        $statement = $this->database->pdo()->prepare($sql);
         $statement->bindValue(':id', $id);
         $statement->execute();
 
         return $statement->fetch();
     }
 
-    public function createContacts($login, $password, $mail, $firstname, $lastname ) : void
+    public function setContact($firstname, $lastname, $email ) : void
     {
-        $statement = $this->database->pdo()->prepare('INSERT INTO contacts (login, password, mail, role, fistname, lastname) VALUES (:login, :password, :mail, subscriber, :firstname, :lastname )');
-        $statement->bindValue(':login', $login);
-        $statement->bindValue(':password', $password);
-        $statement->bindValue(':mail', $mail);
+        $sql = '
+            INSERT INTO contacts (firstname, lastname, email) 
+            VALUES (:firstname, :lastname, :email)
+        ';
+        $statement = $this->database->pdo()->prepare($sql);
         $statement->bindValue(':firstname', $firstname);
         $statement->bindValue(':lastname', $lastname);
+        $statement->bindValue(':email', $email);
         $statement->execute();
     }
 
-
     public function deleteContacts($id) : void
     {
-        $statement = $this->database->pdo()->prepare('DELETE FROM contacts WHERE user_id = :id');
+        $sql = '
+            DELETE FROM contacts 
+            WHERE user_id = :id
+        ';
+        $statement = $this->database->pdo()->prepare($sql);
         $statement->bindValue(':id', $id);
         $statement->execute();
     }

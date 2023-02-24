@@ -18,7 +18,11 @@ class PostsRepository
 
     public function getAllPosts() : array
     {
-        $statement = $this->database->pdo()->prepare('SELECT * FROM posts');
+        $sql = '
+            SELECT * 
+            FROM posts
+        ';
+        $statement = $this->database->pdo()->prepare($sql);
         $statement->execute();
 
         return $statement->fetchAll();
@@ -26,28 +30,44 @@ class PostsRepository
 
     public function getPostById($id) : array
     {
-        $statement = $this->database->pdo()->prepare('SELECT * FROM posts WHERE post_id = :id');
+        $sql = '
+            SELECT * 
+            FROM posts p
+            INNER JOIN contacts c ON c.contact_id = p.created_by 
+            WHERE post_id = :id
+        ';
+        $statement = $this->database->pdo()->prepare($sql);
         $statement->bindValue(':id', $id);
         $statement->execute();
 
         return $statement->fetch();
     }
 
-    public function addPost($title, $content, $user, DateTime $publishedAt ) : void
+    public function addPost($title, $content, $contactId, DateTime $publishedAt ) : void
     {
-        $statement = $this->database->pdo()->prepare('INSERT INTO posts (title, content, created_by, published_at) VALUES (:title, :content, :user, :publishedAt)');
+        $sql = '
+            INSERT INTO posts (title, content, created_by, published_at) 
+            VALUES (:title, :content, :contactId, :publishedAt)
+        ';
+        $statement = $this->database->pdo()->prepare($sql);
         $statement->bindValue(':title', $title);
         $statement->bindValue(':content', $content);
-        $statement->bindValue(':user', $user);
+        $statement->bindValue(':contactId', $contactId);
         $statement->bindValue(':publishedAt', $publishedAt);
         $statement->execute();
     }
 
-    public function updatePost($id, $title, $content, DateTime $updatedAt) : void
+    public function updatePost($id, $title, $subtitle, $content, DateTime $updatedAt) : void
     {
-        $statement = $this->database->pdo()->prepare('UPDATE posts SET title = :title, content = :content, updated_at = :updatedAt WHERE post_id = :id');
+        $sql = '
+            UPDATE posts 
+            SET title = :title, subtitle = :subtitle, content = :content, updated_at = :updatedAt 
+            WHERE post_id = :id
+        ';
+        $statement = $this->database->pdo()->prepare($sql);
         $statement->bindValue(':id', $id);
         $statement->bindValue(':title', $title);
+        $statement->bindValue(':subtitle', $subtitle);
         $statement->bindValue(':content', $content);
         $statement->bindValue(':updatedAt', $updatedAt);
         $statement->execute();
@@ -55,7 +75,11 @@ class PostsRepository
 
     public function deletePost($id) : void
     {
-        $statement = $this->database->pdo()->prepare('DELETE FROM posts WHERE post_id = :id');
+        $sql = '
+            DELETE FROM posts 
+            WHERE post_id = :id
+        ';
+        $statement = $this->database->pdo()->prepare($sql);
         $statement->bindValue(':id', $id);
         $statement->execute();
     }
