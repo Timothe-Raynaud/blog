@@ -75,7 +75,7 @@ class UserRepository
     {
         $sql = '
             UPDATE users 
-            SET :password 
+            SET password = :password 
             WHERE id = :id
         ';
         $statement = $this->database->pdo()->prepare($sql);
@@ -84,18 +84,27 @@ class UserRepository
         $statement->execute();
     }
 
-    public function setUser($login, $password, $role, $contactId ) : void
+    public function setUser($login, $password, $role, $contactId ) : bool
     {
-        $sql = '
-            INSERT INTO users (login, password, role, contact_id) 
-            VALUES (:login, :password, :role, :role, :contactId )
-        ';
-        $statement = $this->database->pdo()->prepare($sql);
-        $statement->bindValue(':login', $login);
-        $statement->bindValue(':password', $password);
-        $statement->bindValue(':role', $role);
-        $statement->bindValue(':contactId', $contactId);
-        $statement->execute();
+        try {
+            $sql = '
+                INSERT INTO users (login, password, role, contact_id) 
+                VALUES (:login, :password,  :role, :contactId )
+            ';
+            $statement = $this->database->pdo()->prepare($sql);
+            $statement->bindValue(':login', $login);
+            $statement->bindValue(':password', $password);
+            $statement->bindValue(':role', $role);
+            $statement->bindValue(':contactId', $contactId);
+            $statement->execute();
+
+            return true;
+        } catch (Exception $exception){
+            if (DEV_ENVIRONMENT){
+                var_dump($exception);
+            }
+            return false;
+        }
     }
 
 

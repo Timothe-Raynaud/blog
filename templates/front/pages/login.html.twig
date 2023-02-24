@@ -18,4 +18,17 @@
             {% include 'front/pages/login/_signIn.html.twig' %}
         </div>
     </div>
+
+    {% if message != '' %}
+        <div id="loginFlash">{{ message }}</div>
+    {% endif %}
+    <script>
+        {% if isAdd %}
+            showFlashMessage('success', 'loginFlash')
+        {% else %}
+            showFlashMessage('danger',  'loginFlash')
+        {% endif %}
+    </script>
 {% endblock %}
+
+

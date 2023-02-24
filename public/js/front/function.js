@@ -1,8 +1,6 @@
-function showFlashMessage(message, type) {
-    let flashContainer = document.createElement("div");
+function showFlashMessage(type, id) {
+    let flashContainer = document.getElementById(id);
     flashContainer.className = "flash alert-" + type;
-    flashContainer.innerHTML = message;
-    document.body.append(flashContainer);
 
     setTimeout(function() {
         flashContainer.style.display = "none";

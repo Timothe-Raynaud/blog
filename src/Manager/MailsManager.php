@@ -13,8 +13,10 @@ class MailsManager
 
     }
 
-    public function sendMailToCreator($post): string
+    public function sendMailToCreator($post): array
     {
+        $result['isSend'] = false;
+        $result['message'] = '';
         try{
             if ($post != null) {
                 $to = TO;
@@ -23,16 +25,19 @@ class MailsManager
                 $headers = "From: (Email) " . $post['email'] . " (Firstname) " . $post['firstname'] . " (Lastname) " . $post['lastname'];
 
                 if (mail($to, $subject, $message, $headers)) {
-                    return 'sendMail';
+                    $result['isSend'] = true;
+                    $result['message'] = 'Votre mail à bien été envoyé';
+                    return $result;
                 }
-                return 'errorMail';
+                $result['message'] = 'Une erreur est survenue lors de l\'envoi du mail';
+                return $result;
             }
         } catch (Exception $exception){
             if(DEV_ENVIRONMENT){
-                var_dump($e);
+                var_dump($exception);
             }
-            return false;
+            return $result;
         }
-        return false;
+        return $result;
     }
 }

@@ -30,9 +30,10 @@ class MainController
      */
     public function index($post = null): void
     {
-        $data = $this->mailsManager->sendMailToCreator($post);
+        $mailResult = $this->mailsManager->sendMailToCreator($post);
         echo $this->twig->render('front/pages/home.html.twig', [
-            'data' => $data,
+            'isSend' => $mailResult['isSend'],
+            'message' => $mailResult['message'],
         ]);
     }
 

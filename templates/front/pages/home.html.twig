@@ -66,13 +66,14 @@
         </div>
     </div>
 
+    {% if message != '' %}
+        <div id="mailFlash">{{ message }}</div>
+    {% endif %}
     <script>
-        {% if data is defined %}
-            {% if data == 'sendMail' %}
-                showFlashMessage('Le mail a bien été envoyé', 'success')
-            {% elseif data == 'errorMail' %}
-                showFlashMessage('Une erreur est survenue lors de l\'envoie du mail', 'danger')
-            {% endif %}
+        {% if isSend %}
+            showFlashMessage('success', 'mailFlash')
+        {% else %}
+            showFlashMessage('danger', 'mailFlash')
         {% endif %}
     </script>
 {% endblock %}

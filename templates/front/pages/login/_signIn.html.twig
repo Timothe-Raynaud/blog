@@ -3,25 +3,27 @@
         <a href="javascript:void(0)" onclick="hideAndShow('sign-in', 'login')"><div class="">Se connecter <i class="fa-solid fa-arrow-right"></i></div></a>
     </div>
     <h3 class="text-center mb-3 border-bottom pb-3">S'inscrire</h3>
-    <form action="/sign-in" method="post">
+    <form action="/inscription" method="post">
         <div class="pb-3">
             <label for="" class="form-label d-block">Email </label>
             <input name="email" type="email" class="w-100 form-control rounded" required>
         </div>
         <div class="pb-3 w-100 me-md-2">
             <label for="" class="form-label d-block">Nom d'utilisateur </label>
-            <input name="username" type="text" class="w-100 form-control rounded" required id="isAvailableUsername">
+            <input name="username" type="text" class="w-100 form-control rounded" required id="is-available-username">
+            <span id="username-availability" class="fs-6 fst-italic fw-lighter"></span>
         </div>
         <div class="pb-3">
             <label for="" class="form-label d-block">Login </label>
-            <input name="login" type="text" class="w-100 form-control rounded" required id="isAvailableLogin">
+            <input name="login" type="text" class="w-100 form-control rounded" required id="is-available-login">
+            <span id="login-availability" class="fs-6 fst-italic fw-lighter"></span>
         </div>
         <div class="pb-3">
             <label for="" class="form-label d-block">Password </label>
-            <input type="password" class="form-control rounded w-100" name="password" rows="5" cols="50" maxlength="200" required></input>
+            <input type="password" class="form-control rounded w-100" name="password" rows="5" cols="50" maxlength="200" required>
         </div>
         <div class="text-center mb-4">
-            <input type="submit" VALUE="S'inscrire" class="btn btn-primary rounded shadow">
+            <input type="submit" VALUE="S'inscrire" class="btn btn-primary rounded shadow" id="sign-in-submit">
         </div>
     </form>
 </div>

@@ -18,13 +18,13 @@ try {
         '/blog' => $blogController->blog(),
         '/post' => $blogController->post($url[1]),
         '/login' => $userController->login(),
-        '/sign-in' => $userController->signIn($_POST),
+        '/inscription' => $userController->signIn($_POST),
         '/is-login-exist' => $userController->isLoginExist($url[1]),
         '/is-username-exist' => $userController->isUsernameExist($url[1]),
         default => $mainController->error404(),
     };
-} catch (Exception $e) {
+} catch (Exception $exception) {
     if(DEV_ENVIRONMENT){
-        var_dump($e);
+        var_dump($exception);
     }
 }

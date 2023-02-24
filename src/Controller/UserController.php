@@ -42,7 +42,10 @@ class UserController
      */
     public function signIn($post = null): void
     {
+        $resultAddUser = $this->userManager->addNewUser($post);
         echo $this->twig->render('front/pages/login.html.twig', [
+            'isAdd' => $resultAddUser['isAdd'],
+            'message' => $resultAddUser['message'],
         ]);
     }
 

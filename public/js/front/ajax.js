@@ -1,14 +1,21 @@
-const loginField = document.getElementById('isAvailableLogin')
+const signInSubmit = document.getElementById('sign-in-submit')
+
+const loginField = document.getElementById('is-available-login')
 loginField.addEventListener('input', function (){
     const value = loginField.value
     const xmlHttpRequest = new XMLHttpRequest()
     xmlHttpRequest.addEventListener('load', function () {
+        const availability = document.getElementById('login-availability')
         const response = JSON.parse(xmlHttpRequest.responseText.trim())
-        console.log(response)
-        if(response.exist == 'true'){
-            loginField.style.backgroundColor = 'rgba(168, 55, 55, 0.28)'
+        if(value === ''){
+            loginField.style.backgroundColor = '#fff'
+            availability.innerText = ''
+        } else if(response.exist === 'true'){
+            loginField.style.backgroundColor = 'rgba(159, 0, 0, 0.13)'
+            availability.innerText = 'Non disponible'
         } else {
-            loginField.style.backgroundColor = 'rgba(53, 159, 53, 0.28)'
+            loginField.style.backgroundColor = 'rgba(0, 169, 96, 0.13)'
+            availability.innerText = 'Disponible'
         }
     })
 
@@ -18,17 +25,22 @@ loginField.addEventListener('input', function (){
     xmlHttpRequest.send()
 })
 
-const usernameField = document.getElementById('isAvailableUsername')
+const usernameField = document.getElementById('is-available-username')
 usernameField.addEventListener('input', function (){
     const value = usernameField.value
     const xmlHttpRequest = new XMLHttpRequest()
     xmlHttpRequest.addEventListener('load', function () {
+        const availability = document.getElementById('username-availability')
         const response = JSON.parse(xmlHttpRequest.responseText.trim())
-        console.log(response)
-        if(response.exist == 'true'){
-            usernameField.style.backgroundColor = 'rgba(168, 55, 55, 0.28)'
+        if(value === ''){
+            usernameField.style.backgroundColor = '#fff'
+            availability.innerText = ''
+        } else if(response.exist === 'true'){
+            usernameField.style.backgroundColor = 'rgba(159, 0, 0, 0.13)'
+            availability.innerText = 'Non disponible'
         } else {
-            usernameField.style.backgroundColor = 'rgba(53, 159, 53, 0.28)'
+            usernameField.style.backgroundColor = 'rgba(0, 169, 96, 0.13)'
+            availability.innerText = 'Disponible'
         }
     })
 

@@ -55,16 +55,38 @@ class ContactRepository
         return $statement->fetch();
     }
 
-    public function setContact($username, $email ) : void
+    public function getContactsByEmail($email) : mixed
     {
         $sql = '
-            INSERT INTO contacts (username, email) 
-            VALUES (:username, :email)
+            SELECT * 
+            FROM contacts 
+            WHERE email = :email
         ';
         $statement = $this->database->pdo()->prepare($sql);
-        $statement->bindValue(':username', $username);
         $statement->bindValue(':email', $email);
         $statement->execute();
+
+        return $statement->fetch();
+    }
+
+    public function setContact($username, $email ) : bool
+    {
+        try {
+            $sql = '
+                INSERT INTO contacts (username, email) 
+                VALUES (:username, :email)
+            ';
+            $statement = $this->database->pdo()->prepare($sql);
+            $statement->bindValue(':username', $username);
+            $statement->bindValue(':email', $email);
+            $statement->execute();
+            return true;
+        } catch (Exception $exception){
+            if (DEV_ENVIRONMENT){
+                var_dump($exception);
+            }
+            return false;
+        }
     }
 
     public function deleteContacts($id) : void
