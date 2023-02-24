@@ -76,4 +76,51 @@ class UserManager
         $result['message'] = 'Une erreur est survenue lors de l\'inscription';
         return $result;
     }
+
+    public function  connecting($post) : array
+    {
+        $result['isAdd'] = false;
+        $result['message'] = '';
+
+        try{
+            if ($post != null) {
+                $login = $post['login'];
+                $password = $post['password'];
+
+                $user = $this->userRepository->getUserByLogin($login);
+                if ($user){
+                    if (password_verify($password, $user['password'])){
+                        $this->createSession($user);
+                        $result['isAdd'] = true;
+                        $result['message'] = 'Bienvenu '. $user['username'] . ' !';
+                        return $result;
+                    } else {
+                        $result['message'] = 'Mot de passe incorect';
+                        return $result;
+                    }
+                } else{
+                    $result['message'] = 'Login incorect';
+                    return $result;
+                }
+            }
+        } catch (Exception $exception){
+            if(DEV_ENVIRONMENT){
+                var_dump($exception);
+            }
+        }
+        $result['message'] = 'Une erreur est survenu lors de la connection';
+        return $result;
+    }
+
+    public function createSession($user) : void
+    {
+        $_SESSION['username'] = $user['username'];
+        $_SESSION['role'] = $user['role'];
+    }
+
+    public function removeSession() : void
+    {
+        session_destroy();
+    }
+
 }

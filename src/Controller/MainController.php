@@ -15,12 +15,14 @@ class MainController
 {
     private Environment $twig;
     private MailsManager $mailsManager;
+    private array $session;
 
     public function __construct()
     {
         $loader = new FilesystemLoader(ROOT.'/templates');
         $this->twig = new Environment($loader);
         $this->mailsManager = new MailsManager();
+        $this->session = $_SESSION;
     }
 
     /**
@@ -34,6 +36,7 @@ class MainController
         echo $this->twig->render('front/pages/home.html.twig', [
             'isSend' => $mailResult['isSend'],
             'message' => $mailResult['message'],
+            'session' => $this->session,
         ]);
     }
 

@@ -14,11 +14,14 @@ use Twig\Error\SyntaxError;
 class BlogController
 {
     private Twig\Environment $twig;
+    private array $session;
+
 
     public function __construct()
     {
         $loader = new Twig\Loader\FilesystemLoader(ROOT.'/templates');
         $this->twig = new Twig\Environment($loader);
+        $this->session = $_SESSION;
     }
 
 
@@ -33,6 +36,7 @@ class BlogController
         $posts = $postsRepository->getAllPosts();
         echo $this->twig->render('front/pages/blog.html.twig', [
             'posts' => $posts,
+            'session' => $this->session,
         ]);
     }
 
@@ -48,6 +52,7 @@ class BlogController
 
         echo $this->twig->render('front/pages/post.html.twig', [
             'post' => $post,
+            'session' => $this->session,
         ]);
     }
 

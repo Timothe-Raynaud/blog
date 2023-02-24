@@ -31,27 +31,12 @@ class UserRepository
     {
         $sql = '
             SELECT * 
-            FROM users 
-            WHERE login = :login
+            FROM users u
+            INNER JOIN contacts c ON c.contact_id = u.contact_id
+            WHERE u.login = :login
         ';
         $statement = $this->database->pdo()->prepare($sql);
         $statement->bindValue(':login', $login);
-        $statement->execute();
-
-        return $statement->fetch();
-    }
-
-    public function getUserByPasswordAndLogin($password, $login) : ?array
-    {
-        $sql = '
-            SELECT * 
-            FROM users 
-            WHERE login = :login
-            AND password = :password
-        ';
-        $statement = $this->database->pdo()->prepare($sql);
-        $statement->bindValue(':login', $login);
-        $statement->bindValue(':password', $password);
         $statement->execute();
 
         return $statement->fetch();

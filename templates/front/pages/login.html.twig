@@ -11,13 +11,17 @@
 {% endblock %}
 
 {% block main %}
-    <div class="container">
-        <div class="row justify-content-center">
-            {% include 'front/pages/login/_resetPassword.html.twig' %}
-            {% include 'front/pages/login/_login.html.twig' %}
-            {% include 'front/pages/login/_signIn.html.twig' %}
+    {% if session.username is defined %}
+        <div>Votre compte :</div>
+    {% else %}
+        <div class="container">
+            <div class="row justify-content-center">
+                {% include 'front/pages/login/_resetPassword.html.twig' %}
+                {% include 'front/pages/login/_login.html.twig' %}
+                {% include 'front/pages/login/_signIn.html.twig' %}
+            </div>
         </div>
-    </div>
+    {% endif %}
 
     {% if message != '' %}
         <div id="loginFlash">{{ message }}</div>

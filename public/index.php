@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 define('ROOT', dirname(__DIR__));
 require_once ROOT.'/config/config.php';
 use Controller\MainController;
@@ -18,6 +20,8 @@ try {
         '/blog' => $blogController->blog(),
         '/post' => $blogController->post($url[1]),
         '/login' => $userController->login(),
+        '/logout' => $userController->logout(),
+        '/connexion' => $userController->connecting($_POST),
         '/inscription' => $userController->signIn($_POST),
         '/is-login-exist' => $userController->isLoginExist($url[1]),
         '/is-username-exist' => $userController->isUsernameExist($url[1]),
