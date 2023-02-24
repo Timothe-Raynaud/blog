@@ -9,7 +9,7 @@ function showFlashMessage(message, type) {
     }, 5000);
 }
 
-function hideAndShow(hideId, showId, ){
+function hideAndShow(hideId, showId){
     let hideTarget = document.getElementById(hideId)
     let showTarget = document.getElementById(showId)
     hideTarget.classList.add('d-none')

@@ -15,7 +15,7 @@ class UserRepository
         $this->database = new Manager\DatabaseConnection();
     }
 
-    public function getAllUsers() : array
+    public function getAllUsers() : ?array
     {
         $sql = '
             SELECT * 
@@ -27,7 +27,37 @@ class UserRepository
         return $statement->fetchAll();
     }
 
-    public function getUserById($id) : array
+    public function getUserByLogin($login) : mixed
+    {
+        $sql = '
+            SELECT * 
+            FROM users 
+            WHERE login = :login
+        ';
+        $statement = $this->database->pdo()->prepare($sql);
+        $statement->bindValue(':login', $login);
+        $statement->execute();
+
+        return $statement->fetch();
+    }
+
+    public function getUserByPasswordAndLogin($password, $login) : ?array
+    {
+        $sql = '
+            SELECT * 
+            FROM users 
+            WHERE login = :login
+            AND password = :password
+        ';
+        $statement = $this->database->pdo()->prepare($sql);
+        $statement->bindValue(':login', $login);
+        $statement->bindValue(':password', $password);
+        $statement->execute();
+
+        return $statement->fetch();
+    }
+
+    public function getUserById($id) : ?array
     {
         $sql = '
             SELECT * 

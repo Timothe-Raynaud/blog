@@ -12,7 +12,10 @@
 
 {% block main %}
     <div class="container">
-        {% include 'front/pages/login/_resetPassword.html.twig' %}
-        {% include 'front/pages/login/_login.html.twig' %}
+        <div class="row justify-content-center">
+            {% include 'front/pages/login/_resetPassword.html.twig' %}
+            {% include 'front/pages/login/_login.html.twig' %}
+            {% include 'front/pages/login/_signIn.html.twig' %}
+        </div>
     </div>
 {% endblock %}

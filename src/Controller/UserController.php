@@ -4,35 +4,34 @@ namespace Controller;
 
 require_once ROOT.'/config/config.php';
 
-use Manager\MailsManager;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
+use Manager\UserManager;
 
-class MainController
+class UserController
 {
     private Environment $twig;
-    private MailsManager $mailsManager;
+    private UserManager $userManager;
 
     public function __construct()
     {
         $loader = new FilesystemLoader(ROOT.'/templates');
         $this->twig = new Environment($loader);
-        $this->mailsManager = new MailsManager();
+        $this->userManager = new UserManager();
     }
+
 
     /**
      * @throws SyntaxError
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function index($post = null): void
+    public function login(): void
     {
-        $data = $this->mailsManager->sendMailToCreator($post);
-        echo $this->twig->render('front/pages/home.html.twig', [
-            'data' => $data,
+        echo $this->twig->render('front/pages/login.html.twig', [
         ]);
     }
 
@@ -41,9 +40,19 @@ class MainController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function error404(): void
+    public function signIn($post = null): void
     {
-        echo $this->twig->render('layouts/error404.html.twig', [
+        echo $this->twig->render('front/pages/login.html.twig', [
         ]);
+    }
+
+    public function isLoginExist($login) : void
+    {
+        $this->userManager->isLoginExist($login);
+    }
+
+    public function isUsernameExist($username) : void
+    {
+        $this->userManager->isUsernameExist($username);
     }
 }
