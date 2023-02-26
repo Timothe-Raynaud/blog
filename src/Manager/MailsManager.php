@@ -17,26 +17,25 @@ class MailsManager
     {
         $result['isSend'] = false;
         $result['message'] = '';
+
         try{
             if ($post != null) {
                 $to = TO;
                 $subject = $post['subject'];
                 $message = $post['message'];
-                $headers = "From: (Email) " . $post['email'] . " (Firstname) " . $post['firstname'] . " (Lastname) " . $post['lastname'];
+                $headers = "From: (Email) " . $post['email'];
 
                 if (mail($to, $subject, $message, $headers)) {
                     $result['isSend'] = true;
                     $result['message'] = 'Votre mail à bien été envoyé';
                     return $result;
                 }
+
                 $result['message'] = 'Une erreur est survenue lors de l\'envoi du mail';
                 return $result;
             }
         } catch (Exception $exception){
-            if(DEV_ENVIRONMENT){
-                var_dump($exception);
-            }
-            return $result;
+            var_dump($exception);
         }
         return $result;
     }

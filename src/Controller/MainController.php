@@ -45,6 +45,16 @@ class MainController
      * @throws RuntimeError
      * @throws LoaderError
      */
+    public function sendMail($post = null): void
+    {
+        echo  json_encode($this->mailsManager->sendMailToCreator($post));
+    }
+
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     public function error404(): void
     {
         echo $this->twig->render('layouts/error404.html.twig', [

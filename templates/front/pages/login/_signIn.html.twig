@@ -1,6 +1,8 @@
 <div id="sign-in" class="col-lg-8 px-5 d-none">
     <div class="mb-4">
-        <a href="javascript:void(0)" onclick="hideAndShow('sign-in', 'login')"><div class=""><i class="fa-solid fa-chevron-left"></i>&nbsp;Se connecter</div></a>
+        <a href="javascript:void(0)" onclick="hideAndShow('sign-in', 'login')">
+            <div class=""><i class="fa-solid fa-chevron-left"></i>&nbsp;Se connecter</div>
+        </a>
     </div>
     <h3 class="text-center mb-3 border-bottom pb-3">Inscription</h3>
     <form action="/inscription" method="post">
@@ -20,7 +22,8 @@
         </div>
         <div class="pb-3">
             <label for="" class="form-label d-block">Password </label>
-            <input type="password" class="form-control rounded w-100" name="password" rows="5" cols="50" maxlength="200" required>
+            <input type="password" class="form-control rounded w-100" name="password" rows="5" cols="50" maxlength="200"
+                   required>
         </div>
         <div class="text-center mb-4">
             <input type="submit" VALUE="S'inscrire" class="btn btn-primary rounded shadow" id="sign-in-submit">
@@ -29,4 +32,40 @@
 </div>
 
 
-<script src="js/front/ajax.js"></script>
+<script>
+    function testDisponibilityOfField(element, name) {
+        const value = element.value
+
+        fetch(window.location.origin + '/is-' + name + '-exist?' + encodeURIComponent(value))
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Erreur de connexion');
+                }
+            })
+            .then(data => {
+                const availability = document.getElementById(name + '-availability')
+
+                if (value === '') {
+                    element.style.backgroundColor = '#fff'
+                    availability.innerText = ''
+                } else if (data.exist === 'true') {
+                    element.style.backgroundColor = 'rgba(159, 0, 0, 0.13)'
+                    availability.innerText = 'Non disponible'
+                } else {
+                    element.style.backgroundColor = 'rgba(0, 169, 96, 0.13)'
+                    availability.innerText = 'Disponible'
+                }
+            })
+            .catch(error => console.error(error))
+    }
+
+    // Test Validity input inscription
+    const loginField = document.getElementById('is-available-login')
+    const usernameField = document.getElementById('is-available-username')
+
+    loginField.addEventListener('input', () => testDisponibilityOfField(loginField, 'login'))
+    usernameField.addEventListener('input', () => testDisponibilityOfField(usernameField, 'username'))
+
+</script>

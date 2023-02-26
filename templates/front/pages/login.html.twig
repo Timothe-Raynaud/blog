@@ -23,16 +23,8 @@
         </div>
     {% endif %}
 
-    {% if message != '' %}
-        <div id="loginFlash">{{ message }}</div>
-    {% endif %}
-    <script>
-        {% if isAdd %}
-            showFlashMessage('success', 'loginFlash')
-        {% else %}
-            showFlashMessage('danger',  'loginFlash')
-        {% endif %}
-    </script>
+
+    <div id="login-flash" class="d-none"></div>
 {% endblock %}
 
 

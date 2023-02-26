@@ -46,8 +46,7 @@ class UserController
     public function logout(): void
     {
         $this->userManager->removeSession();
-        echo $this->twig->render('front/pages/login.html.twig', [
-        ]);
+
     }
 
     /**
@@ -70,14 +69,22 @@ class UserController
      * @throws SyntaxError
      * @throws LoaderError
      */
+    public function myAccount(): void
+    {
+        echo $this->twig->render('front/pages/myAccount.html.twig', [
+            'session' => $this->session,
+        ]);
+    }
+
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     */
     public function connecting($post = null): void
     {
         $resultConnecting = $this->userManager->connecting($post);
-        echo $this->twig->render('front/pages/login.html.twig', [
-            'isAdd' => $resultConnecting['isAdd'],
-            'message' => $resultConnecting['message'],
-            'session' => $this->session,
-        ]);
+        echo json_encode($resultConnecting);
     }
 
     public function isLoginExist($login) : void
