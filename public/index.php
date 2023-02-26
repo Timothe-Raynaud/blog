@@ -3,7 +3,8 @@
 session_start();
 
 define('ROOT', dirname(__DIR__));
-require_once ROOT.'/config/config.php';
+require_once ROOT . '/config/config.php';
+
 use Controller\MainController;
 use Controller\BlogController;
 use Controller\UserController;
@@ -12,7 +13,7 @@ $mainController = new MainController();
 $blogController = new BlogController();
 $userController = new UserController();
 $request = $_SERVER['REQUEST_URI'];
-$url = explode('?' , $request);
+$url = explode('?', $request);
 
 try {
     match ($url[0]) {
@@ -25,6 +26,7 @@ try {
         '/connexion' => $userController->connecting($_POST),
         '/my-account' => $userController->myAccount(),
         '/inscription' => $userController->signIn($_POST),
+        '/reset-password' => $userController->resetPassword($_POST),
         '/is-login-exist' => $userController->isLoginExist($url[1]),
         '/is-username-exist' => $userController->isUsernameExist($url[1]),
         default => $mainController->error404(),

@@ -2,7 +2,7 @@
 
 namespace Controller;
 
-require_once ROOT.'/config/config.php';
+require_once ROOT . '/config/config.php';
 
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
@@ -20,7 +20,7 @@ class UserController
 
     public function __construct()
     {
-        $loader = new FilesystemLoader(ROOT.'/templates');
+        $loader = new FilesystemLoader(ROOT . '/templates');
         $this->twig = new Environment($loader);
         $this->userManager = new UserManager();
         $this->session = $_SESSION;
@@ -38,16 +38,6 @@ class UserController
         ]);
     }
 
-    /**
-     * @throws RuntimeError
-     * @throws SyntaxError
-     * @throws LoaderError
-     */
-    public function logout(): void
-    {
-        $this->userManager->removeSession();
-
-    }
 
     /**
      * @throws RuntimeError
@@ -71,29 +61,33 @@ class UserController
      */
     public function myAccount(): void
     {
-        echo $this->twig->render('front/pages/myAccount.html.twig', [
+        echo $this->twig->render('front/pages/login.html.twig', [
             'session' => $this->session,
         ]);
     }
 
-    /**
-     * @throws RuntimeError
-     * @throws SyntaxError
-     * @throws LoaderError
-     */
+    public function logout(): void
+    {
+        $this->userManager->removeSession();
+    }
+
     public function connecting($post = null): void
     {
-        $resultConnecting = $this->userManager->connecting($post);
-        echo json_encode($resultConnecting);
+        echo json_encode($this->userManager->connecting($post));
     }
 
-    public function isLoginExist($login) : void
+    public function resetPassword($post = null): void
     {
-        $this->userManager->isLoginExist($login);
+        echo json_encode($this->userManager->resetPassword($post));
     }
 
-    public function isUsernameExist($username) : void
+    public function isLoginExist($login): void
     {
-        $this->userManager->isUsernameExist($username);
+        echo json_encode($this->userManager->isLoginExist($login));
+    }
+
+    public function isUsernameExist($username): void
+    {
+        echo json_encode($this->userManager->isUsernameExist($username));
     }
 }

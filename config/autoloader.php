@@ -5,7 +5,7 @@ function loadClass($className): void
     $fileName = '';
     $namespace = '';
 
-    $includePath = dirname(__DIR__).DIRECTORY_SEPARATOR.'src';
+    $includePath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'src';
 
     if (false !== ($lastNsPos = strripos($className, '\\'))) {
         $namespace = substr($className, 0, $lastNsPos);
@@ -17,8 +17,8 @@ function loadClass($className): void
 
     if (file_exists($fullFileName)) {
         require $fullFileName;
-    } else if(DEV_ENVIRONMENT) {
-        echo 'Class "'.$className.'" does not exist.';
+    } else if (DEV_ENVIRONMENT) {
+        echo 'Class "' . $className . '" does not exist.';
     }
 }
 

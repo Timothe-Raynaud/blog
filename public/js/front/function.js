@@ -4,19 +4,19 @@ function showFlashMessage(id, message, type) {
     flashContainer.classList.remove('d-none');
     flashContainer.className = "flash alert-" + type;
 
-    setTimeout(function() {
+    setTimeout(function () {
         flashContainer.classList.add('d-none');
     }, 5000);
 }
 
-function hideAndShow(hideId, showId){
+function hideAndShow(hideId, showId) {
     let hideTarget = document.getElementById(hideId)
     let showTarget = document.getElementById(showId)
     hideTarget.classList.add('d-none')
     showTarget.classList.remove('d-none')
 }
 
-function logout(){
+function logout() {
     fetch('/logout')
         .then(response => {
             if (response.ok) {

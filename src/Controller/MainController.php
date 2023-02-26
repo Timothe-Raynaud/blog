@@ -2,7 +2,7 @@
 
 namespace Controller;
 
-require_once ROOT.'/config/config.php';
+require_once ROOT . '/config/config.php';
 
 use Manager\MailsManager;
 use Twig\Environment;
@@ -19,7 +19,7 @@ class MainController
 
     public function __construct()
     {
-        $loader = new FilesystemLoader(ROOT.'/templates');
+        $loader = new FilesystemLoader(ROOT . '/templates');
         $this->twig = new Environment($loader);
         $this->mailsManager = new MailsManager();
         $this->session = $_SESSION;
@@ -47,7 +47,7 @@ class MainController
      */
     public function sendMail($post = null): void
     {
-        echo  json_encode($this->mailsManager->sendMailToCreator($post));
+        echo json_encode($this->mailsManager->sendMailToCreator($post));
     }
 
     /**
