@@ -52,7 +52,7 @@
                                       maxlength="200" required></textarea>
                         </div>
                         <div class="text-center">
-                            <input type="submit" VALUE="Envoyer" class="btn btn-primary rounded shadow">
+                            <input type="submit" VALUE="Envoyer" class="btn btn-primary rounded shadow" id="form-submit-contact">
                         </div>
                     </form>
                 </div>
@@ -65,19 +65,22 @@
 
     <script>
         // Sending mail
-        const formMail = document.getElementById('form-sendmail');
+        const formMail = document.getElementById('form-sendmail')
+        const formSubmitContact = document.getElementById('form-submit-contact')
 
         formMail.addEventListener('submit', (event) => {
-            event.preventDefault();
+            event.preventDefault()
+            formSubmitContact.disabled = true
 
-            const emailInput = document.querySelector('input[name=email]');
-            const subjectInput = document.querySelector('input[name=subject]');
-            const messageInput = document.querySelector('textarea[name=message]');
 
-            const formDataMail = new FormData();
-            formDataMail.append('email', emailInput.value);
-            formDataMail.append('subject', subjectInput.value);
-            formDataMail.append('message', messageInput.value);
+            const emailInput = document.querySelector('input[name=email]')
+            const subjectInput = document.querySelector('input[name=subject]')
+            const messageInput = document.querySelector('textarea[name=message]')
+
+            const formDataMail = new FormData()
+            formDataMail.append('email', emailInput.value)
+            formDataMail.append('subject', subjectInput.value)
+            formDataMail.append('message', messageInput.value)
 
             fetch('/sendmail', {
                 method: 'POST',
@@ -85,9 +88,9 @@
             })
                 .then(response => {
                     if (response.ok) {
-                        return response.json();
+                        return response.json()
                     } else {
-                        throw new Error('Erreur de connexion');
+                        throw new Error('Erreur de connexion')
                     }
                 })
                 .then(data => {
@@ -97,8 +100,13 @@
                         showFlashMessage('home-flash', data.message, 'danger')
                     }
                 })
-                .catch(error => console.error(error));
-        });
+                .catch(error => console.error(error))
+                .finally(() => {
+                    setTimeout(() => {
+                        formSubmitContact.disabled = false
+                    }, 2000)
+                })
+        })
     </script>
 {% endblock %}
 

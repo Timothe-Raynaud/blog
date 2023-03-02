@@ -27,18 +27,19 @@
 </div>
 
 <script>
-    // Test User connection
-    const formConnection = document.getElementById('form-connection');
+    const formConnection = document.getElementById('form-connection')
+    const formSubmitConnection = document.getElementById('form-submit-connection')
 
     formConnection.addEventListener('submit', (event) => {
-        event.preventDefault();
+        event.preventDefault()
+        formSubmitConnection.disabled = true
 
-        const loginInput = document.querySelector('input[name=login]');
-        const passwordInput = document.querySelector('input[name=password]');
+        const loginInput = document.querySelector('input[name=login]')
+        const passwordInput = document.querySelector('input[name=password]')
 
-        const formDataConnection = new FormData();
-        formDataConnection.append('login', loginInput.value);
-        formDataConnection.append('password', passwordInput.value);
+        const formDataConnection = new FormData()
+        formDataConnection.append('login', loginInput.value)
+        formDataConnection.append('password', passwordInput.value)
 
         fetch('/connexion', {
             method: 'POST',
@@ -46,18 +47,23 @@
         })
             .then(response => {
                 if (response.ok) {
-                    return response.json();
+                    return response.json()
                 } else {
-                    throw new Error('Erreur de connexion');
+                    throw new Error('Erreur de connexion')
                 }
             })
             .then(data => {
                 if (data.isConnecting) {
-                    window.location.href = '/my-account';
+                    window.location.href = '/my-account'
                 } else {
                     showFlashMessage('login-flash', data.message, 'danger')
                 }
             })
-            .catch(error => console.error(error));
-    });
+            .catch(error => console.error(error))
+            .finally(() => {
+                setTimeout(() => {
+                    formSubmitReset.disabled = false
+                }, 2000)
+            })
+    })
 </script>
