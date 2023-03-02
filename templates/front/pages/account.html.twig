@@ -1,0 +1,66 @@
+{% extends "front/layouts/layout.html.twig" %}
+
+{% block title %}Accueil{% endblock %}
+{% block header %}
+    {% include 'front/layouts/_header.html.twig' with {
+        'bandeau' : 'img/front/bandeau_login.jpg',
+        'page_title' : session.username,
+        'subtitle_page' : session.email,
+        'meta_title' : ''
+    } %}
+{% endblock %}
+
+{% block main %}
+    <div class="container">
+        <div class="row justify-content-around mb-4">
+            {% if session.username is defined %}
+                <div class="col-4">
+
+                </div>
+                <div class="col-6 ">
+                    <form action="">
+                        <div>
+                            <label for="" class="form-label fs-6">Nom d'utilisateur</label>
+                            <input class="form-control mb-4 rounded" type="text" name="username" value="{{ session.username }}">
+                        </div>
+                        <div>
+                            <label for="" class="form-label fs-6">Email</label>
+                            <input class="form-control mb-4 rounded" type="text" name="email" value="{{ session.email }}">
+                        </div>
+                        <div>
+                            <label for="" class="form-label fs-6">login</label>
+                            <input class="form-control mb-4 rounded" type="text" name="login" value="{{ session.login }}">
+                        </div>
+                        <div class="border p-4 rounded mb-4">
+                            <div class="mb-4 fw-bold border-bottom">Modifier le mot de passe</div>
+                            <div>
+                                <label for="" class="form-label fs-6">Ancien mot de passe</label>
+                                <input class="form-control mb-4 rounded" type="password" name="password">
+                            </div>
+                            <div>
+                                <label for="" class="form-label fs-6">Nouveau mot de passe</label>
+                                <input class="form-control mb-4 rounded" type="password" name="new_password_1">
+                            </div>
+                            <div>
+                                <label for="" class="form-label fs-6">Confirmer mot de passe</label>
+                                <input class="form-control mb-4 rounded" type="password" name="new_password_2">
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <input class="btn btn-primary rounded" type="submit-password" name="submit" value="Enregistrer">
+                        </div>
+                    </form>
+                </div>
+            {% else %}
+                <div class="row justify-content-center">
+                    <div>Vous devez vous connecter pour avoir acces à cet page.</div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+
+    <div id="login-flash" class="d-none"></div>
+{% endblock %}
+
+

@@ -156,8 +156,10 @@ class UserManager
 
     public function createSession($user): void
     {
-        $_SESSION['user_id'] = $user['user_id'];
         $_SESSION['username'] = $user['username'];
+        $_SESSION['login'] = $user['login'];
+        $_SESSION['user_id'] = $user['user_id'];
+        $_SESSION['email'] = $user['email'];
         $_SESSION['role'] = $user['role'];
     }
 

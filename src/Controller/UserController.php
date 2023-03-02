@@ -61,7 +61,7 @@ class UserController
      */
     public function myAccount(): void
     {
-        echo $this->twig->render('front/pages/login.html.twig', [
+        echo $this->twig->render('front/pages/account.html.twig', [
             'session' => $this->session,
         ]);
     }

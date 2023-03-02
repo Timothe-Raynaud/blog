@@ -1,13 +1,11 @@
 <?php
 
-const DEV_ENVIRONMENT = true;
-const TO = 'timothe@timotheraynaud.com';
-
 require_once ROOT . '/config/autoloader.php';
 require_once ROOT . '/vendor/autoload.php';
 require_once ROOT . '/config/database.php';
 
-
+// Dev/Prod configuration
+const DEV_ENVIRONMENT = true;
 if (DEV_ENVIRONMENT) {
     ini_set('display_startup_errors', 'on');
     ini_set('display_errors', 'on');
@@ -21,3 +19,13 @@ if (DEV_ENVIRONMENT) {
     ini_set('log_errors', 'on');
     ini_set('error_log', '../PHP_errors.log');
 }
+
+// Mail Configuration
+const MAILHOST = 'mailhog';
+const MAILPORT = 1025;
+const MAILSMTPAUTH = false;
+const MAILSMTSECURE = '';
+const TO = 'timothe@timotheraynaud.com';
+
+
+
