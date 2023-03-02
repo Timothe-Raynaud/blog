@@ -26,6 +26,7 @@ const MAILPORT = 1025;
 const MAILSMTPAUTH = false;
 const MAILSMTSECURE = '';
 const TO = 'timothe@timotheraynaud.com';
+const FROM = 'service@timotheraynaud.com';
 
 
 

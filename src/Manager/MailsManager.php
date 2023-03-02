@@ -4,12 +4,15 @@ namespace Manager;
 
 use Exception;
 use PHPMailer\PHPMailer\PHPMailer;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 
 require_once ROOT . '/config/config.php';
 
 class MailsManager
 {
     private PHPMailer $phpMailer;
+    private Environment $twig;
 
     public function __construct()
     {
@@ -19,6 +22,8 @@ class MailsManager
         $this->phpMailer->Port = MAILPORT;
         $this->phpMailer->SMTPAuth = MAILSMTPAUTH;
         $this->phpMailer->SMTPSecure = MAILSMTSECURE;
+        $loader = new FilesystemLoader(ROOT . '/templates');
+        $this->twig = new Environment($loader);
     }
 
     public function sendMailToCreator($post): array
@@ -26,39 +31,48 @@ class MailsManager
         $result['isSend'] = false;
         $result['message'] = '';
 
-        try {
-            if ($post != null) {
-                $this->phpMailer->setFrom($post['email']);
-                $this->phpMailer->addAddress(TO);
-                $this->phpMailer->Subject = $post['subject'];
-                $this->phpMailer->Body = $post['message'];
+        if ($post != null) {
+            $template = $this->twig->load('email/contact.html.twig');
+            $body = $template->render([
+                'message' => $post['message']
+            ]);
+            $this->phpMailer->setFrom($post['email']);
+            $this->phpMailer->addAddress(TO);
+            $this->phpMailer->Subject = $post['subject'];
+            $this->phpMailer->Body = $body;
 
-                try{
-                    $this->phpMailer->Debugoutput = function($str, $level) { echo "$level: $str"; };
-                    $this->phpMailer->send();
-                    $result['isSend'] = true;
-                    $result['message'] = 'Votre mail à bien été envoyé';
-                    return $result;
-                } catch (Exception $exception){
-                    var_dump($exception);
-                }
-
-                $result['message'] = 'Une erreur est survenue lors de l\'envoi du mail';
+            try{
+                $this->phpMailer->send();
+                $result['isSend'] = true;
+                $result['message'] = 'Votre mail à bien été envoyé';
                 return $result;
+            } catch (Exception $exception){
+                var_dump($exception);
             }
-        } catch (Exception $exception) {
-            var_dump($exception);
+
+            $result['message'] = 'Une erreur est survenue lors de l\'envoi du mail';
+            return $result;
         }
+
         return $result;
     }
 
-    public function sendResetMail($to, $token): bool
+    public function sendResetMail($to, $token, $username): bool
     {
-        $subject = 'Reinitialisation d\'un mot de passe';
-        $message = "Pour réinitialisé le mot de passe aller sur : <br>{$token}";
-
-        if (mail($to, $subject, $message)) {
+        $template = $this->twig->load('email/reset_password.html.twig');
+        $body = $template->render([
+            'token' => $token,
+            'username' => $username,
+        ]);
+        $this->phpMailer->setFrom(FROM);
+        $this->phpMailer->addAddress($to);
+        $this->phpMailer->Subject = 'Reinitialisation du mot de passe';
+        $this->phpMailer->Body = $body;
+        try{
+            $this->phpMailer->send();
             return true;
+        } catch (Exception $exception){
+            var_dump($exception);
         }
 
         return false;

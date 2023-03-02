@@ -107,6 +107,10 @@ class UserManager
                     $result['message'] = 'Mot de passe incorect';
                     return $result;
                 }
+                if($user['is_available'] === 0){
+                    $result['message'] = 'Ce compte n\'est pas encore activé';
+                    return $result;
+                }
 
                 // Ok - Create session
                 $this->createSession($user);
@@ -141,7 +145,8 @@ class UserManager
                 }
 
                 $token = $_SERVER['HTTP_HOST'] . '/reset?' . bin2hex(random_bytes(32));
-                if ($this->mailsManager->sendResetMail($email, $token) && $this->resetPasswordRepository->setResetPassword($token, $user['user_id'])) {
+                if ($this->mailsManager->sendResetMail($email, $token, $user['username']) && $this->resetPasswordRepository->setResetPassword($token, $user['user_id'])) {
+                    $result['isSend'] = true;
                     $result['message'] = 'Un mail de resiliation vous à été envoyé';
                     return $result;
                 }
