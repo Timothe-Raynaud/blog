@@ -64,7 +64,11 @@
     <div id="home-flash" class="d-none"></div>
 
     <script>
-        // Sending mail
+        {% if errorMessage is defined %}
+            const errorMessage = '{{ errorMessage }}'
+            showFlashMessage('home-flash', errorMessage, 'danger')
+        {% endif  %}
+
         const formMail = document.getElementById('form-sendmail')
         const formSubmitContact = document.getElementById('form-submit-contact')
 

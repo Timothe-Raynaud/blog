@@ -66,6 +66,28 @@ class UserController
         ]);
     }
 
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     */
+    public function renderResetPassword($token): bool
+    {
+        $user = $this->userManager->getUserByResetToken($token);
+        if($user) {
+            echo $this->twig->render('front/pages/reset_password.html.twig', [
+                'user' => $user,
+            ]);
+            return true;
+        }
+
+        $message = 'Lien non valide';
+        echo $this->twig->render('front/pages/home.html.twig', [
+            'errorMessage' => $message,
+        ]);
+        return true;
+    }
+
     public function logout(): void
     {
         $this->userManager->removeSession();
@@ -78,7 +100,13 @@ class UserController
 
     public function resetPassword($post = null): void
     {
+        var_dump($post);
         echo json_encode($this->userManager->resetPassword($post));
+    }
+
+    public function mailResetPassword($post = null): void
+    {
+        echo json_encode($this->userManager->sendMailResetPassword($post));
     }
 
     public function isLoginExist($login): void

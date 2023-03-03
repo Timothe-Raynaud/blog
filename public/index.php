@@ -17,10 +17,17 @@ $url = explode('?', $request);
 
 try {
     match ($url[0]) {
+
+        // Main Controller
         '/' => $mainController->index($_POST),
         '/sendmail' => $mainController->sendMail($_POST),
+
+        // Blog Controller
         '/blog' => $blogController->blog(),
         '/post' => $blogController->post($url[1]),
+
+        // User Controller
+        '/reset' => $userController->renderResetPassword($url[1]),
         '/login' => $userController->login(),
         '/logout' => $userController->logout(),
         '/connexion' => $userController->connecting($_POST),
@@ -29,6 +36,9 @@ try {
         '/reset-password' => $userController->resetPassword($_POST),
         '/is-login-exist' => $userController->isLoginExist($url[1]),
         '/is-username-exist' => $userController->isUsernameExist($url[1]),
+        '/send-reset-password' => $userController->mailResetPassword($_POST),
+
+        // Default
         default => $mainController->error404(),
     };
 } catch (Exception $exception) {

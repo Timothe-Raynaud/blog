@@ -24,22 +24,6 @@ class UserManager
         $this->resetPasswordRepository = new ResetPasswordRepository();
     }
 
-    public function isLoginExist($login): array
-    {
-        if ($this->userRepository->getUserByLogin($login)) {
-            return ['exist' => 'true'];
-        }
-        return ['exist' => 'false'];
-    }
-
-    public function isUsernameExist($username): array
-    {
-        if ($this->contactRepository->getContactsByUsername($username)) {
-            return ['exist' => 'true'];
-        }
-        return ['exist' => 'false'];
-    }
-
     public function addNewUser($post): array
     {
         $result['isAdd'] = false;
@@ -68,8 +52,8 @@ class UserManager
 
                 // Ok - Create User
                 if ($this->contactRepository->setContact($username, $email)) {
-                    $password = password_hash($password, PASSWORD_DEFAULT);
                     $contact = $this->contactRepository->getContactsByUsername($username);
+                    $password = password_hash($password, PASSWORD_DEFAULT);
 
                     if ($this->userRepository->setUser($login, $password, 'DEFAULT', $contact['contact_id'])) {
                         $result['isAdd'] = true;
@@ -125,7 +109,7 @@ class UserManager
         return $result;
     }
 
-    public function resetPassword($post): array
+    public function sendMailResetPassword($post): array
     {
         $result['isSend'] = false;
         $result['message'] = '';
@@ -144,8 +128,9 @@ class UserManager
                     $result['message'] = 'Votre compte n\'est pas activé';
                 }
 
-                $token = $_SERVER['HTTP_HOST'] . '/reset?' . bin2hex(random_bytes(32));
-                if ($this->mailsManager->sendResetMail($email, $token, $user['username']) && $this->resetPasswordRepository->setResetPassword($token, $user['user_id'])) {
+                $token = bin2hex(random_bytes(32));
+                $link = $_SERVER['HTTP_HOST'] . '/reset?' . $token;
+                if ($this->mailsManager->sendResetMail($email, $link, $user['username']) && $this->resetPasswordRepository->setResetPassword($token, $user['user_id'])) {
                     $result['isSend'] = true;
                     $result['message'] = 'Un mail de resiliation vous à été envoyé';
                     return $result;
@@ -159,11 +144,79 @@ class UserManager
         return $result;
     }
 
+    public function resetPassword($post): array
+    {
+        $result['isReset'] = false;
+
+        try {
+            if ($post != null) {
+                $result['message'] = 'Une erreur est survenu';
+                $firstPassword = $post['firstPassword'];
+                $secondPassword = $post['secondPassword'];
+                $userId = $post['userId'];
+                $user = $this->userRepository->getUserById($userId);
+
+                if (!$user) {
+                    $result['message'] = 'Un problème est survenue, veuillez recommencer l\'opération depuis le debut.';
+                    return $result;
+                }
+                if($firstPassword != $secondPassword){
+                    $result['message'] = 'Les mot de passe doivent être identique';
+                    return $result;
+                }
+
+                $password = password_hash($firstPassword, PASSWORD_DEFAULT);
+                if ($this->userRepository->setPassword($userId, $password)){
+                    $result['isReset'] = true;
+                    $result['message'] = 'Le mot de passe a bien été modifié<br> Redirection à la page de conenction';
+                    return $result;
+                }
+
+            }
+        } catch (Exception $exception) {
+            var_dump($exception);
+        }
+        return $result;
+    }
+
+    public function getUserByResetToken($token) : ?array
+    {
+        $now = date('Y-m-d h:i:s');
+        $user = $this->resetPasswordRepository->getResetUserByToken($token);
+        if ($user == null){
+            return null;
+        }
+        if ($user['is_used']){
+            return null;
+        }
+        if ($user['expiration_date'] < $now){
+            return null;
+        }
+
+        return $user;
+    }
+
+    public function isLoginExist($login): array
+    {
+        if ($this->userRepository->getUserByLogin($login)) {
+            return ['exist' => 'true'];
+        }
+        return ['exist' => 'false'];
+    }
+
+    public function isUsernameExist($username): array
+    {
+        if ($this->contactRepository->getContactsByUsername($username)) {
+            return ['exist' => 'true'];
+        }
+        return ['exist' => 'false'];
+    }
+
     public function createSession($user): void
     {
         $_SESSION['username'] = $user['username'];
         $_SESSION['login'] = $user['login'];
-        $_SESSION['user_id'] = $user['user_id'];
+        $_SESSION['userId'] = $user['user_id'];
         $_SESSION['email'] = $user['email'];
         $_SESSION['role'] = $user['role'];
     }

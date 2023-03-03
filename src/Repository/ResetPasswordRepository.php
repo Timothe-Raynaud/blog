@@ -18,38 +18,12 @@ class ResetPasswordRepository
         $this->database = new Manager\DatabaseConnection();
     }
 
-    public function getResetPassword(): ?array
+    public function getResetUserByToken($token): mixed
     {
         $sql = '
             SELECT * 
-            FROM reset_password
-        ';
-        $statement = $this->database->pdo()->prepare($sql);
-        $statement->execute();
-
-        return $statement->fetchAll();
-    }
-
-    public function getResetPasswordById($id): ?array
-    {
-        $sql = '
-            SELECT * 
-            FROM reset_password 
-            WHERE reset_password_id = :id
-        ';
-        $statement = $this->database->pdo()->prepare($sql);
-        $statement->bindValue(':id', $id);
-        $statement->execute();
-
-        return $statement->fetch();
-    }
-
-
-    public function getResetPasswordByToken($token): mixed
-    {
-        $sql = '
-            SELECT * 
-            FROM reset_password 
+            FROM reset_password rp 
+            INNER JOIN users u ON u.user_id = rp.user_id
             WHERE token = :token
         ';
         $statement = $this->database->pdo()->prepare($sql);

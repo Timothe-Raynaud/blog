@@ -71,17 +71,24 @@ class UserRepository
         return $statement->fetch();
     }
 
-    public function setPassword($id, $password): void
+    public function setPassword($id, $password): bool
     {
-        $sql = '
-            UPDATE users 
-            SET password = :password 
-            WHERE id = :id
-        ';
-        $statement = $this->database->pdo()->prepare($sql);
-        $statement->bindValue(':id', $id);
-        $statement->bindValue(':password', $password);
-        $statement->execute();
+        try{
+            $sql = '
+                UPDATE users 
+                SET password = :password 
+                WHERE id = :id
+            ';
+            $statement = $this->database->pdo()->prepare($sql);
+            $statement->bindValue(':id', $id);
+            $statement->bindValue(':password', $password);
+            $statement->execute();
+
+            return true;
+        } catch (\Exception $exception){
+            var_dump($exception);
+        }
+        return false;
     }
 
     public function setUser($login, $password, $role, $contactId): bool

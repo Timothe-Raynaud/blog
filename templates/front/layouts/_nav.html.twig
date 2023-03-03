@@ -14,7 +14,6 @@
 
                     {% if session.username is defined %}
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/my-account">
-                                {{ session.username }}&nbsp;
                                 <i class="fa-solid fa-user"></i>
                         </a></li>
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="javascript:void(0)" id="disconnected" onclick="logout()">
