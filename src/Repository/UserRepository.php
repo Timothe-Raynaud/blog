@@ -2,8 +2,6 @@
 
 namespace Repository;
 
-require_once ROOT . '/config/config.php';
-
 use Manager;
 
 class UserRepository
@@ -62,7 +60,7 @@ class UserRepository
         $sql = '
             SELECT * 
             FROM users 
-            WHERE id = :id
+            WHERE user_id = :id
         ';
         $statement = $this->database->pdo()->prepare($sql);
         $statement->bindValue(':id', $id);
@@ -77,7 +75,7 @@ class UserRepository
             $sql = '
                 UPDATE users 
                 SET password = :password 
-                WHERE id = :id
+                WHERE user_id = :id
             ';
             $statement = $this->database->pdo()->prepare($sql);
             $statement->bindValue(':id', $id);

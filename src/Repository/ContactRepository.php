@@ -2,8 +2,6 @@
 
 namespace Repository;
 
-require_once ROOT.'/config/config.php';
-
 use Manager;
 
 class ContactRepository

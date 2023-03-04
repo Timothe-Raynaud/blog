@@ -2,8 +2,6 @@
 
 namespace Manager;
 
-require_once ROOT . '/config/config.php';
-
 use Exception;
 use Repository\UserRepository;
 use Repository\ContactRepository;
@@ -130,9 +128,12 @@ class UserManager
 
                 $token = bin2hex(random_bytes(32));
                 $link = $_SERVER['HTTP_HOST'] . '/reset?' . $token;
-                if ($this->mailsManager->sendResetMail($email, $link, $user['username']) && $this->resetPasswordRepository->setResetPassword($token, $user['user_id'])) {
+
+                if ($this->mailsManager->sendResetMail($email, $link, $user['username'])
+                    && $this->resetPasswordRepository->setResetPassword($token, $user['user_id'])) {
+
                     $result['isSend'] = true;
-                    $result['message'] = 'Un mail de resiliation vous à été envoyé';
+                    $result['message'] = 'Un mail de reinitialisation vous à été envoyé';
                     return $result;
                 }
 
@@ -140,7 +141,7 @@ class UserManager
         } catch (Exception $exception) {
             var_dump($exception);
         }
-        $result['message'] = 'Une erreur est survenu';
+        $result['message'] = 'Une erreur est survenue';
         return $result;
     }
 
@@ -150,9 +151,10 @@ class UserManager
 
         try {
             if ($post != null) {
-                $result['message'] = 'Une erreur est survenu';
+                $result['message'] = 'Une erreur est survenue';
                 $firstPassword = $post['firstPassword'];
                 $secondPassword = $post['secondPassword'];
+                $token = $post['token'];
                 $userId = $post['userId'];
                 $user = $this->userRepository->getUserById($userId);
 
@@ -161,14 +163,16 @@ class UserManager
                     return $result;
                 }
                 if($firstPassword != $secondPassword){
-                    $result['message'] = 'Les mot de passe doivent être identique';
+                    $result['message'] = 'Les mots de passe doivent être identiques';
                     return $result;
                 }
 
                 $password = password_hash($firstPassword, PASSWORD_DEFAULT);
-                if ($this->userRepository->setPassword($userId, $password)){
+                if ($this->userRepository->setPassword($userId, $password)
+                    and $this->resetPasswordRepository->setIsUsed($token)){
+
                     $result['isReset'] = true;
-                    $result['message'] = 'Le mot de passe a bien été modifié<br> Redirection à la page de conenction';
+                    $result['message'] = 'Le mot de passe a bien été modifié<br> Redirection à la page de connexion';
                     return $result;
                 }
 
@@ -198,18 +202,16 @@ class UserManager
 
     public function isLoginExist($login): array
     {
-        if ($this->userRepository->getUserByLogin($login)) {
-            return ['exist' => 'true'];
-        }
-        return ['exist' => 'false'];
+        $result = $this->userRepository->getUserByLogin($login);
+
+        return ['exist' => $result];
     }
 
     public function isUsernameExist($username): array
     {
-        if ($this->contactRepository->getContactsByUsername($username)) {
-            return ['exist' => 'true'];
-        }
-        return ['exist' => 'false'];
+        $result = $this->contactRepository->getContactsByUsername($username);
+        
+        return ['exist' => $result];
     }
 
     public function createSession($user): void

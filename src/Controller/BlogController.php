@@ -2,8 +2,6 @@
 
 namespace Controller;
 
-require_once ROOT.'/config/config.php';
-
 use Twig;
 use Manager;
 use Repository;

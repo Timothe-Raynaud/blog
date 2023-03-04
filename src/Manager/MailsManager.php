@@ -7,8 +7,6 @@ use PHPMailer\PHPMailer\PHPMailer;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
-require_once ROOT . '/config/config.php';
-
 class MailsManager
 {
     private PHPMailer $phpMailer;
@@ -18,10 +16,10 @@ class MailsManager
     {
         $this->phpMailer = new PHPMailer();
         $this->phpMailer->isSMTP();
-        $this->phpMailer->Host = MAILHOST;
-        $this->phpMailer->Port = MAILPORT;
-        $this->phpMailer->SMTPAuth = MAILSMTPAUTH;
-        $this->phpMailer->SMTPSecure = MAILSMTSECURE;
+        $this->phpMailer->Host = MAIL_HOST;
+        $this->phpMailer->Port = MAIL_PORT;
+        $this->phpMailer->SMTPAuth = MAIL_SMTP_AUTH;
+        $this->phpMailer->SMTPSecure = MAIL_SMTP_SECURE;
         $loader = new FilesystemLoader(ROOT . '/templates');
         $this->twig = new Environment($loader);
     }
@@ -37,7 +35,7 @@ class MailsManager
                 'message' => $post['message']
             ]);
             $this->phpMailer->setFrom($post['email']);
-            $this->phpMailer->addAddress(TO);
+            $this->phpMailer->addAddress(MAIL_TO);
             $this->phpMailer->Subject = $post['subject'];
             $this->phpMailer->Body = $body;
 
@@ -64,7 +62,7 @@ class MailsManager
             'token' => $token,
             'username' => $username,
         ]);
-        $this->phpMailer->setFrom(FROM);
+        $this->phpMailer->setFrom(MAIL_FROM);
         $this->phpMailer->addAddress($to);
         $this->phpMailer->Subject = 'Reinitialisation du mot de passe';
         $this->phpMailer->Body = $body;

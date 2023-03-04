@@ -2,8 +2,6 @@
 
 namespace Manager;
 
-require_once ROOT.'/config/config.php';
-
 use PDO;
 
 class DatabaseConnection

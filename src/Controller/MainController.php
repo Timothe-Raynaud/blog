@@ -2,8 +2,6 @@
 
 namespace Controller;
 
-require_once ROOT . '/config/config.php';
-
 use Manager\MailsManager;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;

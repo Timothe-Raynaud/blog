@@ -2,8 +2,6 @@
 
 namespace Repository;
 
-require_once ROOT . '/config/config.php';
-
 use DateInterval;
 use DateTime;
 use Manager;
@@ -49,11 +47,37 @@ class ResetPasswordRepository
             $statement->bindValue(':userId', $userId);
             $statement->bindValue(':expirationDate', $expirationDate);
             $statement->execute();
+
             return true;
+
         } catch (Exception $exception) {
             if (DEV_ENVIRONMENT) {
                 var_dump($exception);
             }
+
+            return false;
+        }
+    }
+
+    public function setIsUsed($token): bool
+    {
+        try {
+            $sql = '
+                UPDATE reset_password
+                SET is_used = 1
+                WHERE token = :token 
+            ';
+            $statement = $this->database->pdo()->prepare($sql);
+            $statement->bindValue(':token', $token);
+            $statement->execute();
+
+            return true;
+
+        } catch (Exception $exception) {
+            if (DEV_ENVIRONMENT) {
+                var_dump($exception);
+            }
+
             return false;
         }
     }

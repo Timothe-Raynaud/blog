@@ -2,8 +2,6 @@
 
 namespace Controller;
 
-require_once ROOT . '/config/config.php';
-
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use Twig\Error\LoaderError;
@@ -77,6 +75,7 @@ class UserController
         if($user) {
             echo $this->twig->render('front/pages/reset_password.html.twig', [
                 'user' => $user,
+                'token' => $token,
             ]);
             return true;
         }
@@ -100,7 +99,6 @@ class UserController
 
     public function resetPassword($post = null): void
     {
-        var_dump($post);
         echo json_encode($this->userManager->resetPassword($post));
     }
 
