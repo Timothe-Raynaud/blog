@@ -11,8 +11,8 @@ formResetPassword.addEventListener('submit', (event) => {
     const formDataResetPassword = new FormData()
     formDataResetPassword.append('firstPassword', firstPassword.value)
     formDataResetPassword.append('secondPassword', secondPassword.value)
-    formDataResetPassword.append('userId', '{{ user.user_id }}')
-    formDataResetPassword.append('token', '{{ token }}')
+    formDataResetPassword.append('userId', userId)
+    formDataResetPassword.append('token', token)
 
     fetch('/reset-password', {
         method: 'POST',
