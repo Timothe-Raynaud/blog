@@ -2,8 +2,7 @@
 
 session_start();
 
-define('ROOT', dirname(__DIR__));
-require_once ROOT . '/config/config.php';
+require_once dirname(__DIR__) . '/config/config.php';
 
 use Controller\MainController;
 use Controller\BlogController;
@@ -17,7 +16,6 @@ $url = explode('?', $request);
 
 try {
     match ($url[0]) {
-
         // Main Controller
         '/' => $mainController->index($_POST),
         '/sendmail' => $mainController->sendMail($_POST),

@@ -1,6 +1,6 @@
-# Configuration for server
+# Installing project
 
-- Change 'DEV_ENVIRONMENT' on config/config.php to false 
-- Set BDD access in config/database.php
+- Set on config/config.php -> 'DEV_ENVIRONMENT' if is 'PROD' or 'DEV'
+- Set all config information on config/_(prod/dev).php
 - Composer install
 

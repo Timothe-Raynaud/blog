@@ -14,12 +14,11 @@
     <div class="container">
         <div class="row justify-content-around mb-4">
             {% if session.username is defined %}
-                <div class="col-4">
-
-                </div>
-                <div class="col-6 ">
-                    <form action="">
-                        <div>
+                <div class="fw-bold border-bottom fs-2 mb-5">Mon compte</div>
+                <form action="" class="col-lg-5 col-md-8 col-10">
+                    <div class="border p-4 rounded mb-4">
+                        <div class="mb-4 fw-bold border-bottom">Informations</div>
+                        <div >
                             <label for="" class="form-label fs-6">Nom d'utilisateur</label>
                             <input class="form-control mb-4 rounded" type="text" name="username" value="{{ session.username }}">
                         </div>
@@ -31,26 +30,33 @@
                             <label for="" class="form-label fs-6">login</label>
                             <input class="form-control mb-4 rounded" type="text" name="login" value="{{ session.login }}">
                         </div>
-                        <div class="border p-4 rounded mb-4">
-                            <div class="mb-4 fw-bold border-bottom">Modifier le mot de passe</div>
-                            <div>
-                                <label for="" class="form-label fs-6">Ancien mot de passe</label>
-                                <input class="form-control mb-4 rounded" type="password" name="password">
-                            </div>
-                            <div>
-                                <label for="" class="form-label fs-6">Nouveau mot de passe</label>
-                                <input class="form-control mb-4 rounded" type="password" name="new_password_1">
-                            </div>
-                            <div>
-                                <label for="" class="form-label fs-6">Confirmer mot de passe</label>
-                                <input class="form-control mb-4 rounded" type="password" name="new_password_2">
-                            </div>
+                        <div class="text-center">
+                            <input class="btn btn-primary rounded" type="submit" name="submit" value="Enregistrer">
+                        </div>
+                    </div>
+                </form>
+
+                <form action="" class="col-lg-5 col-md-8 col-10">
+                    <div class="border p-4 rounded mb-4">
+                        <div class="mb-4 fw-bold border-bottom">Modifier le mot de passe</div>
+                        <div>
+                            <label for="" class="form-label fs-6">Ancien mot de passe</label>
+                            <input class="form-control mb-4 rounded" type="password" name="password">
+                        </div>
+                        <div>
+                            <label for="" class="form-label fs-6">Nouveau mot de passe</label>
+                            <input class="form-control mb-4 rounded" type="password" name="new_password_1">
+                        </div>
+                        <div>
+                            <label for="" class="form-label fs-6">Confirmer mot de passe</label>
+                            <input class="form-control mb-4 rounded" type="password" name="new_password_2">
                         </div>
                         <div class="text-center">
                             <input class="btn btn-primary rounded" type="submit" name="submit" value="Enregistrer">
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
+
             {% else %}
                 <div class="row justify-content-center">
                     <div>Vous devez vous connecter pour avoir acces à cet page.</div>
