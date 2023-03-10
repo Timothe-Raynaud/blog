@@ -55,7 +55,7 @@ class MainController
      */
     public function error404(): void
     {
-        echo $this->twig->render('layouts/error404.html.twig', [
+        echo $this->twig->render('front/pages/error_404.html.twig', [
         ]);
     }
 }

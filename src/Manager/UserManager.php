@@ -172,7 +172,7 @@ class UserManager
                     and $this->resetPasswordRepository->setIsUsed($token)){
 
                     $result['isReset'] = true;
-                    $result['message'] = 'Le mot de passe a bien été modifié<br> Redirection à la page de connexion';
+                    $result['message'] = 'Le mot de passe a bien été modifié <br> Redirection à la page de connexion';
                     return $result;
                 }
 

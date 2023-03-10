@@ -8,4 +8,7 @@ require_once ROOT . '/vendor/autoload.php';
 // Dev/Prod configuration
 const DEV_ENVIRONMENT = 'DEV';
 
-DEV_ENVIRONMENT === 'PROD' ? include '_prod.php' : include '_dev.php';
+match (DEV_ENVIRONMENT){
+    'DEV' => include '_dev.php',
+    'PROD' => include '_prod.php'
+};
