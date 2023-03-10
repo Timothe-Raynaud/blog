@@ -3,6 +3,7 @@
 namespace Repository;
 
 use Manager;
+use Exception;
 
 class UserRepository
 {
@@ -59,7 +60,8 @@ class UserRepository
     {
         $sql = '
             SELECT * 
-            FROM users 
+            FROM users u
+            INNER JOIN contacts c ON c.contact_id = u.contact_id 
             WHERE user_id = :id
         ';
         $statement = $this->database->pdo()->prepare($sql);
@@ -67,26 +69,6 @@ class UserRepository
         $statement->execute();
 
         return $statement->fetch();
-    }
-
-    public function setPassword($id, $password): bool
-    {
-        try{
-            $sql = '
-                UPDATE users 
-                SET password = :password 
-                WHERE user_id = :id
-            ';
-            $statement = $this->database->pdo()->prepare($sql);
-            $statement->bindValue(':id', $id);
-            $statement->bindValue(':password', $password);
-            $statement->execute();
-
-            return true;
-        } catch (\Exception $exception){
-            var_dump($exception);
-        }
-        return false;
     }
 
     public function setUser($login, $password, $role, $contactId): bool
@@ -104,12 +86,55 @@ class UserRepository
             $statement->execute();
 
             return true;
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             var_dump($exception);
         }
         return false;
     }
 
+    public function updatePassword($id, $password): bool
+    {
+        try{
+            $sql = '
+                UPDATE users 
+                SET password = :password 
+                WHERE user_id = :id
+            ';
+            $statement = $this->database->pdo()->prepare($sql);
+            $statement->bindValue(':id', $id);
+            $statement->bindValue(':password', $password);
+            $statement->execute();
+
+            return true;
+
+        } catch (Exception $exception){
+            var_dump($exception);
+        }
+
+        return false;
+    }
+
+    public function updateAccount($id, $login): bool
+    {
+        try{
+            $sql = '
+                UPDATE users 
+                SET login = :login
+                WHERE user_id = :id
+            ';
+            $statement = $this->database->pdo()->prepare($sql);
+            $statement->bindValue(':id', $id);
+            $statement->bindValue(':login', $login);
+            $statement->execute();
+
+            return true;
+
+        } catch (Exception $exception){
+            var_dump($exception);
+        }
+
+        return false;
+    }
 
     public function deleteUser($id): void
     {

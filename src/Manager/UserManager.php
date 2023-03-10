@@ -34,7 +34,7 @@ class UserManager
                 $login = $post['login'];
                 $password = $post['password'];
 
-                // Test validity
+                // Test input
                 if ($this->contactRepository->getContactsByUsername($username)) {
                     $result['message'] = 'Le nom d\'utilisateur est déja pris.';
                     return $result;
@@ -98,6 +98,7 @@ class UserManager
                 $this->createSession($user);
                 $result['isConnecting'] = true;
                 $result['message'] = 'Bienvenu ' . $user['username'] . ' !';
+
                 return $result;
             }
         } catch (Exception $exception) {
@@ -126,6 +127,7 @@ class UserManager
                     $result['message'] = 'Votre compte n\'est pas activé';
                 }
 
+                // Ok - Send reset mail password
                 $token = bin2hex(random_bytes(32));
                 $link = $_SERVER['HTTP_HOST'] . '/reset?' . $token;
 
@@ -148,16 +150,17 @@ class UserManager
     public function resetPassword($post): array
     {
         $result['isReset'] = false;
+        $result['message'] = 'Une erreur est survenue';
 
         try {
             if ($post != null) {
-                $result['message'] = 'Une erreur est survenue';
                 $firstPassword = $post['firstPassword'];
                 $secondPassword = $post['secondPassword'];
                 $token = $post['token'];
                 $userId = $post['userId'];
                 $user = $this->userRepository->getUserById($userId);
 
+                // Test input
                 if (!$user) {
                     $result['message'] = 'Un problème est survenue, veuillez recommencer l\'opération depuis le debut.';
                     return $result;
@@ -167,8 +170,9 @@ class UserManager
                     return $result;
                 }
 
+                // Ok - Update password
                 $password = password_hash($firstPassword, PASSWORD_DEFAULT);
-                if ($this->userRepository->setPassword($userId, $password)
+                if ($this->userRepository->updatePassword($userId, $password)
                     and $this->resetPasswordRepository->setIsUsed($token)){
 
                     $result['isReset'] = true;
@@ -180,6 +184,111 @@ class UserManager
         } catch (Exception $exception) {
             var_dump($exception);
         }
+
+        return $result;
+    }
+
+    public function updateAccount($post): array
+    {
+        $result['isUpdate'] = false;
+        $result['message'] = 'Une erreur est survenue';
+
+        try {
+            if ($post != null) {
+                $username = $post['username'];
+                $email = $post['email'];
+                $login = $post['login'];
+                $userId = $post['userId'];
+                $user = $this->userRepository->getUserById($userId);
+
+                // Test input
+                if (!$user) {
+                    return $result;
+                }
+                if($username === $user['username'] and $login === $user['login'] and $email === $user['email']){
+                    $result['message'] = 'Votre profil est déjà à jour';
+                    return $result;
+                }
+                if ($username != $user['username']){
+                    if ($this->contactRepository->getContactsByUsername($username)) {
+                        $result['message'] = 'Le nom d\'utilisateur est déja pris.';
+                        return $result;
+                    }
+                }
+                if ($login != $user['login']){
+                    if ($this->userRepository->getUserByLogin($login)) {
+                        $result['message'] = 'Ce login est déja pris';
+                        return $result;
+                    }
+                }
+                if ($email != $user['email']){
+                    if ($this->contactRepository->getContactsByEmail($email)) {
+                        $result['message'] = 'Cet adresse email est déjà utilisé';
+                        return $result;
+                    }
+                }
+
+                // Ok - Update account
+                $contactId = $user['contact_id'];
+                if ($this->userRepository->updateAccount($userId, $login) and $this->contactRepository->updateContact($contactId, $username, $email)){
+                    $result['message'] = 'Votre compte à bien été mis à jour.';
+                    $result['isUpdate'] = true;
+
+                    //Update session
+                    $user = $this->userRepository->getUserById($userId);
+                    $this->createSession($user);
+
+                    return $result;
+                }
+
+            }
+        } catch (Exception $exception) {
+            var_dump($exception);
+        }
+
+        return $result;
+    }
+
+    public function updatePassword($post): array
+    {
+        $result['isUpdate'] = false;
+        $result['message'] = 'Une erreur est survenue';
+
+        try {
+            if ($post != null) {;
+                $password = $post['password'];
+                $firstNewPassword = $post['firstNewPassword'];
+                $secondNewPassword = $post['secondNewPassword'];
+                $userId = $post['userId'];
+                $user = $this->userRepository->getUserById($userId);
+
+                // Test input
+                if (!$user) {
+                    return $result;
+                }
+                if($firstNewPassword != $secondNewPassword){
+                    $result['message'] = 'Les mots de passe doivent être identiques';
+                    return $result;
+                }
+                if (!password_verify($password, $user['password'])) {
+                    $result['message'] = 'Mot de passe incorect';
+                    return $result;
+                }
+
+                // Ok - Update password
+                $password = password_hash($firstNewPassword, PASSWORD_DEFAULT);
+                if ($this->userRepository->updatePassword($userId, $password)){
+                    $result['isUpdate'] = true;
+                    $result['message'] = 'Le mot de passe a bien été modifié';
+
+                    return $result;
+                }
+
+            }
+        } catch (Exception $exception) {
+            var_dump($exception);
+        }
+
         return $result;
     }
 

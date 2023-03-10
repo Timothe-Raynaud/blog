@@ -3,6 +3,7 @@
 namespace Repository;
 
 use Manager;
+use Exception;
 
 class ContactRepository
 {
@@ -78,13 +79,38 @@ class ContactRepository
             $statement->bindValue(':username', $username);
             $statement->bindValue(':email', $email);
             $statement->execute();
+
             return true;
+
         } catch (Exception $exception){
-            if (DEV_ENVIRONMENT){
-                var_dump($exception);
-            }
-            return false;
+            var_dump($exception);
         }
+
+        return false;
+    }
+
+    public function updateContact($id, $username, $email) : bool
+    {
+        try {
+            $sql = '
+                UPDATE contacts
+                SET username = :username
+                    , email = :email
+                WHERE contact_id = :id
+            ';
+            $statement = $this->database->pdo()->prepare($sql);
+            $statement->bindValue(':username', $username);
+            $statement->bindValue(':email', $email);
+            $statement->bindValue(':id', $id);
+            $statement->execute();
+
+            return true;
+
+        } catch (Exception $exception){
+            var_dump($exception);
+        }
+
+        return false;
     }
 
     public function deleteContacts($id) : void

@@ -30,6 +30,8 @@ try {
         '/logout' => $userController->logout(),
         '/connexion' => $userController->connecting($_POST),
         '/my-account' => $userController->myAccount(),
+        '/update-account' => $userController->updateAccount($_POST),
+        '/update-password' => $userController->updatePassword($_POST),
         '/inscription' => $userController->signIn($_POST),
         '/reset-password' => $userController->resetPassword($_POST),
         '/is-login-exist' => $userController->isLoginExist($url[1]),

@@ -4,9 +4,9 @@
 {% block header %}
     {% include 'front/layouts/_header.html.twig' with {
         'bandeau' : 'img/front/bandeau_login.jpg',
-        'page_title' : session.username,
-        'subtitle_page' : session.email,
-        'meta_title' : ''
+        'page_title' : 'Mon compte',
+        'subtitle_page' : '',
+        'meta_title' : '',
     } %}
 {% endblock %}
 
@@ -15,7 +15,7 @@
         <div class="row justify-content-around mb-4">
             {% if session.username is defined %}
                 <div class="fw-bold border-bottom fs-2 mb-5">Mon compte</div>
-                <form action="" class="col-lg-5 col-md-8 col-10">
+                <form action="" class="col-lg-5 col-md-8 col-10" id="form-update-account">
                     <div class="border p-4 rounded mb-4">
                         <div class="mb-4 fw-bold border-bottom">Informations</div>
                         <div >
@@ -31,12 +31,12 @@
                             <input class="form-control mb-4 rounded" type="text" name="login" value="{{ session.login }}">
                         </div>
                         <div class="text-center">
-                            <input class="btn btn-primary rounded" type="submit" name="submit" value="Enregistrer">
+                            <input class="btn btn-primary rounded" type="submit" name="submit" value="Enregistrer" id="form-submit-update-account">
                         </div>
                     </div>
                 </form>
 
-                <form action="" class="col-lg-5 col-md-8 col-10">
+                <form action="" class="col-lg-5 col-md-8 col-10" id="form-update-password">
                     <div class="border p-4 rounded mb-4">
                         <div class="mb-4 fw-bold border-bottom">Modifier le mot de passe</div>
                         <div>
@@ -45,14 +45,14 @@
                         </div>
                         <div>
                             <label for="" class="form-label fs-6">Nouveau mot de passe</label>
-                            <input class="form-control mb-4 rounded" type="password" name="new_password_1">
+                            <input class="form-control mb-4 rounded" type="password" name="first_new_password">
                         </div>
                         <div>
                             <label for="" class="form-label fs-6">Confirmer mot de passe</label>
-                            <input class="form-control mb-4 rounded" type="password" name="new_password_2">
+                            <input class="form-control mb-4 rounded" type="password" name="second_new_password">
                         </div>
                         <div class="text-center">
-                            <input class="btn btn-primary rounded" type="submit" name="submit" value="Enregistrer">
+                            <input class="btn btn-primary rounded" type="submit" name="submit" value="Enregistrer" id="form-submit-update-password">
                         </div>
                     </div>
                 </form>
@@ -62,11 +62,15 @@
                     <div>Vous devez vous connecter pour avoir acces à cet page.</div>
                 </div>
             {% endif %}
+
         </div>
     </div>
 
+    <div id="update-account-flash" class="d-none"></div>
 
-    <div id="login-flash" class="d-none"></div>
+    <script>const userId = '{{ session.userId }}'</script>
+    <script src="js/front/pages/account.js"></script>
+
 {% endblock %}
 
 

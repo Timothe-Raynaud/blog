@@ -102,6 +102,16 @@ class UserController
         echo json_encode($this->userManager->resetPassword($post));
     }
 
+    public function updateAccount($post = null): void
+    {
+        echo json_encode($this->userManager->updateAccount($post));
+    }
+
+    public function updatePassword($post = null): void
+    {
+        echo json_encode($this->userManager->updatePassword($post));
+    }
+
     public function mailResetPassword($post = null): void
     {
         echo json_encode($this->userManager->sendMailResetPassword($post));
