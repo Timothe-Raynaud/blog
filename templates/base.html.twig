@@ -13,6 +13,8 @@
           rel="stylesheet" type="text/css"/>
     {% block stylesheets %}{% endblock %}
 </head>
+
+{% block body %}
 <body>
 {% block nav %}{% endblock %}
 
@@ -24,4 +26,5 @@
 
 {% block js %}{% endblock %}
 </body>
+{% endblock %}
 </html>

@@ -11289,7 +11289,7 @@ header.masthead .site-heading .h1 {
   padding:0;
   text-transform:uppercase;
   font-size:3em;
-  color:#bcbebf;
+  color: #fdfdfe;
   transform-style:preserve-3d;
   transition:0.8s;
 }
@@ -11311,5 +11311,5 @@ header.masthead .site-heading .h1 {
 .center:hover h1 span:nth-child(3){
   transform:translate(-50%,-50%) skewX(0deg);
   left:0;
-  color:#bcbebf;
+  color:#fdfdfe;
 }

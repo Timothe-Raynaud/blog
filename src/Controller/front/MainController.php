@@ -1,13 +1,13 @@
 <?php
 
-namespace Controller;
+namespace Controller\front;
 
 use Manager\MailsManager;
 use Twig\Environment;
-use Twig\Loader\FilesystemLoader;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
+use Twig\Loader\FilesystemLoader;
 
 class MainController
 {

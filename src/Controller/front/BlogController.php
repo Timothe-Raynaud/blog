@@ -1,10 +1,9 @@
 <?php
 
-namespace Controller;
+namespace Controller\front;
 
-use Twig;
-use Manager;
 use Repository;
+use Twig;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;

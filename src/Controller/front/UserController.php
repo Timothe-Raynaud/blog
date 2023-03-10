@@ -1,13 +1,13 @@
 <?php
 
-namespace Controller;
+namespace Controller\front;
 
+use Manager\UserManager;
 use Twig\Environment;
-use Twig\Loader\FilesystemLoader;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
-use Manager\UserManager;
+use Twig\Loader\FilesystemLoader;
 
 class UserController
 {

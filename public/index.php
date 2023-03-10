@@ -4,13 +4,16 @@ session_start();
 
 require_once dirname(__DIR__) . '/config/config.php';
 
-use Controller\MainController;
-use Controller\BlogController;
-use Controller\UserController;
+use Controller\front\BlogController;
+use Controller\front\MainController;
+use Controller\front\UserController;
+use Controller\back\AdminController;
 
 $mainController = new MainController();
 $blogController = new BlogController();
 $userController = new UserController();
+$adminController = new AdminController();
+
 $request = $_SERVER['REQUEST_URI'];
 $url = explode('?', $request);
 
@@ -37,6 +40,9 @@ try {
         '/is-login-exist' => $userController->isLoginExist($url[1]),
         '/is-username-exist' => $userController->isUsernameExist($url[1]),
         '/send-reset-password' => $userController->mailResetPassword($_POST),
+
+        // Admin Controller
+        '/admin' => $adminController->index(),
 
         // Default
         default => $mainController->error404(),
