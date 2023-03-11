@@ -33,7 +33,7 @@ formConnection.addEventListener('submit', (event) => {
         .catch(error => console.error(error))
         .finally(() => {
             setTimeout(() => {
-                formSubmitReset.disabled = false
+                formSubmitConnection.disabled = false
             }, 2000)
         })
 })

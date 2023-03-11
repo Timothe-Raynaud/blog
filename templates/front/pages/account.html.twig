@@ -68,6 +68,13 @@
 
     <div id="update-account-flash" class="d-none"></div>
 
+    <script>
+        {% if errorMessage is not null %}
+        const errorMessage = '{{ errorMessage }}'
+        showFlashMessage('update-account-flash', errorMessage, 'danger')
+        {% endif %}
+    </script>
+
     <script>const userId = '{{ session.userId }}'</script>
     <script src="js/front/pages/account.js"></script>
 

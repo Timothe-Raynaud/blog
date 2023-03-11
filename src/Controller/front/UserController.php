@@ -29,10 +29,13 @@ class UserController
      * @throws SyntaxError
      * @throws LoaderError
      */
-    public function login(): void
+    public function login($isError = null): void
     {
+        $errorMessage = $this->userManager->askIfErrorAdmin($isError);
+
         echo $this->twig->render('front/pages/login.html.twig', [
             'session' => $this->session,
+            'errorMessage' => $errorMessage,
         ]);
     }
 
@@ -45,6 +48,7 @@ class UserController
     public function signIn($post = null): void
     {
         $resultAddUser = $this->userManager->addNewUser($post);
+
         echo $this->twig->render('front/pages/login.html.twig', [
             'isAdd' => $resultAddUser['isAdd'],
             'message' => $resultAddUser['message'],
@@ -57,10 +61,13 @@ class UserController
      * @throws SyntaxError
      * @throws LoaderError
      */
-    public function myAccount(): void
+    public function myAccount($isError = null): void
     {
+        $errorMessage = $this->userManager->askIfErrorAdmin($isError);
+
         echo $this->twig->render('front/pages/account.html.twig', [
             'session' => $this->session,
+            'errorMessage' => $errorMessage,
         ]);
     }
 
@@ -72,6 +79,7 @@ class UserController
     public function renderResetPassword($token): bool
     {
         $user = $this->userManager->getUserByResetToken($token);
+
         if($user) {
             echo $this->twig->render('front/pages/reset_password.html.twig', [
                 'user' => $user,
@@ -81,9 +89,11 @@ class UserController
         }
 
         $message = 'Lien non valide';
+
         echo $this->twig->render('front/pages/home.html.twig', [
             'errorMessage' => $message,
         ]);
+
         return true;
     }
 

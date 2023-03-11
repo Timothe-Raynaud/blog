@@ -28,16 +28,48 @@ class AdminController
     public function index(): void
     {
         if(!isset($this->session['role'])) {
-            echo $this->twig->render('back/pages/login.html.twig', [
-
-            ]);
-        } else if ($this->session['role'] === 'ADMIN') {
-            echo $this->twig->render('back/pages/home.html.twig', [
+            header("Location: login?1");
+        } else if ($this->session['role'] != 'ADMIN') {
+            header("Location: my-account?1");
+        } else {
+            echo $this->twig->render('back/pages/users.html.twig', [
                 'session' => $this->session,
             ]);
-        } else {
-            echo $this->twig->render('back/pages/access_denied.html.twig', [
+        }
+    }
 
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
+    public function users(): void
+    {
+        if(!isset($this->session['role'])) {
+            header("Location: login?1");
+        } else if ($this->session['role'] != 'ADMIN') {
+            header("Location: my-account?1");
+        } else {
+            echo $this->twig->render('back/pages/users.html.twig', [
+                'session' => $this->session,
+            ]);
+        }
+    }
+
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
+    public function posts(): void
+    {
+        if(!isset($this->session['role'])) {
+            header("Location: login?1");
+        } else if ($this->session['role'] != 'ADMIN') {
+            header("Location: my-account?1");
+        } else {
+            echo $this->twig->render('back/pages/posts.html.twig', [
+                'session' => $this->session,
             ]);
         }
     }

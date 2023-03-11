@@ -29,10 +29,10 @@ try {
 
         // User Controller
         '/reset' => $userController->renderResetPassword($url[1]),
-        '/login' => $userController->login(),
+        '/login' => $userController->login($url[1] ?? null),
         '/logout' => $userController->logout(),
         '/connexion' => $userController->connecting($_POST),
-        '/my-account' => $userController->myAccount(),
+        '/my-account' => $userController->myAccount($url[1] ?? null),
         '/update-account' => $userController->updateAccount($_POST),
         '/update-password' => $userController->updatePassword($_POST),
         '/inscription' => $userController->signIn($_POST),
@@ -43,6 +43,8 @@ try {
 
         // Admin Controller
         '/admin' => $adminController->index(),
+        '/admin-users' => $adminController->users(),
+        '/admin-posts' => $adminController->posts(),
 
         // Default
         default => $mainController->error404(),

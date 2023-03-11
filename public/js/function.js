@@ -22,11 +22,12 @@ function logout() {
             if (response.ok) {
                 window.location.href = '/';
             } else {
-                throw new Error('Erreur de connexion');
+                throw new Error('Erreur');
             }
         })
         .catch(error => console.error(error))
 }
+
 function testDisponibilityOfField(element, name) {
     const value = element.value
 
