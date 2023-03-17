@@ -1,6 +1,6 @@
 <?php
 
-namespace Controller\back;
+namespace Controller\Back;
 
 use Manager\UserManager;
 use Repository\UserRepository;

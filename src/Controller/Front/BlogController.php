@@ -1,6 +1,6 @@
 <?php
 
-namespace Controller\front;
+namespace Controller\Front;
 
 use Repository;
 use Twig;

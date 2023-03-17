@@ -4,10 +4,10 @@ session_start();
 
 require_once dirname(__DIR__) . '/config/config.php';
 
-use Controller\front\BlogController;
-use Controller\front\MainController;
-use Controller\front\UserController;
-use Controller\back\AdminController;
+use Controller\Front\BlogController;
+use Controller\Front\MainController;
+use Controller\Front\UserController;
+use Controller\Back\AdminController;
 
 $mainController = new MainController();
 $blogController = new BlogController();

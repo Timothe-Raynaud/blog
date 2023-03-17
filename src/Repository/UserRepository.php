@@ -20,6 +20,7 @@ class UserRepository
             SELECT * 
             FROM users u
             INNER JOIN contacts c ON c.contact_id = u.contact_id
+            INNER JOIN roles r ON r.role_id = u.role_id
         ';
         $statement = $this->database->pdo()->prepare($sql);
         $statement->execute();
@@ -33,6 +34,7 @@ class UserRepository
             SELECT * 
             FROM users u
             INNER JOIN contacts c ON c.contact_id = u.contact_id
+            INNER JOIN roles r ON r.role_id = u.role_id
             WHERE u.login = :login
         ';
         $statement = $this->database->pdo()->prepare($sql);
@@ -48,6 +50,7 @@ class UserRepository
             SELECT * 
             FROM users u
             INNER JOIN contacts c ON c.contact_id = u.contact_id
+            INNER JOIN roles r ON r.role_id = u.role_id
             WHERE c.email = :email
         ';
         $statement = $this->database->pdo()->prepare($sql);
@@ -63,6 +66,7 @@ class UserRepository
             SELECT * 
             FROM users u
             INNER JOIN contacts c ON c.contact_id = u.contact_id 
+            INNER JOIN roles r ON r.role_id = u.role_id
             WHERE user_id = :id
         ';
         $statement = $this->database->pdo()->prepare($sql);
@@ -72,17 +76,16 @@ class UserRepository
         return $statement->fetch();
     }
 
-    public function setUser($login, $password, $role, $contactId): bool
+    public function setUser($login, $password, $contactId): bool
     {
         try {
             $sql = '
-                INSERT INTO users (login, password, role, contact_id, is_available) 
-                VALUES (:login, :password,  :role, :contactId, 1)
+                INSERT INTO users (login, password, role_id, contact_id, is_available) 
+                VALUES (:login, :password,  1, :contactId, 1)
             ';
             $statement = $this->database->pdo()->prepare($sql);
             $statement->bindValue(':login', $login);
             $statement->bindValue(':password', $password);
-            $statement->bindValue(':role', $role);
             $statement->bindValue(':contactId', $contactId);
             $statement->execute();
 
@@ -111,7 +114,7 @@ class UserRepository
             UPDATE users
             SET is_available = 0
             WHERE user_id = :userId
-            AND role != "ADMIN"
+            AND role_id != 3
         ';
         $statement = $this->database->pdo()->prepare($sql);
         $statement->bindValue(':userId', $userId);

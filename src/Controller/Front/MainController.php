@@ -1,6 +1,6 @@
 <?php
 
-namespace Controller\front;
+namespace Controller\Front;
 
 use Manager\MailsManager;
 use Twig\Environment;
@@ -43,9 +43,10 @@ class MainController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function sendMail($post = null): void
+    public function error404(): void
     {
-        echo json_encode($this->mailsManager->sendMailToCreator($post));
+        echo $this->twig->render('front/pages/error_404.html.twig', [
+        ]);
     }
 
     /**
@@ -53,9 +54,8 @@ class MainController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function error404(): void
+    public function sendMail($post = null): void
     {
-        echo $this->twig->render('front/pages/error_404.html.twig', [
-        ]);
+        echo json_encode($this->mailsManager->sendMailToCreator($post));
     }
 }

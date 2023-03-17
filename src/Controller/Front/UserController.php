@@ -1,6 +1,6 @@
 <?php
 
-namespace Controller\front;
+namespace Controller\Front;
 
 use Manager\UserManager;
 use Twig\Environment;

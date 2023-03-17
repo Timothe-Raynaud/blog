@@ -53,7 +53,7 @@ class UserManager
                     $contact = $this->contactRepository->getContactsByUsername($username);
                     $password = password_hash($password, PASSWORD_DEFAULT);
 
-                    if ($this->userRepository->setUser($login, $password, 'DEFAULT', $contact['contact_id'])) {
+                    if ($this->userRepository->setUser($login, $password, $contact['contact_id'])) {
                         $result['isAdd'] = true;
                         $result['message'] = 'Le compte à bien été créer';
                         return $result;

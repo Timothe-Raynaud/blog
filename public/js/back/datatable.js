@@ -1,5 +1,19 @@
 $(document).ready(function () {
     $('#users-datatable').DataTable({
+        language: {
+            search: "Rechercher&nbsp;:",
+            lengthMenu:    "Afficher _MENU_ utilisateurs",
+            info:           "Affichage des utilisateurs _START_ &agrave; _END_ sur _TOTAL_ utilisateurs",
+            infoEmpty:      "Affichage des utilisateurs 0 &agrave; 0 sur 0 utilisateurs",
+            infoFiltered:   "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
+            paginate: {
+                first: "Premier",
+                previous: "Pr&eacute;c&eacute;dent",
+                next: "Suivant",
+                last: "Dernier"
+
+            },
+        },
         responsive: true,
         "columnDefs": [
             {
@@ -8,6 +22,7 @@ $(document).ready(function () {
             },
             {
                 "width": "0",
+                ordering:  false,
                 "targets": 6
             },
             { responsivePriority: 1, targets: 0},
