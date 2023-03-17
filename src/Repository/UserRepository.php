@@ -18,7 +18,8 @@ class UserRepository
     {
         $sql = '
             SELECT * 
-            FROM users
+            FROM users u
+            INNER JOIN contacts c ON c.contact_id = u.contact_id
         ';
         $statement = $this->database->pdo()->prepare($sql);
         $statement->execute();

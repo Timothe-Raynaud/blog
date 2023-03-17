@@ -42,7 +42,6 @@ try {
         '/send-reset-password' => $userController->mailResetPassword($_POST),
 
         // Admin Controller
-        '/admin' => $adminController->index(),
         '/admin-users' => $adminController->users(),
         '/admin-posts' => $adminController->posts(),
 

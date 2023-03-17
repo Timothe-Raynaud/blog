@@ -11,7 +11,11 @@
             </div>
 
             <div class="row">
-
+                <div class="text-black">
+                    {% for user in users %}
+                        <div>{{ user.login }}</div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>

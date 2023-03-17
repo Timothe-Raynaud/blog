@@ -2,6 +2,8 @@
 
 namespace Controller\back;
 
+use Manager\UserManager;
+use Repository\UserRepository;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -11,6 +13,8 @@ use Twig\Loader\FilesystemLoader;
 class AdminController
 {
     private Environment $twig;
+    private UserManager $userManager;
+    private UserRepository $userRepository;
     private array $session;
 
     public function __construct()
@@ -18,24 +22,8 @@ class AdminController
         $loader = new FilesystemLoader(ROOT . '/templates');
         $this->twig = new Environment($loader);
         $this->session = $_SESSION;
-    }
-
-    /**
-     * @throws SyntaxError
-     * @throws RuntimeError
-     * @throws LoaderError
-     */
-    public function index(): void
-    {
-        if(!isset($this->session['role'])) {
-            header("Location: login?1");
-        } else if ($this->session['role'] != 'ADMIN') {
-            header("Location: my-account?1");
-        } else {
-            echo $this->twig->render('back/pages/users.html.twig', [
-                'session' => $this->session,
-            ]);
-        }
+        $this->userManager = new UserManager();
+        $this->userRepository = new UserRepository();
     }
 
     /**
@@ -45,6 +33,7 @@ class AdminController
      */
     public function users(): void
     {
+        $users = $this->userRepository->getAllUsers();
         if(!isset($this->session['role'])) {
             header("Location: login?1");
         } else if ($this->session['role'] != 'ADMIN') {
@@ -52,6 +41,7 @@ class AdminController
         } else {
             echo $this->twig->render('back/pages/users.html.twig', [
                 'session' => $this->session,
+                'users' => $users,
             ]);
         }
     }
