@@ -33,12 +33,57 @@ class AdminController
      */
     public function users(): void
     {
-        $users = $this->userRepository->getAllUsers();
-        if(!isset($this->session['role'])) {
+        if (!isset($this->session['role'])) {
             header("Location: login?1");
         } else if ($this->session['role'] != 'ADMIN') {
             header("Location: my-account?1");
         } else {
+            $users = $this->userRepository->getAllUsers();
+
+            echo $this->twig->render('back/pages/users.html.twig', [
+                'session' => $this->session,
+                'users' => $users,
+            ]);
+        }
+    }
+
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
+    public function userValidation($user_id): void
+    {
+        if (!isset($this->session['role'])) {
+            header("Location: login?1");
+        } else if ($this->session['role'] != 'ADMIN') {
+            header("Location: my-account?1");
+        } else {
+            $this->userRepository->setIsAvailable($user_id);
+            $users = $this->userRepository->getAllUsers();
+
+            echo $this->twig->render('back/pages/users.html.twig', [
+                'session' => $this->session,
+                'users' => $users,
+            ]);
+        }
+    }
+
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
+    public function userBlockation($user_id): void
+    {
+        if (!isset($this->session['role'])) {
+            header("Location: login?1");
+        } else if ($this->session['role'] != 'ADMIN') {
+            header("Location: my-account?1");
+        } else {
+            $this->userRepository->setIsNotAvailable($user_id);
+            $users = $this->userRepository->getAllUsers();
+
             echo $this->twig->render('back/pages/users.html.twig', [
                 'session' => $this->session,
                 'users' => $users,
@@ -53,7 +98,7 @@ class AdminController
      */
     public function posts(): void
     {
-        if(!isset($this->session['role'])) {
+        if (!isset($this->session['role'])) {
             header("Location: login?1");
         } else if ($this->session['role'] != 'ADMIN') {
             header("Location: my-account?1");

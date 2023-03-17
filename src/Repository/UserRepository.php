@@ -93,6 +93,31 @@ class UserRepository
         return false;
     }
 
+    public function setIsAvailable($userId): void
+    {
+        $sql = '
+            UPDATE users
+            SET is_available = 1
+            WHERE user_id = :userId
+        ';
+        $statement = $this->database->pdo()->prepare($sql);
+        $statement->bindValue(':userId', $userId);
+        $statement->execute();
+    }
+
+    public function setIsNotAvailable($userId): void
+    {
+        $sql = '
+            UPDATE users
+            SET is_available = 0
+            WHERE user_id = :userId
+            AND role != "ADMIN"
+        ';
+        $statement = $this->database->pdo()->prepare($sql);
+        $statement->bindValue(':userId', $userId);
+        $statement->execute();
+    }
+
     public function updatePassword($id, $password): bool
     {
         try{

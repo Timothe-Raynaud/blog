@@ -44,6 +44,8 @@ try {
         // Admin Controller
         '/admin-users' => $adminController->users(),
         '/admin-posts' => $adminController->posts(),
+        '/admin-user-validated' => $adminController->userValidation($url[1]),
+        '/admin-user-block' => $adminController->userBlockation($url[1]),
 
         // Default
         default => $mainController->error404(),
