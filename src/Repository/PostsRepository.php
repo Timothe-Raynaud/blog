@@ -43,6 +43,7 @@ class PostsRepository
 
     public function addPost($title, $content, $contactId, DateTime $publishedAt ) : void
     {
+        // TODO - Ajouter les colonnes manquantes.
         $sql = '
             INSERT INTO posts (title, content, created_by, published_at) 
             VALUES (:title, :content, :contactId, :publishedAt)
