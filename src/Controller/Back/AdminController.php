@@ -4,6 +4,7 @@ namespace Controller\Back;
 
 use Manager\UserManager;
 use Repository\UserRepository;
+use Repository\RolesRepository;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -15,6 +16,7 @@ class AdminController
     private Environment $twig;
     private UserManager $userManager;
     private UserRepository $userRepository;
+    private RolesRepository $rolesRepository;
     private array $session;
 
     public function __construct()
@@ -24,6 +26,7 @@ class AdminController
         $this->session = $_SESSION;
         $this->userManager = new UserManager();
         $this->userRepository = new UserRepository();
+        $this->rolesRepository = new RolesRepository();
     }
 
     /**
@@ -39,10 +42,12 @@ class AdminController
             header("Location: my-account?1");
         } else {
             $users = $this->userRepository->getAllUsers();
+            $roles = $this->rolesRepository->getRoles();
 
             echo $this->twig->render('back/pages/users.html.twig', [
                 'session' => $this->session,
                 'users' => $users,
+                'roles' => $roles,
             ]);
         }
     }
@@ -60,12 +65,8 @@ class AdminController
             header("Location: my-account?1");
         } else {
             $this->userRepository->setIsAvailable($user_id);
-            $users = $this->userRepository->getAllUsers();
 
-            echo $this->twig->render('back/pages/users.html.twig', [
-                'session' => $this->session,
-                'users' => $users,
-            ]);
+            $this->users();
         }
     }
 

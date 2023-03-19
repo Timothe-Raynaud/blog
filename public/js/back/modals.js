@@ -1,17 +1,28 @@
 var userModal = document.getElementById('user-modal')
 userModal.addEventListener('show.bs.modal', function (event) {
-    var button = event.relatedTarget
+    let button = event.relatedTarget
 
-    var username = button.getAttribute('data-bs-username')
-    var login = button.getAttribute('data-bs-login')
-    var role = button.getAttribute('data-bs-role')
+    let username = button.getAttribute('data-bs-username')
+    let login = button.getAttribute('data-bs-login')
+    let email = button.getAttribute('data-bs-email')
+    let role = button.getAttribute('data-bs-role')
 
-    var modalTitle = userModal.querySelector('.modal-user-title')
-    var modalLogin = userModal.querySelector('.modal-user-login')
-    var modalUsername = userModal.querySelector('.modal-user-username')
-    var modalRole = userModal.querySelector('.modal-user-role')
+    let modalTitle = userModal.querySelector('.modal-title')
+    let modalLogin = userModal.querySelector('.modal-login')
+    let modalUsername = userModal.querySelector('.modal-username')
+    let modalEmail = userModal.querySelector('.modal-email')
+    let modalRoles = userModal.querySelector('.modal-role')
 
     modalTitle.textContent = username
     modalLogin.value = login
     modalUsername.value = username
+    modalEmail.value = email
+
+
+    for (let modalRole in modalRoles){
+
+        if ( modalRole.value === role){
+            modalRole.classList.add('selected')
+        }
+    }
 })
