@@ -4,4 +4,3 @@
 - If is for prod configure 'config/_prod.php' and be sure there is no 'config/_dev.php' 
 - Composer install
 - There is a directories name 'sql' for create database.
-

@@ -49,4 +49,3 @@ match ($url[0]) {
     // Default
     default => $mainController->error404(),
 };
-
