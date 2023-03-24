@@ -88,6 +88,9 @@ class UserRepository
         return $statement->fetch();
     }
 
+    /**
+     * @throws Exception
+     */
     public function setUser(string $login, string $password, int $contactId): bool
     {
         try {
@@ -103,7 +106,7 @@ class UserRepository
 
             return true;
         } catch (Exception $exception) {
-            var_dump($exception);
+            throw new Exception($exception);
         }
         return false;
     }
@@ -133,6 +136,9 @@ class UserRepository
         $statement->execute();
     }
 
+    /**
+     * @throws Exception
+     */
     public function updatePassword(int $id, string $password): bool
     {
         try{
@@ -149,12 +155,15 @@ class UserRepository
             return true;
 
         } catch (Exception $exception){
-            var_dump($exception);
+            throw new Exception($exception);
         }
 
         return false;
     }
 
+    /**
+     * @throws Exception
+     */
     public function updateAccount(int $id, string $login): bool
     {
         try{
@@ -171,7 +180,7 @@ class UserRepository
             return true;
 
         } catch (Exception $exception){
-            var_dump($exception);
+            throw new Exception($exception);
         }
 
         return false;

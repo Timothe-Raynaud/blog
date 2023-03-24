@@ -70,6 +70,9 @@ class UserManager
         return $result;
     }
 
+    /**
+     * @throws Exception
+     */
     public function connecting(array $post): array
     {
         $result['isConnecting'] = false;
@@ -103,12 +106,15 @@ class UserManager
                 return $result;
             }
         } catch (Exception $exception) {
-            var_dump($exception);
+            throw new Exception($exception);
         }
         $result['message'] = 'Une erreur est survenu lors de la connection';
         return $result;
     }
 
+    /**
+     * @throws Exception
+     */
     public function sendMailResetPassword(array $post): array
     {
         $result['isSend'] = false;
@@ -142,12 +148,15 @@ class UserManager
 
             }
         } catch (Exception $exception) {
-            var_dump($exception);
+            throw new Exception($exception);
         }
         $result['message'] = 'Une erreur est survenue';
         return $result;
     }
 
+    /**
+     * @throws Exception
+     */
     public function resetPassword(array $post): array
     {
         $result['isReset'] = false;
@@ -183,12 +192,15 @@ class UserManager
 
             }
         } catch (Exception $exception) {
-            var_dump($exception);
+            throw new Exception($exception);
         }
 
         return $result;
     }
 
+    /**
+     * @throws Exception
+     */
     public function updateAccount(array $post): array
     {
         $result['isUpdate'] = false;
@@ -244,12 +256,15 @@ class UserManager
 
             }
         } catch (Exception $exception) {
-            var_dump($exception);
+            throw new Exception($exception);
         }
 
         return $result;
     }
 
+    /**
+     * @throws Exception
+     */
     public function updatePassword(array $post): array
     {
         $result['isUpdate'] = false;
@@ -287,7 +302,7 @@ class UserManager
 
             }
         } catch (Exception $exception) {
-            var_dump($exception);
+            throw new Exception($exception);
         }
 
         return $result;

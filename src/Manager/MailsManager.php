@@ -5,6 +5,9 @@ namespace Manager;
 use Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 use Twig\Loader\FilesystemLoader;
 
 class MailsManager
@@ -24,6 +27,13 @@ class MailsManager
         $this->twig = new Environment($loader);
     }
 
+
+    /**
+     * @throws \PHPMailer\PHPMailer\Exception
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     public function sendMailToCreator(array $post): array
     {
         $result['isSend'] = false;
@@ -39,22 +49,28 @@ class MailsManager
             $this->phpMailer->Subject = $post['subject'];
             $this->phpMailer->Body = $body;
 
-            try{
-                $this->phpMailer->send();
+            if ($this->phpMailer->send()) {
                 $result['isSend'] = true;
                 $result['message'] = 'Votre mail à bien été envoyé';
                 return $result;
-            } catch (Exception $exception){
-                var_dump($exception);
             }
+
 
             $result['message'] = 'Une erreur est survenue lors de l\'envoi du mail';
             return $result;
         }
 
+
         return $result;
     }
 
+
+    /**
+     * @throws \PHPMailer\PHPMailer\Exception
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     public function sendResetMail(string $to, string $token, string $username): bool
     {
         $template = $this->twig->load('email/reset_password.html.twig');
@@ -66,11 +82,10 @@ class MailsManager
         $this->phpMailer->addAddress($to);
         $this->phpMailer->Subject = 'Reinitialisation du mot de passe';
         $this->phpMailer->Body = $body;
-        try{
+
+        if ($this->phpMailer->send()){
             $this->phpMailer->send();
             return true;
-        } catch (Exception $exception){
-            var_dump($exception);
         }
 
         return false;

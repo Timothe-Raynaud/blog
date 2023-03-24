@@ -68,6 +68,9 @@ class ContactRepository
         return $statement->fetch();
     }
 
+    /**
+     * @throws Exception
+     */
     public function setContact(string $username, string $email ) : bool
     {
         try {
@@ -83,12 +86,13 @@ class ContactRepository
             return true;
 
         } catch (Exception $exception){
-            var_dump($exception);
+            throw new Exception($exception);
         }
-
-        return false;
     }
 
+    /**
+     * @throws Exception
+     */
     public function updateContact(int $id, string $username, string $email) : bool
     {
         try {
@@ -107,10 +111,8 @@ class ContactRepository
             return true;
 
         } catch (Exception $exception){
-            var_dump($exception);
+            throw new Exception($exception);
         }
-
-        return false;
     }
 
     public function deleteContacts(int $id) : void
