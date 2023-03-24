@@ -16,7 +16,7 @@ class ResetPasswordRepository
         $this->database = new Manager\DatabaseConnection();
     }
 
-    public function getResetUserByToken($token): mixed
+    public function getResetUserByToken(string $token): mixed
     {
         $sql = '
             SELECT * 
@@ -34,7 +34,7 @@ class ResetPasswordRepository
     /**
      * @throws Exception
      */
-    public function setResetPassword($token, $userId): bool
+    public function setResetPassword(string $token, int $userId): bool
     {
         $date = new DateTime();
         $date->add(new DateInterval('P1D'));
@@ -61,7 +61,7 @@ class ResetPasswordRepository
     /**
      * @throws Exception
      */
-    public function setIsUsed($token): bool
+    public function setIsUsed(string $token): bool
     {
         try {
             $sql = '

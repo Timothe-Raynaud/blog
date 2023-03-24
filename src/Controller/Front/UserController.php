@@ -29,7 +29,7 @@ class UserController
      * @throws SyntaxError
      * @throws LoaderError
      */
-    public function login($isError = null): void
+    public function login(bool $isError = null): void
     {
         $errorMessage = $this->userManager->askIfErrorAdmin($isError);
 
@@ -45,7 +45,7 @@ class UserController
      * @throws SyntaxError
      * @throws LoaderError
      */
-    public function signIn($post = null): void
+    public function signIn(?array $post = null): void
     {
         $resultAddUser = $this->userManager->addNewUser($post);
 
@@ -61,7 +61,7 @@ class UserController
      * @throws SyntaxError
      * @throws LoaderError
      */
-    public function myAccount($isError = null): void
+    public function myAccount(bool $isError = null): void
     {
         $errorMessage = $this->userManager->askIfErrorAdmin($isError);
 
@@ -76,7 +76,7 @@ class UserController
      * @throws SyntaxError
      * @throws LoaderError
      */
-    public function renderResetPassword($token): bool
+    public function renderResetPassword(string $token): bool
     {
         $user = $this->userManager->getUserByResetToken($token);
 
@@ -102,37 +102,37 @@ class UserController
         $this->userManager->removeSession();
     }
 
-    public function connecting($post = null): void
+    public function connecting(?array $post = null): void
     {
         echo json_encode($this->userManager->connecting($post));
     }
 
-    public function resetPassword($post = null): void
+    public function resetPassword(?array $post = null): void
     {
         echo json_encode($this->userManager->resetPassword($post));
     }
 
-    public function updateAccount($post = null): void
+    public function updateAccount(?array $post = null): void
     {
         echo json_encode($this->userManager->updateAccount($post));
     }
 
-    public function updatePassword($post = null): void
+    public function updatePassword(?array $post = null): void
     {
         echo json_encode($this->userManager->updatePassword($post));
     }
 
-    public function mailResetPassword($post = null): void
+    public function mailResetPassword(?array $post = null): void
     {
         echo json_encode($this->userManager->sendMailResetPassword($post));
     }
 
-    public function isLoginExist($login): void
+    public function isLoginExist(string $login): void
     {
         echo json_encode($this->userManager->isLoginExist($login));
     }
 
-    public function isUsernameExist($username): void
+    public function isUsernameExist(string $username): void
     {
         echo json_encode($this->userManager->isUsernameExist($username));
     }

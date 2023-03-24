@@ -40,7 +40,7 @@ class UserRepository
 
         return $statement->fetch();
     }
-    public function getUserByLogin($login): mixed
+    public function getUserByLogin(string $login): mixed
     {
         $sql = '
             SELECT * 
@@ -56,7 +56,7 @@ class UserRepository
         return $statement->fetch();
     }
 
-    public function getUserByEmail($email): mixed
+    public function getUserByEmail(string $email): mixed
     {
         $sql = '
             SELECT * 
@@ -72,7 +72,7 @@ class UserRepository
         return $statement->fetch();
     }
 
-    public function getUserById($id): ?array
+    public function getUserById(int $id): ?array
     {
         $sql = '
             SELECT * 
@@ -88,7 +88,7 @@ class UserRepository
         return $statement->fetch();
     }
 
-    public function setUser($login, $password, $contactId): bool
+    public function setUser(string $login, string $password, int $contactId): bool
     {
         try {
             $sql = '
@@ -108,7 +108,7 @@ class UserRepository
         return false;
     }
 
-    public function setIsAvailable($userId): void
+    public function setIsAvailable(int $userId): void
     {
         $sql = '
             UPDATE users
@@ -120,7 +120,7 @@ class UserRepository
         $statement->execute();
     }
 
-    public function setIsNotAvailable($userId): void
+    public function setIsNotAvailable(int $userId): void
     {
         $sql = '
             UPDATE users
@@ -133,7 +133,7 @@ class UserRepository
         $statement->execute();
     }
 
-    public function updatePassword($id, $password): bool
+    public function updatePassword(int $id, string $password): bool
     {
         try{
             $sql = '
@@ -155,7 +155,7 @@ class UserRepository
         return false;
     }
 
-    public function updateAccount($id, $login): bool
+    public function updateAccount(int $id, string $login): bool
     {
         try{
             $sql = '
@@ -177,7 +177,7 @@ class UserRepository
         return false;
     }
 
-    public function deleteUser($id): void
+    public function deleteUser(int $id): void
     {
         $sql = '
             DELETE FROM users 

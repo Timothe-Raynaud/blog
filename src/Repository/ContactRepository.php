@@ -26,7 +26,7 @@ class ContactRepository
         return $statement->fetchAll();
     }
 
-    public function getContactsById($id) : ?array
+    public function getContactsById(int $id) : ?array
     {
         $sql = '
             SELECT * 
@@ -40,7 +40,7 @@ class ContactRepository
         return $statement->fetch();
     }
 
-    public function getContactsByUsername($username) : mixed
+    public function getContactsByUsername(string $username) : mixed
     {
         $sql = '
             SELECT * 
@@ -54,7 +54,7 @@ class ContactRepository
         return $statement->fetch();
     }
 
-    public function getContactsByEmail($email) : mixed
+    public function getContactsByEmail(string $email) : mixed
     {
         $sql = '
             SELECT * 
@@ -68,7 +68,7 @@ class ContactRepository
         return $statement->fetch();
     }
 
-    public function setContact($username, $email ) : bool
+    public function setContact(string $username, string $email ) : bool
     {
         try {
             $sql = '
@@ -89,7 +89,7 @@ class ContactRepository
         return false;
     }
 
-    public function updateContact($id, $username, $email) : bool
+    public function updateContact(int $id, string $username, string $email) : bool
     {
         try {
             $sql = '
@@ -113,7 +113,7 @@ class ContactRepository
         return false;
     }
 
-    public function deleteContacts($id) : void
+    public function deleteContacts(int $id) : void
     {
         $sql = '
             DELETE FROM contacts 

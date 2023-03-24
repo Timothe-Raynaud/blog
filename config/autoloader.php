@@ -3,7 +3,7 @@
 /**
  * @throws Exception
  */
-function loadClass($className): void
+function loadClass(string $className): void
 {
     try {
         $fileName = '';

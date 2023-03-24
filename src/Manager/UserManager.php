@@ -25,7 +25,7 @@ class UserManager
     /**
      * @throws Exception
      */
-    public function addNewUser($post): array
+    public function addNewUser(array $post): array
     {
         $result['isAdd'] = false;
         $result['message'] = '';
@@ -70,7 +70,7 @@ class UserManager
         return $result;
     }
 
-    public function connecting($post): array
+    public function connecting(array $post): array
     {
         $result['isConnecting'] = false;
         $result['message'] = '';
@@ -109,7 +109,7 @@ class UserManager
         return $result;
     }
 
-    public function sendMailResetPassword($post): array
+    public function sendMailResetPassword(array $post): array
     {
         $result['isSend'] = false;
         $result['message'] = '';
@@ -148,7 +148,7 @@ class UserManager
         return $result;
     }
 
-    public function resetPassword($post): array
+    public function resetPassword(array $post): array
     {
         $result['isReset'] = false;
         $result['message'] = 'Une erreur est survenue';
@@ -189,7 +189,7 @@ class UserManager
         return $result;
     }
 
-    public function updateAccount($post): array
+    public function updateAccount(array $post): array
     {
         $result['isUpdate'] = false;
         $result['message'] = 'Une erreur est survenue';
@@ -250,7 +250,7 @@ class UserManager
         return $result;
     }
 
-    public function updatePassword($post): array
+    public function updatePassword(array $post): array
     {
         $result['isUpdate'] = false;
         $result['message'] = 'Une erreur est survenue';
@@ -293,7 +293,7 @@ class UserManager
         return $result;
     }
 
-    public function getUserByResetToken($token) : ?array
+    public function getUserByResetToken(string $token) : ?array
     {
         $now = date('Y-m-d h:i:s');
         $user = $this->resetPasswordRepository->getResetUserByToken($token);
@@ -310,21 +310,21 @@ class UserManager
         return $user;
     }
 
-    public function isLoginExist($login): array
+    public function isLoginExist(string $login): array
     {
         $result = $this->userRepository->getUserByLogin($login);
 
         return ['exist' => $result];
     }
 
-    public function isUsernameExist($username): array
+    public function isUsernameExist(string $username): array
     {
         $result = $this->contactRepository->getContactsByUsername($username);
         
         return ['exist' => $result];
     }
 
-    public function createSession($user): void
+    public function createSession(array $user): void
     {
         $_SESSION['username'] = $user['username'];
         $_SESSION['login'] = $user['login'];
@@ -338,7 +338,7 @@ class UserManager
         session_destroy();
     }
 
-    public function askIfErrorAdmin($isError): ?String
+    public function askIfErrorAdmin(bool $isError): ?String
     {
         $errorMessage = null;
         if ($isError === '1'){

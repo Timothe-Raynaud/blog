@@ -59,7 +59,7 @@ class AdminController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function userValidation($user_id): void
+    public function userValidation(int $user_id): void
     {
         if (!isset($this->session['role'])) {
             header("Location: login?1");
@@ -77,7 +77,7 @@ class AdminController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function userBlockation($user_id): void
+    public function userBlockation(int $user_id): void
     {
         if (!isset($this->session['role'])) {
             header("Location: login?1");

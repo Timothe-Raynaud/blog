@@ -42,10 +42,10 @@ class BlogController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function post($id): void
+    public function post(int $post_id): void
     {
         $postsRepository = new Repository\PostsRepository();
-        $post = $postsRepository->getPostById($id);
+        $post = $postsRepository->getPostById($post_id);
 
         echo $this->twig->render('front/pages/post.html.twig', [
             'post' => $post,

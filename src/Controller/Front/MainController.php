@@ -28,7 +28,7 @@ class MainController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function index($post = null): void
+    public function index(?array $post = null): void
     {
         $mailResult = $this->mailsManager->sendMailToCreator($post);
         echo $this->twig->render('front/pages/home.html.twig', [
@@ -54,7 +54,7 @@ class MainController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function sendMail($post = null): void
+    public function sendMail(?array $post = null): void
     {
         echo json_encode($this->mailsManager->sendMailToCreator($post));
     }

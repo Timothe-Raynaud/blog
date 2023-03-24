@@ -26,7 +26,7 @@ class PostsRepository
         return $statement->fetchAll();
     }
 
-    public function getPostById($id) : ?array
+    public function getPostById(int $id) : ?array
     {
         $sql = '
             SELECT * 
@@ -41,7 +41,7 @@ class PostsRepository
         return $statement->fetch();
     }
 
-    public function addPost($title, $content, $contactId, DateTime $publishedAt ) : void
+    public function addPost(string $title, string $content, int $contactId, DateTime $publishedAt ) : void
     {
         // TODO - Ajouter les colonnes manquantes.
         $sql = '
@@ -56,7 +56,7 @@ class PostsRepository
         $statement->execute();
     }
 
-    public function updatePost($id, $title, $subtitle, $content, DateTime $updatedAt) : void
+    public function updatePost(int $id, string $title, string $subtitle, string $content, DateTime $updatedAt) : void
     {
         $sql = '
             UPDATE posts 
@@ -72,7 +72,7 @@ class PostsRepository
         $statement->execute();
     }
 
-    public function deletePost($id) : void
+    public function deletePost(int $id) : void
     {
         $sql = '
             DELETE FROM posts 

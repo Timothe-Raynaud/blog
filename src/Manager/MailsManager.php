@@ -24,7 +24,7 @@ class MailsManager
         $this->twig = new Environment($loader);
     }
 
-    public function sendMailToCreator($post): array
+    public function sendMailToCreator(array $post): array
     {
         $result['isSend'] = false;
         $result['message'] = '';
@@ -55,7 +55,7 @@ class MailsManager
         return $result;
     }
 
-    public function sendResetMail($to, $token, $username): bool
+    public function sendResetMail(string $to, string $token, string $username): bool
     {
         $template = $this->twig->load('email/reset_password.html.twig');
         $body = $template->render([
