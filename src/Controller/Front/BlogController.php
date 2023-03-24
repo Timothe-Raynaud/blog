@@ -74,7 +74,7 @@ class BlogController
         }
     }
 
-    public function addPost($post): void
+    public function addPost(array $post): void
     {
         $result = $this->postsManager->addPost($post);
         if ($result['isAdd']){
