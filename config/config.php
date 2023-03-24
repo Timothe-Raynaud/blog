@@ -1,15 +1,15 @@
 <?php
 
 // Mail Configuration
-const MAIL_TO = '';
-const MAIL_FROM = '';
-const MAIL_HOST = '';
-const MAIL_PORT = '';
-const MAIL_SMTP_AUTH = '';
-const MAIL_SMTP_SECURE = '';
+define('MAIL_TO', '');
+define('MAIL_FROM', '');
+define('MAIL_HOST', '');
+define('MAIL_PORT', '');
+define('MAIL_SMTP_AUTH', '');
+define('MAIL_SMTP_SECURE', '');
 
 // Database configuration
-const DB_HOST = '';
-const DB_NAME = '';
-const DB_USER = '';
-const DB_PASSWORD = '';
+define('DB_HOST', '');
+define('DB_NAME', '');
+define('DB_USER', '');
+define('DB_PASSWORD', '');
