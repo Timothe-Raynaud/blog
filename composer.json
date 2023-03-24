@@ -1,7 +1,5 @@
 {
     "license": [
-        "twig",
-        "phpmailer",
         "LGPL-2.1-only",
         "MIT",
         "BSD-3-Clause"
