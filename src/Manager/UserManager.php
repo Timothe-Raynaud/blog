@@ -183,7 +183,7 @@ class UserManager
                 // Ok - Update password
                 $password = password_hash($firstPassword, PASSWORD_DEFAULT);
                 if ($this->userRepository->updatePassword($userId, $password)
-                    and $this->resetPasswordRepository->setIsUsed($token)){
+                   &&$this->resetPasswordRepository->setIsUsed($token)){
 
                     $result['isReset'] = true;
                     $result['message'] = 'Le mot de passe a bien été modifié <br> Redirection à la page de connexion';
@@ -218,7 +218,7 @@ class UserManager
                 if (!$user) {
                     return $result;
                 }
-                if($username === $user['username'] and $login === $user['login'] and $email === $user['email']){
+                if($username === $user['username']&&$login === $user['login']&&$email === $user['email']){
                     $result['message'] = 'Votre profil est déjà à jour';
                     return $result;
                 }
@@ -243,7 +243,7 @@ class UserManager
 
                 // Ok - Update account
                 $contactId = $user['contact_id'];
-                if ($this->userRepository->updateAccount($userId, $login) and $this->contactRepository->updateContact($contactId, $username, $email)){
+                if ($this->userRepository->updateAccount($userId, $login)&&$this->contactRepository->updateContact($contactId, $username, $email)){
                     $result['message'] = 'Votre compte à bien été mis à jour.';
                     $result['isUpdate'] = true;
 
@@ -312,7 +312,7 @@ class UserManager
     {
         $now = date('Y-m-d h:i:s');
         $user = $this->resetPasswordRepository->getResetUserByToken($token);
-        if ($user == null){
+        if (empty($user)){
             return null;
         }
         if ($user['is_used']){
