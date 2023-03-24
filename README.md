@@ -1,6 +1,7 @@
 # Installing project
 
-- Set on config/config.php -> 'DEV_ENVIRONMENT' if is 'PROD' or 'DEV'
-- Set all config information on config/_(prod/dev).php
+- For dev environment create file 'config/_dev.php' and configure it based on '_prod.php'
+- If is for prod configure 'config/_prod.php' and be sure there is no 'config/_dev.php' 
 - Composer install
+- There is a directories name 'sql' for create database.
 

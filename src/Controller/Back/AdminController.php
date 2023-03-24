@@ -42,11 +42,13 @@ class AdminController
             header("Location: my-account?1");
         } else {
             $users = $this->userRepository->getAllUsers();
+            $availableUsers = $this->userRepository->getAvailableUsers();
             $roles = $this->rolesRepository->getRoles();
 
             echo $this->twig->render('back/pages/users.html.twig', [
                 'session' => $this->session,
                 'users' => $users,
+                'availableUsers' => $availableUsers,
                 'roles' => $roles,
             ]);
         }

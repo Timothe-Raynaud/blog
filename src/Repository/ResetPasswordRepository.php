@@ -31,6 +31,9 @@ class ResetPasswordRepository
         return $statement->fetch();
     }
 
+    /**
+     * @throws Exception
+     */
     public function setResetPassword($token, $userId): bool
     {
         $date = new DateTime();
@@ -51,14 +54,13 @@ class ResetPasswordRepository
             return true;
 
         } catch (Exception $exception) {
-            if (DEV_ENVIRONMENT) {
-                var_dump($exception);
-            }
-
-            return false;
+            throw new Exception($exception);
         }
     }
 
+    /**
+     * @throws Exception
+     */
     public function setIsUsed($token): bool
     {
         try {
@@ -74,11 +76,7 @@ class ResetPasswordRepository
             return true;
 
         } catch (Exception $exception) {
-            if (DEV_ENVIRONMENT) {
-                var_dump($exception);
-            }
-
-            return false;
+            throw new Exception($exception);
         }
     }
 

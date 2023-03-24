@@ -22,6 +22,9 @@ class UserManager
         $this->resetPasswordRepository = new ResetPasswordRepository();
     }
 
+    /**
+     * @throws Exception
+     */
     public function addNewUser($post): array
     {
         $result['isAdd'] = false;
@@ -61,9 +64,7 @@ class UserManager
                 }
             }
         } catch (Exception $exception) {
-            if (DEV_ENVIRONMENT) {
-                var_dump($exception);
-            }
+            throw new Exception($exception);
         }
         $result['message'] = 'Une erreur est survenue lors de l\'inscription';
         return $result;

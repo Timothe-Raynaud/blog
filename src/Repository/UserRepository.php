@@ -28,6 +28,18 @@ class UserRepository
         return $statement->fetchAll();
     }
 
+    public function getAvailableUsers(): ?array
+    {
+        $sql = '
+            SELECT COUNT(*) as numberOf
+            FROM users u
+            WHERE u.is_available = 1
+        ';
+        $statement = $this->database->pdo()->prepare($sql);
+        $statement->execute();
+
+        return $statement->fetch();
+    }
     public function getUserByLogin($login): mixed
     {
         $sql = '

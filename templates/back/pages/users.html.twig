@@ -1,12 +1,5 @@
 {% extends 'back/layouts/layout.html.twig' %}
 
-{% set countValidatedUsers = 0 %}
-{% for user in users %}
-    {% if user.is_available %}
-        {% set countValidatedUsers = countValidatedUsers + 1 %}
-    {% endif %}
-{% endfor %}
-
 {% block main %}
 
     <div id="content">
@@ -46,7 +39,7 @@
                                         Utilisateur valide
                                     </div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                        {{ countValidatedUsers }}
+                                        {{ availableUsers.numberOf }}
                                     </div>
                                 </div>
                                 <div class="col-auto">
