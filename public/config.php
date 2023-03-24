@@ -6,10 +6,10 @@ require_once ROOT . '/config/autoloader.php';
 require_once ROOT . '/vendor/autoload.php';
 
 // Dev/Prod configuration
-const DEV_ENVIRONMENT = ROOT . '/config/_dev.php';
-const PROD_ENVIRONMENT = ROOT . '/config/_prod.php';
+const LOCAL_ENVIRONMENT = ROOT . '/config/local.php';
+const PROD_ENVIRONMENT = ROOT . '/config/config.php';
 
-match (file_exists(DEV_ENVIRONMENT)){
-    true => include DEV_ENVIRONMENT,
+match (file_exists(LOCAL_ENVIRONMENT)){
+    true => include LOCAL_ENVIRONMENT,
     default => include PROD_ENVIRONMENT
 };
