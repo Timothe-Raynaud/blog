@@ -2,9 +2,8 @@
 
 namespace Controller\Front;
 
-define('ROOT', dirname(__DIR__));
-
 use Manager\MailsManager;
+use PHPMailer\PHPMailer\Exception;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -29,6 +28,7 @@ class MainController
      * @throws SyntaxError
      * @throws RuntimeError
      * @throws LoaderError
+     * @throws Exception
      */
     public function index(?array $post = null): void
     {
@@ -55,6 +55,7 @@ class MainController
      * @throws SyntaxError
      * @throws RuntimeError
      * @throws LoaderError
+     * @throws Exception
      */
     public function sendMail(?array $post = null): void
     {

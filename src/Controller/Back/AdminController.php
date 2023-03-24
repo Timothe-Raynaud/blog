@@ -2,8 +2,6 @@
 
 namespace Controller\Back;
 
-define('ROOT', dirname(__DIR__));
-
 use Manager\UserManager;
 use Repository\UserRepository;
 use Repository\RolesRepository;
@@ -23,7 +21,7 @@ class AdminController
 
     public function __construct()
     {
-        $loader = new FilesystemLoader(ROOT . '/templates');
+        $loader = new FilesystemLoader(ROOT  . '/templates');
         $this->twig = new Environment($loader);
         $this->session = $_SESSION;
         $this->userManager = new UserManager();
@@ -110,6 +108,9 @@ class AdminController
         }
     }
 
+    /**
+     * @throws \Exception
+     */
     public function updateRole(?array $posts): void
     {
         echo json_encode($this->userManager->updateRole($posts));

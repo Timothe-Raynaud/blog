@@ -2,8 +2,6 @@
 
 namespace Controller\Front;
 
-define('ROOT', dirname(__DIR__));
-
 use Manager\PostsManager;
 use Repository\PostsRepository;
 use Twig;
@@ -21,10 +19,10 @@ class BlogController
 
     public function __construct()
     {
+        $loader = new Twig\Loader\FilesystemLoader(ROOT .'/templates');
+        $this->twig = new Twig\Environment($loader);
         $this->postsRepository = new PostsRepository();
         $this->postsManager = new PostsManager();
-        $loader = new Twig\Loader\FilesystemLoader(ROOT.'/templates');
-        $this->twig = new Twig\Environment($loader);
         $this->session = $_SESSION;
     }
 

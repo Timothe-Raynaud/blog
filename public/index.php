@@ -2,9 +2,7 @@
 
 session_start();
 
-define('ROOT', dirname(__DIR__));
-
-require_once ROOT . '/config/config.php';
+require_once dirname(__DIR__) . '/config/config.php';
 
 use Controller\Front\BlogController;
 use Controller\Front\MainController;

@@ -11,7 +11,7 @@ class Autoloader
             $fileName = '';
             $namespace = '';
 
-            $includePath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'src';
+            $includePath = dirname(__DIR__) . '/src';
 
             if (false !== ($lastNsPos = strripos($className, '\\'))) {
                 $namespace = substr($className, 0, $lastNsPos);

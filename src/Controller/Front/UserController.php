@@ -2,8 +2,6 @@
 
 namespace Controller\Front;
 
-define('ROOT', dirname(__DIR__));
-
 use Manager\UserManager;
 use Twig\Environment;
 use Twig\Error\LoaderError;
@@ -20,7 +18,7 @@ class UserController
 
     public function __construct()
     {
-        $loader = new FilesystemLoader(ROOT . '/templates');
+        $loader = new FilesystemLoader(ROOT  . '/templates');
         $this->twig = new Environment($loader);
         $this->userManager = new UserManager();
         $this->session = $_SESSION;

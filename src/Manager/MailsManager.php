@@ -2,7 +2,8 @@
 
 namespace Manager;
 
-use Exception;
+require_once ROOT . '/config/config.php';
+
 use PHPMailer\PHPMailer\PHPMailer;
 use Twig\Environment;
 use Twig\Error\LoaderError;
