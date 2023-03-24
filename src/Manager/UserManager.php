@@ -353,10 +353,10 @@ class UserManager
         session_destroy();
     }
 
-    public function askIfErrorAdmin(bool $isError): ?String
+    public function askIfErrorAdmin(?int $isError = null): ?String
     {
         $errorMessage = null;
-        if ($isError === '1'){
+        if ($isError === 1){
             $errorMessage = 'L\'acces à l\'admin est réserver aux administrateur.';
         }
 

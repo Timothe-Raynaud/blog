@@ -2,8 +2,6 @@
 
 namespace Controller\Back;
 
-require_once dirname(__DIR__) . '/config/config.php';
-
 use Manager\UserManager;
 use Repository\UserRepository;
 use Repository\RolesRepository;

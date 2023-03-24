@@ -29,7 +29,7 @@ class UserController
      * @throws SyntaxError
      * @throws LoaderError
      */
-    public function login(bool $isError = null): void
+    public function login(int $isError = null): void
     {
         $errorMessage = $this->userManager->askIfErrorAdmin($isError);
 
@@ -61,7 +61,7 @@ class UserController
      * @throws SyntaxError
      * @throws LoaderError
      */
-    public function myAccount(bool $isError = null): void
+    public function myAccount(int $isError = null): void
     {
         $errorMessage = $this->userManager->askIfErrorAdmin($isError);
 
