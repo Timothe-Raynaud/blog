@@ -39,7 +39,7 @@ class MailsManager
         $result['isSend'] = false;
         $result['message'] = '';
 
-        if ($post != null) {
+        if (!empty($post)) {
             $template = $this->twig->load('email/contact.html.twig');
             $body = $template->render([
                 'message' => $post['message']

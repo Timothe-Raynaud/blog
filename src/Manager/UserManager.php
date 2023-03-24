@@ -31,7 +31,7 @@ class UserManager
         $result['message'] = '';
 
         try {
-            if ($post != null) {
+            if (!empty($post)) {
                 $email = $post['email'];
                 $username = $post['username'];
                 $login = $post['login'];
@@ -79,7 +79,7 @@ class UserManager
         $result['message'] = '';
 
         try {
-            if ($post != null) {
+            if (!empty($post)) {
                 $login = $post['login'];
                 $password = $post['password'];
                 $user = $this->userRepository->getUserByLogin($login);
@@ -121,7 +121,7 @@ class UserManager
         $result['message'] = '';
 
         try {
-            if ($post != null) {
+            if (!empty($post)) {
                 $email = $post['email'];
                 $user = $this->userRepository->getUserByEmail($email);
 
@@ -163,7 +163,7 @@ class UserManager
         $result['message'] = 'Une erreur est survenue';
 
         try {
-            if ($post != null) {
+            if (!empty($post)) {
                 $firstPassword = $post['firstPassword'];
                 $secondPassword = $post['secondPassword'];
                 $token = $post['token'];
@@ -207,7 +207,7 @@ class UserManager
         $result['message'] = 'Une erreur est survenue';
 
         try {
-            if ($post != null) {
+            if (!empty($post)) {
                 $username = $post['username'];
                 $email = $post['email'];
                 $login = $post['login'];
@@ -271,7 +271,7 @@ class UserManager
         $result['message'] = 'Une erreur est survenue';
 
         try {
-            if ($post != null) {;
+            if (!empty($post)) {;
                 $password = $post['password'];
                 $firstNewPassword = $post['firstNewPassword'];
                 $secondNewPassword = $post['secondNewPassword'];
