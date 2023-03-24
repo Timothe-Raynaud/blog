@@ -2,7 +2,7 @@
 
 session_start();
 
-require_once dirname(__DIR__) . '/config/config.php';
+require_once dirname(__DIR__) . '/public/config.php';
 
 use Controller\Front\BlogController;
 use Controller\Front\MainController;
