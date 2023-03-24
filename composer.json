@@ -1,7 +1,11 @@
 {
-    "name": "Mon-blog",
-    "description": "Un blog pour un projet openclassroom",
-    "license": "Timothe Raynaud",
+    "license": [
+        "twig",
+        "phpmailer",
+        "LGPL-2.1-only",
+        "MIT",
+        "BSD-3-Clause"
+    ],
     "require": {
         "twig/twig": "^3.0",
         "ext-pdo": "*",

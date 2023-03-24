@@ -1,0 +1,8 @@
+{
+  "lang": "fr",
+  "name": "Mon Blog",
+  "description": "Un blog comumn.",
+  "short_name": "Mon Blog",
+  "start_url": "/index.html",
+  "display": "standalone"
+}
