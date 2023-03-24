@@ -5,6 +5,8 @@ define('ROOT', dirname(__DIR__));
 require_once ROOT . '/config/autoloader.php';
 require_once ROOT . '/vendor/autoload.php';
 
+spl_autoload_register([Autoloader::class, 'loadClass']);
+
 // Dev/Prod configuration
 const DEV_ENVIRONMENT = ROOT . '/config/_dev.php';
 const PROD_ENVIRONMENT = ROOT . '/config/_prod.php';

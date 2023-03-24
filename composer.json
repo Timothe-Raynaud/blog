@@ -1,4 +1,7 @@
 {
+    "name": "Mon-blog",
+    "description": "Un blog pour un projet openclassroom",
+    "license": "Timothe Raynaud",
     "require": {
         "twig/twig": "^3.0",
         "ext-pdo": "*",
