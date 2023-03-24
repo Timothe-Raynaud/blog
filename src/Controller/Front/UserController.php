@@ -2,6 +2,8 @@
 
 namespace Controller\Front;
 
+define('ROOT', dirname(__DIR__));
+
 use Manager\UserManager;
 use Twig\Environment;
 use Twig\Error\LoaderError;

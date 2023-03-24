@@ -2,6 +2,8 @@
 
 namespace Controller\Front;
 
+define('ROOT', dirname(__DIR__));
+
 use Manager\PostsManager;
 use Repository\PostsRepository;
 use Twig;

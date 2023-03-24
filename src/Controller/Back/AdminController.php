@@ -2,6 +2,8 @@
 
 namespace Controller\Back;
 
+define('ROOT', dirname(__DIR__));
+
 use Manager\UserManager;
 use Repository\UserRepository;
 use Repository\RolesRepository;

@@ -1,15 +1,15 @@
 <?php
 
-// Mail Configuration
-define('MAIL_TO', '');
-define('MAIL_FROM', '');
-define('MAIL_HOST', '');
-define('MAIL_PORT', '');
-define('MAIL_SMTP_AUTH', '');
-define('MAIL_SMTP_SECURE', '');
+define('ROOT', dirname(__DIR__));
 
-// Database configuration
-define('DB_HOST', '');
-define('DB_NAME', '');
-define('DB_USER', '');
-define('DB_PASSWORD', '');
+require_once ROOT . '/config/autoloader.php';
+require_once ROOT . '/vendor/autoload.php';
+
+// Dev/Prod configuration
+const LOCAL_ENVIRONMENT = ROOT . '/config/local.php';
+const PROD_ENVIRONMENT = ROOT . '/config/production.php';
+
+match (file_exists(LOCAL_ENVIRONMENT)){
+true => include LOCAL_ENVIRONMENT,
+default => include PROD_ENVIRONMENT
+};
