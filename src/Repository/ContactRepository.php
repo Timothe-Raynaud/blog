@@ -2,9 +2,8 @@
 
 namespace Repository;
 
-require_once ROOT.'/config/config.php';
-
 use Manager;
+use Exception;
 
 class ContactRepository
 {
@@ -15,7 +14,7 @@ class ContactRepository
         $this->database = new Manager\DatabaseConnection();
     }
 
-    public function getContacts() : array
+    public function getContacts() : ?array
     {
         $sql = '
             SELECT * 
@@ -27,7 +26,7 @@ class ContactRepository
         return $statement->fetchAll();
     }
 
-    public function getContactsById($id) : array
+    public function getContactsById($id) : ?array
     {
         $sql = '
             SELECT * 
@@ -41,17 +40,77 @@ class ContactRepository
         return $statement->fetch();
     }
 
-    public function setContact($firstname, $lastname, $email ) : void
+    public function getContactsByUsername($username) : mixed
     {
         $sql = '
-            INSERT INTO contacts (firstname, lastname, email) 
-            VALUES (:firstname, :lastname, :email)
+            SELECT * 
+            FROM contacts 
+            WHERE username = :username
         ';
         $statement = $this->database->pdo()->prepare($sql);
-        $statement->bindValue(':firstname', $firstname);
-        $statement->bindValue(':lastname', $lastname);
+        $statement->bindValue(':username', $username);
+        $statement->execute();
+
+        return $statement->fetch();
+    }
+
+    public function getContactsByEmail($email) : mixed
+    {
+        $sql = '
+            SELECT * 
+            FROM contacts 
+            WHERE email = :email
+        ';
+        $statement = $this->database->pdo()->prepare($sql);
         $statement->bindValue(':email', $email);
         $statement->execute();
+
+        return $statement->fetch();
+    }
+
+    public function setContact($username, $email ) : bool
+    {
+        try {
+            $sql = '
+                INSERT INTO contacts (username, email) 
+                VALUES (:username, :email)
+            ';
+            $statement = $this->database->pdo()->prepare($sql);
+            $statement->bindValue(':username', $username);
+            $statement->bindValue(':email', $email);
+            $statement->execute();
+
+            return true;
+
+        } catch (Exception $exception){
+            var_dump($exception);
+        }
+
+        return false;
+    }
+
+    public function updateContact($id, $username, $email) : bool
+    {
+        try {
+            $sql = '
+                UPDATE contacts
+                SET username = :username
+                    , email = :email
+                WHERE contact_id = :id
+            ';
+            $statement = $this->database->pdo()->prepare($sql);
+            $statement->bindValue(':username', $username);
+            $statement->bindValue(':email', $email);
+            $statement->bindValue(':id', $id);
+            $statement->execute();
+
+            return true;
+
+        } catch (Exception $exception){
+            var_dump($exception);
+        }
+
+        return false;
     }
 
     public function deleteContacts($id) : void

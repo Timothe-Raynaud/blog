@@ -12,7 +12,28 @@
 
 {% block main %}
     <div class="container">
-        {% include 'front/pages/login/_resetPassword.html.twig' %}
-        {% include 'front/pages/login/_login.html.twig' %}
+        {% if session.username is defined %}
+            <div class="row justify-content-center">
+                <div>Vous êtes déjà connecté</div>
+            </div>
+        {% else %}
+            <div class="row justify-content-center">
+                {% include 'front/pages/login/_mail_reset_password.html.twig' %}
+                {% include 'front/pages/login/_login.html.twig' %}
+                {% include 'front/pages/login/_signIn.html.twig' %}
+            </div>
+        {% endif %}
     </div>
+
+    <div id="error-login-flash" class="d-none"></div>
+
+    <script>
+        {% if errorMessage is not null %}
+        const errorMessage = '{{ errorMessage }}'
+        showFlashMessage('error-login-flash', errorMessage, 'danger')
+        {% endif %}
+    </script>
+    <div id="login-flash" class="d-none"></div>
 {% endblock %}
+
+

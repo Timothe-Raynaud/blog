@@ -1,0 +1,155 @@
+{% extends 'back/layouts/layout.html.twig' %}
+
+{% block main %}
+
+    <div id="content">
+
+        <div class="container-fluid">
+
+            <div class="d-sm-flex align-items-center justify-content-between my-4">
+                <h1 class="h3 mb-0 text-gray-800 mt-4">Utilisateur - pannel</h1>
+            </div>
+
+            <div class="row">
+
+                <div class="col-xl-2 col-md-4 mb-6 my-2">
+                    <div class="card border-left-primary shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        Nombre d'utilisateur :
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ users|length }}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fa-solid fa-user-plus"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-2 col-md-4 mb-6 my-2">
+                    <div class="card border-left-success shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                        Utilisateur valide
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                        {{ availableUsers.numberOf }}
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fa-solid fa-user-shield"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 my-4">
+                    <table id="users-datatable" class="display" style="width:100%">
+                        <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Login</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th class="text-center">Valide</th>
+                            <th>Autoriser/Bloquer</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for user in users %}
+                            <tr>
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.login }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.role }}</td>
+                                {% if user.is_available %}
+                                    <td class="text-center"><span class="bg-success px-4 py-1 rounded text-white">Compte valide</span></td>
+                                    <td class="text-center">
+                                        <a href="/admin-user-block?{{ user.user_id }}"
+                                           class="btn bg-danger text-white" style="width: 40px; height: 40px;">
+                                            <i class="fa-solid fa-xmark"></i>
+                                        </a>
+                                    </td>
+                                {% else %}
+                                    <td class="text-center"><span class="bg-danger px-4 py-1 rounded text-white">Compte non valide</span></td>
+                                    <td class="text-center">
+                                        <a href="/admin-user-validated?{{ user.user_id }}"
+                                           class="btn bg-success text-white" style="width: 40px; height: 40px;">
+                                            <i class="fa-solid fa-check"></i>
+                                        </a>
+                                    </td>
+                                {% endif %}
+                                <td class="text-center">
+                                    <button type="button"
+                                            class="btn text-primary"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#user-modal"
+                                            data-bs-username= {{ user.username }}
+                                            data-bs-login= {{ user.login }}
+                                            data-bs-email= {{ user.email }}
+                                            data-bs-role= {{ user.role_id }}
+                                    >
+                                        <i class="fa-solid fa-magnifying-glass"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="user-modal" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel"></h4>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex justify-content-between my-2">
+                        <div>
+                            <label class="form-label">Login</label>
+                            <input type="text" class="form-control modal-login" readonly="readonly" />
+                        </div>
+                        <div>
+                            <label class="form-label">Username</label>
+                            <input type="text" class="form-control modal-username" readonly="readonly" />
+                        </div>
+                    </div>
+                    <div>
+                        <label class="form-label">Email</label>
+                        <input type="text" class="form-control modal-email" readonly="readonly" />
+                    </div>
+                    <form action="" class="my-2">
+                        <div>
+                            <label class="form-label">Role :</label>
+                            <select class="form-control modal-role" id="roleSelector">
+                                {% for role in roles %}
+                                    <option value="{{ role.role_id }}">{{ role.role }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                    <button type="button" class="btn btn-primary">Enregistrer les modifications</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

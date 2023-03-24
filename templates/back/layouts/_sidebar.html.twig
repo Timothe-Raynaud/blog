@@ -1,0 +1,58 @@
+{% block sidebar %}
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+        <!-- Sidebar - Brand -->
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
+            <div class="sidebar-brand-icon rotate-n-15">
+                <i class="fa-solid fa-toolbox"></i>
+            </div>
+            <div class="sidebar-brand-text mx-3">Mon blog</div>
+        </a>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0">
+
+
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item d-flex justify-content-between flex-wrap">
+            <div class="sidebar-brand-text text-gray-100 mx-3 mt-3">{{ session.username }} - {{ session.role }}</div>
+            <a class="text-gray-400 p-3" href="javascript:void(0)" onclick="logout()">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            </a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            Interface
+        </div>
+
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/admin-users">
+                <i class="fa-solid fa-users"></i>
+                <span>Utilisateurs</span>
+            </a>
+        </li>
+
+        <!-- Nav Item - Utilities Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/admin-posts">
+                <i class="fa-solid fa-blog"></i>
+                <span>Posts</span>
+            </a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider d-none d-md-block">
+
+        <!-- Sidebar Toggler (Sidebar) -->
+        <div class="text-center d-none d-md-inline">
+            <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        </div>
+
+
+    </ul>
+{% endblock %}

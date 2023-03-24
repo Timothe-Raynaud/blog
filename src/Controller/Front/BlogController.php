@@ -1,12 +1,9 @@
 <?php
 
-namespace Controller;
+namespace Controller\Front;
 
-require_once ROOT.'/config/config.php';
-
-use Twig;
-use Manager;
 use Repository;
+use Twig;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
@@ -14,11 +11,14 @@ use Twig\Error\SyntaxError;
 class BlogController
 {
     private Twig\Environment $twig;
+    private array $session;
+
 
     public function __construct()
     {
         $loader = new Twig\Loader\FilesystemLoader(ROOT.'/templates');
         $this->twig = new Twig\Environment($loader);
+        $this->session = $_SESSION;
     }
 
 
@@ -33,6 +33,7 @@ class BlogController
         $posts = $postsRepository->getAllPosts();
         echo $this->twig->render('front/pages/blog.html.twig', [
             'posts' => $posts,
+            'session' => $this->session,
         ]);
     }
 
@@ -48,6 +49,7 @@ class BlogController
 
         echo $this->twig->render('front/pages/post.html.twig', [
             'post' => $post,
+            'session' => $this->session,
         ]);
     }
 

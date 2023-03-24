@@ -1,9 +1,11 @@
 {
     "require": {
         "twig/twig": "^3.0",
-        "ext-pdo": "*"
+        "ext-pdo": "*",
+        "phpmailer/phpmailer": "^6.7"
     },
     "require-dev": {
-        "phpstan/phpstan": "^1.9"
+        "phpstan/phpstan": "^1.9",
+        "squizlabs/php_codesniffer": "*"
     }
 }

@@ -1,10 +1,15 @@
 <?php
 
-const DEV_ENVIRONMENT = true;
+define('ROOT', dirname(__DIR__));
 
-require_once ROOT.'/config/autoloader.php';
-require_once ROOT.'/vendor/autoload.php';
-require_once ROOT.'/config/database.php';
+require_once ROOT . '/config/autoloader.php';
+require_once ROOT . '/vendor/autoload.php';
 
-define('TO', 'timothe@timotheraynaud.com');
+// Dev/Prod configuration
+const DEV_ENVIRONMENT = ROOT . '/config/_dev.php';
+const PROD_ENVIRONMENT = ROOT . '/config/_prod.php';
 
+match (file_exists(DEV_ENVIRONMENT)){
+    true => include DEV_ENVIRONMENT,
+    default => include PROD_ENVIRONMENT
+};

@@ -2,8 +2,6 @@
 
 namespace Repository;
 
-require_once ROOT.'/config/config.php';
-
 use DateTime;
 use Manager;
 
@@ -16,7 +14,7 @@ class PostsRepository
         $this->database = new Manager\DatabaseConnection();
     }
 
-    public function getAllPosts() : array
+    public function getAllPosts() : ?array
     {
         $sql = '
             SELECT * 
@@ -28,7 +26,7 @@ class PostsRepository
         return $statement->fetchAll();
     }
 
-    public function getPostById($id) : array
+    public function getPostById($id) : ?array
     {
         $sql = '
             SELECT * 
@@ -45,6 +43,7 @@ class PostsRepository
 
     public function addPost($title, $content, $contactId, DateTime $publishedAt ) : void
     {
+        // TODO - Ajouter les colonnes manquantes.
         $sql = '
             INSERT INTO posts (title, content, created_by, published_at) 
             VALUES (:title, :content, :contactId, :publishedAt)

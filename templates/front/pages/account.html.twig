@@ -1,0 +1,83 @@
+{% extends "front/layouts/layout.html.twig" %}
+
+{% block title %}Accueil{% endblock %}
+{% block header %}
+    {% include 'front/layouts/_header.html.twig' with {
+        'bandeau' : 'img/front/bandeau_login.jpg',
+        'page_title' : 'Mon compte',
+        'subtitle_page' : '',
+        'meta_title' : '',
+    } %}
+{% endblock %}
+
+{% block main %}
+    <div class="container">
+        <div class="row justify-content-around mb-4">
+            {% if session.username is defined %}
+                <div class="fw-bold border-bottom fs-2 mb-5">Mon compte</div>
+                <form action="" class="col-lg-5 col-md-8 col-10" id="form-update-account">
+                    <div class="border p-4 rounded mb-4">
+                        <div class="mb-4 fw-bold border-bottom">Informations</div>
+                        <div >
+                            <label for="" class="form-label fs-6">Nom d'utilisateur</label>
+                            <input class="form-control mb-4 rounded" type="text" name="username" value="{{ session.username }}">
+                        </div>
+                        <div>
+                            <label for="" class="form-label fs-6">Email</label>
+                            <input class="form-control mb-4 rounded" type="text" name="email" value="{{ session.email }}">
+                        </div>
+                        <div>
+                            <label for="" class="form-label fs-6">login</label>
+                            <input class="form-control mb-4 rounded" type="text" name="login" value="{{ session.login }}">
+                        </div>
+                        <div class="text-center">
+                            <input class="btn btn-primary rounded" type="submit" name="submit" value="Enregistrer" id="form-submit-update-account">
+                        </div>
+                    </div>
+                </form>
+
+                <form action="" class="col-lg-5 col-md-8 col-10" id="form-update-password">
+                    <div class="border p-4 rounded mb-4">
+                        <div class="mb-4 fw-bold border-bottom">Modifier le mot de passe</div>
+                        <div>
+                            <label for="" class="form-label fs-6">Ancien mot de passe</label>
+                            <input class="form-control mb-4 rounded" type="password" name="password">
+                        </div>
+                        <div>
+                            <label for="" class="form-label fs-6">Nouveau mot de passe</label>
+                            <input class="form-control mb-4 rounded" type="password" name="first_new_password">
+                        </div>
+                        <div>
+                            <label for="" class="form-label fs-6">Confirmer mot de passe</label>
+                            <input class="form-control mb-4 rounded" type="password" name="second_new_password">
+                        </div>
+                        <div class="text-center">
+                            <input class="btn btn-primary rounded" type="submit" name="submit" value="Enregistrer" id="form-submit-update-password">
+                        </div>
+                    </div>
+                </form>
+
+            {% else %}
+                <div class="row justify-content-center">
+                    <div>Vous devez vous connecter pour avoir acces à cet page.</div>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+    <div id="update-account-flash" class="d-none"></div>
+
+    <script>
+        {% if errorMessage is not null %}
+        const errorMessage = '{{ errorMessage }}'
+        showFlashMessage('update-account-flash', errorMessage, 'danger')
+        {% endif %}
+    </script>
+
+    <script>const userId = '{{ session.userId }}'</script>
+    <script src="js/front/pages/account.js"></script>
+
+{% endblock %}
+
+

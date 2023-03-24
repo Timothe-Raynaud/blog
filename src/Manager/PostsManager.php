@@ -1,8 +1,6 @@
 <?php
 
-Namespace Manager;
-
-require_once ROOT.'/config/config.php';
+namespace Manager;
 
 class PostsManager
 {

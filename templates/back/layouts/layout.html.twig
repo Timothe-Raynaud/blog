@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link href="css/back/sb-admin/sb-admin-2.min.css" rel="stylesheet"/>
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet
+    ">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+    <body class="bg-gradient-primary">
+    <div id="wrapper">
+
+        {% block sidebar %}
+            {% include 'back/layouts/_sidebar.html.twig' %}
+        {% endblock %}
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+
+            {% block main %}{% endblock %}
+
+            {% block footer %}
+                {% include 'back/layouts/_footer.html.twig' %}
+            {% endblock %}
+        </div>
+
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#wrapper">
+            <i class="fas fa-angle-up"></i>
+        </a>
+
+    </div>
+    </body>
+    {% block js %}
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+        <script src="js/back/sb-admin/sb-admin-2.js"></script>
+        <script src="js/back/datatable.js"></script>
+        <script src="js/back/modals.js"></script>
+    {% endblock %}
+{% endblock %}

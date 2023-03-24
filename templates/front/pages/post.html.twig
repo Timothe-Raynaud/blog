@@ -6,13 +6,15 @@
         'bandeau' : 'img/front/bandeau_home.jpg',
         'page_title' : post.title,
         'subtitle_page' : post.subtitle,
-        'meta_title' : 'Écrit par ' ~ post.firstname ~ ' ' ~ post.lastname ~ ' - ' ~ post.published_at|date("d/m/Y")
+        'meta_title' : 'Écrit par ' ~ post.username ~ ' - ' ~ post.published_at|date("d/m/Y")
     } %}
 {% endblock %}
 
 {% block main %}
     <div class="container">
-        <a href="/blog"><div class="ms-4"><i class="fa-solid fa-chevron-left"></i>&nbsp; retour</div></a>
+        <a href="/blog">
+            <div class="ms-4"><i class="fa-solid fa-chevron-left"></i>&nbsp; retour</div>
+        </a>
         <article class="mb-4">
             <div class="container px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
