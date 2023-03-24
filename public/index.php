@@ -53,10 +53,6 @@ try {
         // Default
         default => $mainController->error404(),
     };
-} catch (\Twig\Error\LoaderError $exception) {
-    throw new $exception;
-} catch (\Twig\Error\RuntimeError $exception) {
-    throw new $exception;
-} catch (\Twig\Error\SyntaxError $exception) {
+} catch (\Twig\Error\LoaderError|\Twig\Error\RuntimeError|\Twig\Error\SyntaxError $exception) {
     throw new $exception;
 }

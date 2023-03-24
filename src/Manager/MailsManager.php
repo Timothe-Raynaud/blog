@@ -4,6 +4,7 @@ namespace Manager;
 
 require_once ROOT . '/config/config.php';
 
+use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use Twig\Environment;
 use Twig\Error\LoaderError;
@@ -30,7 +31,7 @@ class MailsManager
 
 
     /**
-     * @throws \PHPMailer\PHPMailer\Exception
+     * @throws Exception
      * @throws SyntaxError
      * @throws RuntimeError
      * @throws LoaderError
@@ -67,7 +68,7 @@ class MailsManager
 
 
     /**
-     * @throws \PHPMailer\PHPMailer\Exception
+     * @throws Exception
      * @throws SyntaxError
      * @throws RuntimeError
      * @throws LoaderError

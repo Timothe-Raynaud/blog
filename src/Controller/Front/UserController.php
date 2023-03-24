@@ -2,6 +2,7 @@
 
 namespace Controller\Front;
 
+use Exception;
 use Manager\UserManager;
 use Twig\Environment;
 use Twig\Error\LoaderError;
@@ -102,26 +103,41 @@ class UserController
         $this->userManager->removeSession();
     }
 
+    /**
+     * @throws Exception
+     */
     public function connecting(?array $post = null): void
     {
         echo json_encode($this->userManager->connecting($post));
     }
 
+    /**
+     * @throws Exception
+     */
     public function resetPassword(?array $post = null): void
     {
         echo json_encode($this->userManager->resetPassword($post));
     }
 
+    /**
+     * @throws Exception
+     */
     public function updateAccount(?array $post = null): void
     {
         echo json_encode($this->userManager->updateAccount($post));
     }
 
+    /**
+     * @throws Exception
+     */
     public function updatePassword(?array $post = null): void
     {
         echo json_encode($this->userManager->updatePassword($post));
     }
 
+    /**
+     * @throws Exception
+     */
     public function mailResetPassword(?array $post = null): void
     {
         echo json_encode($this->userManager->sendMailResetPassword($post));

@@ -2,6 +2,7 @@
 
 namespace Controller\Back;
 
+use Exception;
 use Manager\UserManager;
 use Repository\UserRepository;
 use Repository\RolesRepository;
@@ -109,7 +110,7 @@ class AdminController
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function updateRole(?array $posts): void
     {

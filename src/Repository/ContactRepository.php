@@ -26,20 +26,6 @@ class ContactRepository
         return $statement->fetchAll();
     }
 
-    public function getContactsById(int $id) : ?array
-    {
-        $sql = '
-            SELECT * 
-            FROM contacts 
-            WHERE contact_id = :id
-        ';
-        $statement = $this->database->pdo()->prepare($sql);
-        $statement->bindValue(':id', $id);
-        $statement->execute();
-
-        return $statement->fetch();
-    }
-
     public function getContactsByUsername(string $username) : mixed
     {
         $sql = '
@@ -115,14 +101,4 @@ class ContactRepository
         }
     }
 
-    public function deleteContacts(int $id) : void
-    {
-        $sql = '
-            DELETE FROM contacts 
-            WHERE user_id = :id
-        ';
-        $statement = $this->database->pdo()->prepare($sql);
-        $statement->bindValue(':id', $id);
-        $statement->execute();
-    }
 }

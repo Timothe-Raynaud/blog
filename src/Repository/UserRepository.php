@@ -108,7 +108,6 @@ class UserRepository
         } catch (Exception $exception) {
             throw new Exception($exception);
         }
-        return false;
     }
 
     public function setIsAvailable(int $userId): void
@@ -157,8 +156,6 @@ class UserRepository
         } catch (Exception $exception){
             throw new Exception($exception);
         }
-
-        return false;
     }
 
     /**
@@ -182,8 +179,6 @@ class UserRepository
         } catch (Exception $exception){
             throw new Exception($exception);
         }
-
-        return false;
     }
 
     /**
@@ -207,8 +202,6 @@ class UserRepository
         } catch (Exception $exception){
             throw new Exception($exception);
         }
-
-        return false;
     }
 
     public function deleteUser(int $id): void
