@@ -1,0 +1,6 @@
+{
+  "name": "Mon Blog",
+  "short_name": "Mon Blog",
+  "start_url": "/public/index.html",
+  "display": "standalone"
+}
