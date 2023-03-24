@@ -1,0 +1,44 @@
+{% extends "front/layouts/layout.html.twig" %}
+
+{% block title %}{{ post.title }}{% endblock %}
+{% block header %}
+    {% include 'front/layouts/_header.html.twig' with {
+        'bandeau' : 'img/front/bandeau_home.jpg',
+        'page_title' : 'Nouveau post',
+        'subtitle_page' : '',
+        'meta_title' : now|date("d/m/Y")
+    } %}
+{% endblock %}
+
+{% block main %}
+    <main class="container mb-4">
+        <div class="mb-4">
+            <a href="/blog">
+                <div class="d-inline"><i class="fa-solid fa-arrow-left"></i> Retour</div>
+            </a>
+        </div>
+        <div class="border-bottom mb-3 pb-3">
+            <div class="fs-3 text-uppercase">Créer votre post ici</div>
+        </div>
+        <form action="/add-post">
+            <form action="" class="pb-4 text-start" method="post" id="form-sendmail">
+                <div class="pb-2">
+                    <label for="" class="form-label d-block">Titre</label>
+                    <input name="title" type="email" class="w-100 form-control rounded" required>
+                </div>
+                <div class="pb-3">
+                    <label for="" class="form-label d-block">Contenu</label>
+                    <textarea class="form-control rounded w-100" name="content" rows="10" cols="50"
+                              maxlength="800" required></textarea>
+                    <div class="blockquote fst-italic fw-lighter fs-6">* Le post ne sera en ligne qu'une fois validé par
+                        un admin.
+                    </div>
+                </div>
+                <div class="text-center">
+                    <input type="submit" VALUE="Créer" class="btn btn-primary rounded shadow"
+                           id="form-submit-contact">
+                </div>
+            </form>
+        </form>
+    </main>
+{% endblock %}

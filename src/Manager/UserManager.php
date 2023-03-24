@@ -308,6 +308,45 @@ class UserManager
         return $result;
     }
 
+    /**
+     * @throws Exception
+     */
+    public function updateRole(array $post): array
+    {
+        $result['isUpdate'] = false;
+        $result['message'] = 'Une erreur est survenue';
+
+        try {
+            if (!empty($post)) {;
+                $role = $post['role'];
+                $login = $post['login'];
+                $user = $this->userRepository->getUserByLogin($login);
+
+                // Test input
+                if (!$user) {
+                    return $result;
+                }
+                if ($user['role_id'] === (int)$role){
+                    $result['message'] = 'Le role est déja définis sur ' . $user['role'] . ' .';
+                    return $result;
+                }
+
+                // Ok - Update password
+                if ($this->userRepository->updateRole($user['user_id'], $role)){
+                    $result['isUpdate'] = true;
+                    $result['message'] = 'Le role de l\'utilisateur à bien été modifié.';
+
+                    return $result;
+                }
+
+            }
+        } catch (Exception $exception) {
+            throw new Exception($exception);
+        }
+
+        return $result;
+    }
+
     public function getUserByResetToken(string $token) : ?array
     {
         $now = date('Y-m-d h:i:s');
@@ -358,6 +397,12 @@ class UserManager
         $errorMessage = null;
         if ($isError === 1){
             $errorMessage = 'L\'acces à l\'admin est réserver aux administrateur.';
+        }
+        if ($isError === 2){
+            $errorMessage = '
+            L\'acces à la creation de post est réserver à certains utilisateur. 
+            Veuillez contacter l\'admin pour en faire la demande ou vous connecter avec un compte valide.
+            ';
         }
 
         return $errorMessage;

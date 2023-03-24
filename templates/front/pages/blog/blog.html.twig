@@ -1,0 +1,32 @@
+{% extends "front/layouts/layout.html.twig" %}
+{% import "front/layouts/_macros.html.twig" as frontend_macros %}
+
+{% block title %}Accueil{% endblock %}
+{% block header %}
+    {% include 'front/layouts/_header.html.twig' with {
+        'bandeau' : 'img/front/bandeau_blog.jpg',
+        'page_title' : ' ',
+        'subtitle_page' : '',
+        'meta_title' : ''
+    } %}
+{% endblock %}
+
+{% block main %}
+    <div class="container d-flex justify-content-between flex-grow-1 mb-4">
+        <div>
+            {% for post in posts %}
+                <div>
+                    {{ frontend_macros.render_all_posts(post) }}
+                </div>
+            {% endfor %}
+        </div>
+        {% if session.username is defined  %}
+            <div class="border-start border-1 ps-4 pt-2 w-25">
+                <div class="border-bottom mb-3 pb-2">Bonjour {{ session.username }}</div>
+                <form action="/create-post">
+                    <button class="btn btn-primary rounded shadow">Créer un post</button>
+                </form>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

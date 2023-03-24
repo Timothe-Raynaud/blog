@@ -186,6 +186,31 @@ class UserRepository
         return false;
     }
 
+    /**
+     * @throws Exception
+     */
+    public function updateRole(int $user_id, int $role): bool
+    {
+        try{
+            $sql = '
+                UPDATE users 
+                SET role_id = :role
+                WHERE user_id = :id
+            ';
+            $statement = $this->database->pdo()->prepare($sql);
+            $statement->bindValue(':id', $user_id);
+            $statement->bindValue(':role', $role);
+            $statement->execute();
+
+            return true;
+
+        } catch (Exception $exception){
+            throw new Exception($exception);
+        }
+
+        return false;
+    }
+
     public function deleteUser(int $id): void
     {
         $sql = '

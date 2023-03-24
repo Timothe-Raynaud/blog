@@ -6,7 +6,7 @@ function showFlashMessage(id, message, type) {
 
     setTimeout(function () {
         flashContainer.classList.add('d-none');
-    }, 5000);
+    }, 4000);
 }
 
 function hideAndShow(hideId, showId) {

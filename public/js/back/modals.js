@@ -19,10 +19,9 @@ userModal.addEventListener('show.bs.modal', function (event) {
     modalEmail.value = email
 
 
-    for (let modalRole in modalRoles){
-
-        if ( modalRole.value === role){
-            modalRole.classList.add('selected')
+    for (let option of modalRoles.options){
+        if ( option.value === role){
+            option.setAttribute('selected', 'selected')
         }
     }
 })

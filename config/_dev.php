@@ -13,10 +13,3 @@ define("DB_HOST", 'local_dev_8-db');
 define("DB_NAME", 'my_blog');
 define("DB_USER", 'root');
 define("DB_PASSWORD", 'root');
-
-// Error Configuration
-ini_set('display_startup_errors', 'on');
-ini_set('display_errors', 'on');
-ini_set('html_errors', 'on');
-ini_set('log_errors', 'off');
-ini_set('error_log', '');

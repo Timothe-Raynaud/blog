@@ -85,12 +85,8 @@ class AdminController
             header("Location: my-account?1");
         } else {
             $this->userRepository->setIsNotAvailable($user_id);
-            $users = $this->userRepository->getAllUsers();
 
-            echo $this->twig->render('back/pages/users.html.twig', [
-                'session' => $this->session,
-                'users' => $users,
-            ]);
+            $this->users();
         }
     }
 
@@ -110,6 +106,11 @@ class AdminController
                 'session' => $this->session,
             ]);
         }
+    }
+
+    public function updateRole(?array $posts): void
+    {
+        echo json_encode($this->userManager->updateRole($posts));
     }
 
 }
