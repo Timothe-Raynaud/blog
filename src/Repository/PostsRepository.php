@@ -18,8 +18,18 @@ class PostsRepository
     public function getAllPosts() : ?array
     {
         $sql = '
-            SELECT * 
-            FROM posts
+            SELECT p.*
+                , u.login as creator_login
+                , c.username as creator_username
+                , c.email as creator_email
+                , up.login as updator_login
+                , cp.username as updator_username
+                , cp.email as updator_email
+            FROM posts p
+            INNER JOIN users u ON u.user_id = p.created_by
+            INNER JOIN contacts c ON c.contact_id = u.contact_id
+            LEFT JOIN users up ON up.user_id = p.updated_by
+            LEFT JOIN contacts cp ON cp.contact_id = up.contact_id
         ';
         $statement = $this->database->pdo()->prepare($sql);
         $statement->execute();
@@ -30,8 +40,18 @@ class PostsRepository
     public function getValidatedPosts() : ?array
     {
         $sql = '
-            SELECT * 
-            FROM posts
+            SELECT p.*
+                , u.login as creator_login
+                , c.username as creator_username
+                , c.email as creator_email
+                , up.login as updator_login
+                , cp.username as updator_username
+                , cp.email as updator_email
+            FROM posts p
+            INNER JOIN users u ON u.user_id = p.created_by
+            INNER JOIN contacts c ON c.contact_id = u.contact_id
+            LEFT JOIN users up ON up.user_id = p.updated_by
+            LEFT JOIN contacts cp ON cp.contact_id = up.contact_id
             WHERE is_validated = 1
         ';
         $statement = $this->database->pdo()->prepare($sql);
