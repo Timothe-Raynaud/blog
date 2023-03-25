@@ -10,6 +10,6 @@ const LOCAL_ENVIRONMENT = ROOT . '/config/local.php';
 const PROD_ENVIRONMENT = ROOT . '/config/production.php';
 
 match (file_exists(LOCAL_ENVIRONMENT)){
-true => include LOCAL_ENVIRONMENT,
-default => include PROD_ENVIRONMENT
+true => require_once LOCAL_ENVIRONMENT,
+default => require_once PROD_ENVIRONMENT
 };
