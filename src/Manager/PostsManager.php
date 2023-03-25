@@ -34,8 +34,10 @@ class PostsManager
         }
 
         $title = $post['title'];
+        $chapo = $post['chapo'];
         $content = $post['content'];
-        if ($this->postsRepository->addPost($title, $content, $this->session['userId'])){
+
+        if ($this->postsRepository->addPost($title, $chapo, $content, $this->session['userId'])){
             $result['isAdd'] = true;
 
             return $result;

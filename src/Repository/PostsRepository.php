@@ -115,15 +115,16 @@ class PostsRepository
     /**
      * @throws Exception
      */
-    public function addPost(string $title, string $content, int $userId) : ?bool
+    public function addPost(string $title, string $chapo, string $content, int $userId) : ?bool
     {
         try {
             $sql = '
-                INSERT INTO posts (title, content, created_by, published_at, is_validated) 
-                VALUES (:title, :content, :userId, NOW(), 0)
+                INSERT INTO posts (title, chapo, content, created_by, published_at, is_validated) 
+                VALUES (:title, :chapo, :content, :userId, NOW(), 0)
             ';
             $statement = $this->database->pdo()->prepare($sql);
             $statement->bindValue(':title', $title);
+            $statement->bindValue(':chapo', $chapo);
             $statement->bindValue(':content', $content);
             $statement->bindValue(':userId', $userId);
             $statement->execute();

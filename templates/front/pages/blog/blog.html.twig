@@ -1,6 +1,11 @@
 {% extends "front/layouts/layout.html.twig" %}
 {% import "front/layouts/_macros.html.twig" as frontend_macros %}
 
+{% set postsPerPage = 4 %}
+{% set totalPages = (posts|length / postsPerPage)|round(0, 'ceil') %}
+{% set startIndex = (currentPage - 1) * postsPerPage %}
+{% set currentPosts = posts|slice(startIndex, postsPerPage) %}
+
 {% block title %}Accueil{% endblock %}
 {% block header %}
     {% include 'front/layouts/_header.html.twig' with {
@@ -13,12 +18,23 @@
 
 {% block main %}
     <div class="container d-flex justify-content-between flex-grow-1 mb-4">
-        <div class="flex-grow-1 px-4">
-            {% for post in posts %}
-                <div>
+        <div class="flex-grow-1 px-4 d-flex flex-column justify-content-between align-items-center">
+            {% for post in currentPosts %}
+                <div class="w-100">
                     {{ frontend_macros.render_all_posts(post) }}
                 </div>
             {% endfor %}
+            {% if totalPages > 1 %}
+                <div class="text-center border-top border-1 d-inline-block">
+                    {% for pageNum in 1..totalPages %}
+                        {% if pageNum == currentPage %}
+                            <span class="border-bottom border-2">{{ pageNum }}</span>
+                        {% else %}
+                            <a href="blog?page={{ pageNum }}" class="">{{ pageNum }}</a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endif %}
         </div>
         {% if session.username is defined  %}
             <div class="border-start border-1 ps-4 pt-2 w-25">
@@ -29,6 +45,7 @@
             </div>
         {% endif %}
     </div>
+
 
     <div id="blog-posts-flash" class="d-none"></div>
 

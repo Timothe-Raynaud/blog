@@ -55,6 +55,7 @@
                         <thead>
                         <tr>
                             <th>Titre</th>
+                            <th>Chapô</th>
                             <th>Créer par</th>
                             <th>Publié le</th>
                             <th>Mis à jour par</th>
@@ -67,6 +68,7 @@
                         {% for post in posts %}
                             <tr>
                                 <td>{{ post.title }}</td>
+                                <td>{{ post.chapo }}</td>
                                 <td>
                                     {{ post.creator_username }}
                                     <span class="font-italic">( {{ post.creator_email }} )</span>
@@ -95,8 +97,9 @@
                                             class="btn text-primary"
                                             data-bs-toggle="modal"
                                             data-bs-target="#post-modal"
-                                            data-bs-title= {{ post.title }}
-                                            data-bs-content= {{ post.content }}
+                                            data-bs-title= "{{ post.title }}"
+                                            data-bs-chapo= "{{ post.chapo }}"
+                                            data-bs-content= "{{ post.content }}"
                                     >
                                         <i class="fa-solid fa-magnifying-glass"></i>
                                     </button>
@@ -120,6 +123,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <h4 class="post-modal-chapo mb-4"></h4>
                     <div class="post-modal-content"></div>
                 </div>
                 <form action="" class="my-2" id="form-update-role">

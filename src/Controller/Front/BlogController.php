@@ -34,17 +34,31 @@ class BlogController
      * @throws SyntaxError
      * @throws LoaderError
      */
-    public function blog(?string $typeOfMessage = null): void
+    public function blog(?string $infos = null): void
     {
+
         $message = null;
-        if (!empty($typeOfMessage)){
-            $message = $this->postsManager->getMessage($typeOfMessage);
+        $currentPage = 1;
+
+        if (!empty($infos)){
+
+            parse_str($infos, $infosArray);
+
+            if (isset($infosArray['message'])){
+                $message = $this->postsManager->getMessage($infosArray['message']);
+            }
+            if ($infosArray['page']){
+                $currentPage = $infosArray['page'];
+            }
+
         }
+
         $posts = $this->postsRepository->getValidatedPosts();
         echo $this->twig->render('front/pages/blog/blog.html.twig', [
             'posts' => $posts,
             'session' => $this->session,
             'message' => $message,
+            'currentPage' => $currentPage,
         ]);
     }
 
@@ -92,7 +106,7 @@ class BlogController
         $result = $this->postsManager->addPost($post);
 
         if ($result['isAdd']){
-            header("Location: blog?postIsCreate");
+            header("Location: blog?page=1&message=postIsCreate");
         } else {
             $result['type'] = 'danger';
             echo $this->twig->render('front/pages/blog/create_post.html.twig', [

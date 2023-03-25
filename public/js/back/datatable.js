@@ -58,12 +58,12 @@ $(document).ready(function () {
         "columnDefs": [
             {
                 "width": "0",
-                "targets": 5
+                "targets": 6
             },
             {
                 "width": "0",
                 ordering:  false,
-                "targets": 6
+                "targets": 7
             },
             { responsivePriority: 1, targets: 0},
             { responsivePriority: 2, targets: 1},
@@ -72,6 +72,7 @@ $(document).ready(function () {
             { responsivePriority: 2, targets: 4},
             { responsivePriority: 2, targets: 5},
             { responsivePriority: 1, targets: 6},
+            { responsivePriority: 1, targets: 7},
         ]
     });
 
