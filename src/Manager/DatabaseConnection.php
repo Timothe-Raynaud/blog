@@ -3,6 +3,8 @@
 namespace Manager;
 
 use PDO;
+use Config\Config;
+
 
 class DatabaseConnection
 {
@@ -15,7 +17,7 @@ class DatabaseConnection
 
     public function getConnection() : PDO
     {
-        return new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASSWORD);
+        return new PDO("mysql:host=" . Config::$DB_HOST . ";dbname=" . Config::$DB_NAME, Config::$DB_USER, Config::$DB_PASSWORD);
     }
 
     public function pdo() : PDO

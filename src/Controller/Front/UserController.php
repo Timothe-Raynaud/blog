@@ -2,6 +2,7 @@
 
 namespace Controller\Front;
 
+use Config\Config;
 use Exception;
 use Manager\UserManager;
 use Twig\Environment;
@@ -19,7 +20,7 @@ class UserController
 
     public function __construct()
     {
-        $loader = new FilesystemLoader(ROOT  . '/templates');
+        $loader = new FilesystemLoader(Config::$ROOT  . '/templates');
         $this->twig = new Environment($loader);
         $this->userManager = new UserManager();
         $this->session = $_SESSION;

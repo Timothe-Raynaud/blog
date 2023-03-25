@@ -2,6 +2,7 @@
 
 namespace Controller\Back;
 
+use Config\Config;
 use Exception;
 use Manager\UserManager;
 use Repository\UserRepository;
@@ -23,7 +24,7 @@ class BackUsersController
 
     public function __construct()
     {
-        $loader = new FilesystemLoader(ROOT  . '/templates');
+        $loader = new FilesystemLoader(Config::$ROOT  . '/templates');
         $this->twig = new Environment($loader);
         $this->session = $_SESSION;
         $this->userManager = new UserManager();

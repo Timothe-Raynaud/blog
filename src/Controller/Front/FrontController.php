@@ -2,6 +2,7 @@
 
 namespace Controller\Front;
 
+use Config\Config;
 use Manager\MailsManager;
 use PHPMailer\PHPMailer\Exception;
 use Twig\Environment;
@@ -18,7 +19,7 @@ class FrontController
 
     public function __construct()
     {
-        $loader = new FilesystemLoader(ROOT . '/templates');
+        $loader = new FilesystemLoader(Config::$ROOT . '/templates');
         $this->twig = new Environment($loader);
         $this->mailsManager = new MailsManager();
         $this->session = $_SESSION;

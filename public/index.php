@@ -2,7 +2,12 @@
 
 session_start();
 
-require_once(dirname(__DIR__) . '/lib/Autoloader.php');
+define('ROOT', dirname(__DIR__));
+
+require_once(ROOT . '/vendor/autoload.php');
+
+require_once(ROOT . '/lib/Autoloader.php');
+
 spl_autoload_register([Autoloader::class, 'loadClass']);
 
 use Manager\RooterManager;

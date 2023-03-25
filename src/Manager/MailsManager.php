@@ -2,8 +2,6 @@
 
 namespace Manager;
 
-require_once dirname(__DIR__) . '/../config/config.php';
-
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use Twig\Environment;
@@ -11,6 +9,7 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 use Twig\Loader\FilesystemLoader;
+use Config\Config;
 
 class MailsManager
 {
@@ -21,11 +20,11 @@ class MailsManager
     {
         $this->phpMailer = new PHPMailer();
         $this->phpMailer->isSMTP();
-        $this->phpMailer->Host = MAIL_HOST;
-        $this->phpMailer->Port = MAIL_PORT;
-        $this->phpMailer->SMTPAuth = MAIL_SMTP_AUTH;
-        $this->phpMailer->SMTPSecure = MAIL_SMTP_SECURE;
-        $loader = new FilesystemLoader(ROOT . '/templates');
+        $this->phpMailer->Host = Config::$MAIL_HOST;
+        $this->phpMailer->Port = Config::$MAIL_PORT;
+        $this->phpMailer->SMTPAuth = Config::$MAIL_SMTP_AUTH;
+        $this->phpMailer->SMTPSecure = Config::$MAIL_SMTP_SECURE;
+        $loader = new FilesystemLoader(Config::$ROOT . '/templates');
         $this->twig = new Environment($loader);
     }
 

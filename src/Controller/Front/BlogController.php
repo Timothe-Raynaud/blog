@@ -2,6 +2,7 @@
 
 namespace Controller\Front;
 
+use Config\Config;
 use Exception;
 use Manager\PostsManager;
 use Repository\PostsRepository;
@@ -20,7 +21,7 @@ class BlogController
 
     public function __construct()
     {
-        $loader = new Twig\Loader\FilesystemLoader(ROOT .'/templates');
+        $loader = new Twig\Loader\FilesystemLoader(Config::$ROOT .'/templates');
         $this->twig = new Twig\Environment($loader);
         $this->postsRepository = new PostsRepository();
         $this->postsManager = new PostsManager();
