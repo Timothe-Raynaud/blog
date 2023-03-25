@@ -75,6 +75,43 @@ class PostsRepository
         return $statement->fetch();
     }
 
+    public function setIsAvailable(int $postId): void
+    {
+        $sql = '
+            UPDATE posts
+            SET is_validated = 1
+            WHERE post_id = :postId
+        ';
+        $statement = $this->database->pdo()->prepare($sql);
+        $statement->bindValue(':postId', $postId);
+        $statement->execute();
+    }
+
+    public function countValidatedPosts(): array
+    {
+        $sql = '
+            SELECT COUNT(*) as validatedPosts
+            FROM posts
+            WHERE is_validated = 1
+        ';
+        $statement = $this->database->pdo()->prepare($sql);
+        $statement->execute();
+
+        return $statement->fetch();
+    }
+
+    public function setIsNotAvailable(int $postId): void
+    {
+        $sql = '
+            UPDATE posts
+            SET is_validated = 0
+            WHERE post_id = :postId
+        ';
+        $statement = $this->database->pdo()->prepare($sql);
+        $statement->bindValue(':postId', $postId);
+        $statement->execute();
+    }
+
     /**
      * @throws Exception
      */

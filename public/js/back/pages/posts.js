@@ -1,43 +1,16 @@
-const formUpdateRole = document.getElementById('form-update-role')
-const formSubmitUpdateRole = document.getElementById('form-submit-update-role')
+// Posts Modal
+const postModal = document.getElementById('post-modal')
+postModal.addEventListener('show.bs.modal', function (event) {
+    let button = event.relatedTarget
 
-formUpdateRole.addEventListener('submit', (event) => {
-    event.preventDefault()
-    formSubmitUpdateRole.disabled = true
+    let title = button.getAttribute('data-bs-title')
+    let content = button.getAttribute('data-bs-content')
+    let id = button.getAttribute('data-bs-id')
 
+    let modalTitle = postModal.querySelector('.modal-title')
+    let modalContent = postModal.querySelector('.post-modal-content')
 
-    const role = document.querySelector('select[name=role]')
-    const login = document.querySelector('input[name=login]')
+    modalTitle.textContent = title
+    modalContent.textContent = content
 
-    const formDataRole = new FormData()
-    formDataRole.append('role', role.value)
-    formDataRole.append('login', login.value)
-
-    fetch('/update-role', {
-        method: 'POST',
-        body: formDataRole
-    })
-        .then(response => {
-            if (response.ok) {
-                return response.json()
-            } else {
-                throw new Error('Erreur de connexion')
-            }
-        })
-        .then(data => {
-            if (data.isUpdate) {
-                const selectRole = role.options[role.selectedIndex]
-                const displayRole = document.getElementById('role-' + login.value)
-                displayRole.innerText = selectRole.textContent
-                showFlashMessage('users-back-flash', data.message, 'success')
-            } else {
-                showFlashMessage('users-back-flash', data.message, 'danger')
-            }
-        })
-        .catch(error => console.error(error))
-        .finally(() => {
-            setTimeout(() => {
-                formSubmitUpdateRole.disabled = false
-            }, 2000)
-        })
 })

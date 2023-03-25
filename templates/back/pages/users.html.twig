@@ -58,7 +58,6 @@
                             <th>Login</th>
                             <th>Email</th>
                             <th>Role</th>
-                            <th class="text-center">Valide</th>
                             <th>Autoriser/Bloquer</th>
                             <th></th>
                         </tr>
@@ -72,9 +71,7 @@
                                 <td id="role-{{ user.login }}">{{ user.role }}</td>
                                 {% if user.role == 'ADMIN' %}
                                     <td> </td>
-                                    <td> </td>
                                 {% elseif user.is_available %}
-                                    <td class="text-center"><span class="bg-success px-4 py-1 rounded text-white">Compte valide</span></td>
                                     <td class="text-center">
                                         <a href="/admin-user-block?{{ user.user_id }}"
                                            class="btn bg-danger text-white" style="width: 40px; height: 40px;">
@@ -82,7 +79,6 @@
                                         </a>
                                     </td>
                                 {% else %}
-                                    <td class="text-center"><span class="bg-danger px-4 py-1 rounded text-white">Compte non valide</span></td>
                                     <td class="text-center">
                                         <a href="/admin-user-validated?{{ user.user_id }}"
                                            class="btn bg-success text-white" style="width: 40px; height: 40px;">

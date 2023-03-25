@@ -6,9 +6,8 @@
             <h3 class="post-subtitle">{{ post.subtitle }}</h3>
         </a>
         <p class="post-meta">
-            Posted by
-            <a href="#!">{{ post.user }}</a>
-            on August {{ post.date|date("d/m/Y") }}
+            Posted by {{ post.creator_username }}
+            on {{ post.published_at|date("d/m/Y") }}
         </p>
     </div>
 {% endmacro %}

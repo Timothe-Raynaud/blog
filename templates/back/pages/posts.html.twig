@@ -7,7 +7,7 @@
         <div class="container-fluid">
 
             <div class="d-sm-flex align-items-center justify-content-between my-4">
-                <h1 class="h3 mb-0 text-gray-800 mt-4">Utilisateur - pannel</h1>
+                <h1 class="h3 mb-0 text-gray-800 mt-4">Posts - pannel</h1>
             </div>
 
             <div class="row">
@@ -18,12 +18,12 @@
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                        Nombre d'utilisateur :
+                                        Nombre de posts :
                                     </div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800">{{ posts|length }}</div>
                                 </div>
                                 <div class="col-auto">
-                                    <i class="fa-solid fa-post-plus"></i>
+                                    <i class="fa-regular fa-bookmark"></i>
                                 </div>
                             </div>
                         </div>
@@ -36,14 +36,14 @@
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                        Utilisateur valide
+                                        Posts valide
                                     </div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                        {{ availableUsers.numberOf }}
+                                        {{ validatedPosts.validatedPosts }}
                                     </div>
                                 </div>
                                 <div class="col-auto">
-                                    <i class="fa-solid fa-post-shield"></i>
+                                    <i class="fa-solid fa-bookmark"></i>
                                 </div>
                             </div>
                         </div>
@@ -54,31 +54,36 @@
                     <table id="posts-datatable" class="display" style="width:100%">
                         <thead>
                         <tr>
-                            <th>title</th>
+                            <th>Titre</th>
                             <th>Créer par</th>
-                            <th>Mis à jour par</th>
                             <th>Publié le</th>
+                            <th>Mis à jour par</th>
                             <th>Mis à jour le</th>
-                            <th>à valider</th>
+                            <th>Valider/ Bloquer</th>
                             <th></th>
                         </tr>
                         </thead>
                         <tbody>
                         {% for post in posts %}
                             <tr>
-                                <td>{{ posts.title }}</td>
+                                <td>{{ post.title }}</td>
                                 <td>
-                                    {{ post.creator_username }}<br>
-                                    <span>{{ post.creator_email }}</span>
+                                    {{ post.creator_username }}
+                                    <span class="font-italic">( {{ post.creator_email }} )</span>
                                 </td>
+                                <td>{{ post.published_at}} </td>
                                 <td>
                                     {{ post.updator_username }}<br>
                                     <span>{{ post.updator_email }}</span>
                                 </td>
-                                <td>{{ post.published_at}} </td>
                                 <td>{{ post.updated_at }}</td>
-                                <td>
-                                    {% if post.is_validated == 0 %}
+                                <td class="text-center">
+                                    {% if post.is_validated == 1 %}
+                                        <a href="/admin-post-block?{{ post.post_id }}"
+                                           class="btn bg-danger text-white" style="width: 40px; height: 40px;">
+                                            <i class="fa-solid fa-xmark"></i>
+                                        </a>
+                                    {% else %}
                                         <a href="/admin-post-validated?{{ post.post_id }}"
                                            class="btn bg-success text-white" style="width: 40px; height: 40px;">
                                             <i class="fa-solid fa-check"></i>
@@ -92,12 +97,10 @@
                                             data-bs-target="#post-modal"
                                             data-bs-title= {{ post.title }}
                                             data-bs-content= {{ post.content }}
-                                            data-bs-email= {{ post.creator_email }}
                                     >
                                         <i class="fa-solid fa-magnifying-glass"></i>
                                     </button>
                                 </td>
-                                {% endif %}
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -116,34 +119,12 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+                <div class="modal-body">
+                    <div class="post-modal-content"></div>
+                </div>
                 <form action="" class="my-2" id="form-update-role">
-                    <div class="modal-body">
-                        <div class="d-flex justify-content-between my-2">
-                            <div>
-                                <label class="form-label">Login</label>
-                                <input type="text" class="form-control modal-login" readonly="readonly" name="login"/>
-                            </div>
-                            <div>
-                                <label class="form-label">Username</label>
-                                <input type="text" class="form-control modal-postname" readonly="readonly" />
-                            </div>
-                        </div>
-                        <div>
-                            <label class="form-label">Email</label>
-                            <input type="text" class="form-control modal-email" readonly="readonly" />
-                        </div>
-                        <div>
-                            <label class="form-label">Role :</label>
-                            <select class="form-control modal-role" id="roleSelector" name="role">
-                                {% for role in roles %}
-                                    <option value="{{ role.role_id }}">{{ role.role }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                        <button type="submit" class="btn btn-primary" id="form-submit-update-role">Enregistrer les modifications</button>
                     </div>
                 </form>
             </div>
