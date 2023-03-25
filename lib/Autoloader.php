@@ -28,4 +28,3 @@ class Autoloader
     }
 }
 
-spl_autoload_register([Autoloader::class, 'loadClass']);
