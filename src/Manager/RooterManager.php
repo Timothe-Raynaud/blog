@@ -37,7 +37,7 @@ class RooterManager
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function rooting()
+    public function rooting() : void
     {
         // get url information
         $request = $_SERVER['REQUEST_URI'];
