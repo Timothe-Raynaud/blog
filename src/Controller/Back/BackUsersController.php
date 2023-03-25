@@ -12,12 +12,13 @@ use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 use Twig\Loader\FilesystemLoader;
 
-class AdminController
+class BackUsersController
 {
     private Environment $twig;
     private UserManager $userManager;
     private UserRepository $userRepository;
     private RolesRepository $rolesRepository;
+
     private array $session;
 
     public function __construct()
@@ -88,24 +89,6 @@ class AdminController
             $this->userRepository->setIsNotAvailable($user_id);
 
             $this->users();
-        }
-    }
-
-    /**
-     * @throws SyntaxError
-     * @throws RuntimeError
-     * @throws LoaderError
-     */
-    public function posts(): void
-    {
-        if (!isset($this->session['role'])) {
-            header("Location: login?1");
-        } else if ($this->session['role'] != 'ADMIN') {
-            header("Location: my-account?1");
-        } else {
-            echo $this->twig->render('back/pages/posts.html.twig', [
-                'session' => $this->session,
-            ]);
         }
     }
 

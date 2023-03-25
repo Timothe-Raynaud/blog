@@ -2,6 +2,7 @@
 
 namespace Controller\Front;
 
+use Exception;
 use Manager\PostsManager;
 use Repository\PostsRepository;
 use Twig;
@@ -32,12 +33,17 @@ class BlogController
      * @throws SyntaxError
      * @throws LoaderError
      */
-    public function blog(?string $message = null): void
+    public function blog(?string $typeOfMessage = null): void
     {
-        $posts = $this->postsRepository->getAllPosts();
+        $message = null;
+        if (!empty($typeOfMessage)){
+            $message = $this->postsManager->getMessage($typeOfMessage);
+        }
+        $posts = $this->postsRepository->getValidatedPosts();
         echo $this->twig->render('front/pages/blog/blog.html.twig', [
             'posts' => $posts,
             'session' => $this->session,
+            'message' => $message,
         ]);
     }
 
@@ -74,14 +80,24 @@ class BlogController
         }
     }
 
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     * @throws Exception
+     */
     public function addPost(array $post): void
     {
         $result = $this->postsManager->addPost($post);
-        if ($result['isAdd']){
 
+        if ($result['isAdd']){
+            header("Location: blog?postIsCreate");
         } else {
-            header("Location: blog");
+            $result['type'] = 'danger';
+            echo $this->twig->render('front/pages/blog/create_post.html.twig', [
+                'session' => $this->session,
+                'message' => $result,
+            ]);
         }
     }
-
 }

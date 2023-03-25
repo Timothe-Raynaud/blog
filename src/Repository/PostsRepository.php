@@ -4,6 +4,7 @@ namespace Repository;
 
 use DateTime;
 use Manager;
+use Exception;
 
 class PostsRepository
 {
@@ -26,6 +27,19 @@ class PostsRepository
         return $statement->fetchAll();
     }
 
+    public function getValidatedPosts() : ?array
+    {
+        $sql = '
+            SELECT * 
+            FROM posts
+            WHERE is_validated = 1
+        ';
+        $statement = $this->database->pdo()->prepare($sql);
+        $statement->execute();
+
+        return $statement->fetchAll();
+    }
+
     public function getPostById(int $id) : ?array
     {
         $sql = '
@@ -41,18 +55,26 @@ class PostsRepository
         return $statement->fetch();
     }
 
-    public function addPost(string $title, string $content, int $userId, DateTime $publishedAt ) : void
+    /**
+     * @throws Exception
+     */
+    public function addPost(string $title, string $content, int $userId) : ?bool
     {
-        $sql = '
-            INSERT INTO posts (title, content, created_by, published_at, is_validated) 
-            VALUES (:title, :content, :userId, :publishedAt, 0)
-        ';
-        $statement = $this->database->pdo()->prepare($sql);
-        $statement->bindValue(':title', $title);
-        $statement->bindValue(':content', $content);
-        $statement->bindValue(':userId', $userId);
-        $statement->bindValue(':publishedAt', $publishedAt);
-        $statement->execute();
+        try {
+            $sql = '
+                INSERT INTO posts (title, content, created_by, published_at, is_validated) 
+                VALUES (:title, :content, :userId, NOW(), 0)
+            ';
+            $statement = $this->database->pdo()->prepare($sql);
+            $statement->bindValue(':title', $title);
+            $statement->bindValue(':content', $content);
+            $statement->bindValue(':userId', $userId);
+            $statement->execute();
+
+            return true;
+        } catch (Exception $exception){
+            throw new $exception;
+        }
     }
 
     public function updatePost(int $id, string $title, string $subtitle, string $content, int $userId, DateTime $updatedAt) : void

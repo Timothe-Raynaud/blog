@@ -5,7 +5,7 @@
         </a>
     </div>
     <h3 class="text-center mb-3 border-bottom pb-3">Inscription</h3>
-    <form action="/inscription" method="post">
+    <form action="/inscription" method="post" id="signin-form">
         <div class="pb-3">
             <label for="" class="form-label fs-6">Email </label>
             <input name="email" type="email" class="w-100 form-control rounded" required>
@@ -36,6 +36,6 @@
     const loginField = document.getElementById('is-available-login')
     const usernameField = document.getElementById('is-available-username')
 
-    loginField.addEventListener('input', () => testDisponibilityOfField(loginField, 'login'))
-    usernameField.addEventListener('input', () => testDisponibilityOfField(usernameField, 'username'))
+    loginField.addEventListener('input', () => testDisponibilityOfField(loginField, 'login', 'sign-in-submit'))
+    usernameField.addEventListener('input', () => testDisponibilityOfField(usernameField, 'username', 'sign-in-submit'))
 </script>

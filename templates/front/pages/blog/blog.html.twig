@@ -13,7 +13,7 @@
 
 {% block main %}
     <div class="container d-flex justify-content-between flex-grow-1 mb-4">
-        <div>
+        <div class="flex-grow-1 px-4">
             {% for post in posts %}
                 <div>
                     {{ frontend_macros.render_all_posts(post) }}
@@ -29,4 +29,13 @@
             </div>
         {% endif %}
     </div>
+
+    <div id="blog-posts-flash" class="d-none"></div>
+
+    <script>
+        {% if message.type is defined %}
+        const message = '{{ message.message }}'
+        showFlashMessage('blog-posts-flash', message, '{{ message.type }}')
+        {% endif %}
+    </script>
 {% endblock %}

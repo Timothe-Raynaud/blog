@@ -2,6 +2,7 @@
 
 namespace Manager;
 
+use Exception;
 use Repository\PostsRepository;
 
 class PostsManager
@@ -15,11 +16,14 @@ class PostsManager
         $this->postsRepository = new PostsRepository();
     }
 
+    /**
+     * @throws Exception
+     */
     public function addPost(array $post): array
     {
         $result['isAdd'] = false;
 
-        if (empty($this->session['user_id'])){
+        if (empty($this->session['userId'])){
             $result['message'] = 'Vous devez être connecté';
             return $result;
         }
@@ -31,11 +35,8 @@ class PostsManager
 
         $title = $post['title'];
         $content = $post['content'];
-        $now = new \DateTime();
-
-        if ($this->postsRepository-->addPost($title, $content, $this->session['user_id'], $now)){
+        if ($this->postsRepository->addPost($title, $content, $this->session['userId'])){
             $result['isAdd'] = true;
-            $result['message'] = 'Le post a été créer';
 
             return $result;
         }
@@ -43,5 +44,13 @@ class PostsManager
         $result['message'] = 'Une erreur est survenue.';
 
         return $result;
+    }
+
+    public function getMessage(string $type) : ?array
+    {
+        return match ($type){
+            'postIsCreate' => ['type' => 'success', 'message' => 'Votre post à bien été fait.'],
+            default => null,
+        };
     }
 }

@@ -364,18 +364,20 @@ class UserManager
         return $user;
     }
 
-    public function isLoginExist(string $login): array
+    public function isLoginExist(string $login): bool
     {
-        $result = $this->userRepository->getUserByLogin($login);
-
-        return ['exist' => $result];
+        if ($this->userRepository->getUserByLogin($login)){
+            return true;
+        }
+        return false;
     }
 
-    public function isUsernameExist(string $username): array
+    public function isUsernameExist(string $username): bool
     {
-        $result = $this->contactRepository->getContactsByUsername($username);
-        
-        return ['exist' => $result];
+        if ($this->contactRepository->getContactsByUsername($username)){
+            return true;
+        }
+        return false;
     }
 
     public function createSession(array $user): void

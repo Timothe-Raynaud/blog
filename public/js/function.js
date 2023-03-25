@@ -28,7 +28,8 @@ function logout() {
         .catch(error => console.error(error))
 }
 
-function testDisponibilityOfField(element, name) {
+function testDisponibilityOfField(element, name, targetValidationId) {
+    const formSubmitReset = document.getElementById(targetValidationId)
     const value = element.value
 
     fetch(window.location.origin + '/is-' + name + '-exist?' + encodeURIComponent(value))
@@ -45,12 +46,15 @@ function testDisponibilityOfField(element, name) {
             if (value === '') {
                 element.style.backgroundColor = '#fff'
                 availability.innerText = ''
-            } else if (data.exist === 'true') {
+                formSubmitReset.disabled = true
+            } else if (data) {
                 element.style.backgroundColor = 'rgba(159, 0, 0, 0.13)'
                 availability.innerText = 'Non disponible'
+                formSubmitReset.disabled = true
             } else {
                 element.style.backgroundColor = 'rgba(0, 169, 96, 0.13)'
                 availability.innerText = 'Disponible'
+                formSubmitReset.disabled = false
             }
         })
         .catch(error => console.error(error))

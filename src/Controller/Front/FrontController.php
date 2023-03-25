@@ -10,7 +10,7 @@ use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 use Twig\Loader\FilesystemLoader;
 
-class MainController
+class FrontController
 {
     private Environment $twig;
     private MailsManager $mailsManager;

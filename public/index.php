@@ -5,26 +5,33 @@ session_start();
 require_once dirname(__DIR__) . '/config/config.php';
 
 use Controller\Front\BlogController;
-use Controller\Front\MainController;
+use Controller\Front\FrontController;
 use Controller\Front\UserController;
-use Controller\Back\AdminController;
+use Controller\Back\BackUsersController;
+use Controller\Back\BackPostsController;
 
-$mainController = new MainController();
+// Front Controller
+$frontController = new FrontController();
 $blogController = new BlogController();
 $userController = new UserController();
-$adminController = new AdminController();
 
+// Back Controller
+$BackUsersController = new BackUsersController();
+$BackPostsController = new BackPostsController();
+
+// Get url information
 $request = $_SERVER['REQUEST_URI'];
 $url = explode('?', $request);
 
+// rooting url
 try {
     match ($url[0]) {
         // Main Controller
-        '/' => $mainController->index($_POST),
-        '/sendmail' => $mainController->sendMail($_POST),
+        '/' => $frontController->index($_POST),
+        '/sendmail' => $frontController->sendMail($_POST),
 
         // Blog Controller
-        '/blog' => $blogController->blog(),
+        '/blog' => $blogController->blog($url[1] ?? null),
         '/post' => $blogController->post($url[1]),
         '/create-post' => $blogController->createPost(),
         '/add-post' => $blogController->addPost($_POST),
@@ -43,16 +50,18 @@ try {
         '/is-username-exist' => $userController->isUsernameExist($url[1]),
         '/send-reset-password' => $userController->mailResetPassword($_POST),
 
-        // Admin Controller
-        '/admin-users' => $adminController->users(),
-        '/admin-posts' => $adminController->posts(),
-        '/update-role' => $adminController->updateRole($_POST),
-        '/admin-user-validated' => $adminController->userValidation($url[1]),
-        '/admin-user-block' => $adminController->userBlockation($url[1]),
+        // BackUsers Controller
+        '/admin-users' => $BackUsersController->users(),
+        '/update-role' => $BackUsersController->updateRole($_POST),
+        '/admin-user-validated' => $BackUsersController->userValidation($url[1]),
+        '/admin-user-block' => $BackUsersController->userBlockation($url[1]),
+
+        // BAckPosts Controller
+        '/admin-posts' => $BackPostsController->posts(),
 
         // Default
-        default => $mainController->error404(),
+        default => $frontController->error404(),
     };
-} catch (\Twig\Error\LoaderError|\Twig\Error\RuntimeError|\Twig\Error\SyntaxError $exception) {
+} catch (\Twig\Error\LoaderError|\Twig\Error\RuntimeError|\Twig\Error\SyntaxError|Exception $exception) {
     throw new $exception;
 }
