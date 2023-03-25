@@ -46,7 +46,7 @@ class MailsManager
                 'message' => $post['message']
             ]);
             $this->phpMailer->setFrom($post['email']);
-            $this->phpMailer->addAddress(MAIL_TO);
+            $this->phpMailer->addAddress(Config::$MAIL_TO);
             $this->phpMailer->Subject = $post['subject'];
             $this->phpMailer->Body = $body;
 
@@ -79,7 +79,7 @@ class MailsManager
             'token' => $token,
             'username' => $username,
         ]);
-        $this->phpMailer->setFrom(MAIL_FROM);
+        $this->phpMailer->setFrom(Config::$MAIL_FROM);
         $this->phpMailer->addAddress($to);
         $this->phpMailer->Subject = 'Reinitialisation du mot de passe';
         $this->phpMailer->Body = $body;
