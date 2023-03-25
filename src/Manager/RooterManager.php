@@ -2,6 +2,8 @@
 
 namespace Manager;
 
+require_once dirname(__DIR__) . '/../config/config.php';
+
 use Exception;
 use Controller\Front\BlogController;
 use Controller\Front\FrontController;

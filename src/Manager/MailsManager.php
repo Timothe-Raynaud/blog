@@ -2,6 +2,8 @@
 
 namespace Manager;
 
+require_once dirname(__DIR__) . '/../config/config.php';
+
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use Twig\Environment;
