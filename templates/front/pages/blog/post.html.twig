@@ -4,8 +4,8 @@
 {% block header %}
     {% include 'front/layouts/_header.html.twig' with {
         'bandeau' : 'img/front/bandeau_home.jpg',
-        'page_title' : post.title,
-        'subtitle_page' : post.subtitle,
+        'page_title' : post.title|capitalize,
+        'subtitle_page' : post.subtitle|capitalize,
         'meta_title' : 'Écrit par ' ~ post.username ~ ' - ' ~ post.published_at|date("d/m/Y")
     } %}
 {% endblock %}
@@ -17,13 +17,36 @@
                 <div class=""><i class="fa-solid fa-chevron-left"></i>&nbsp; retour</div>
             </a>
         </div>
-        <article class="mb-4 col-md-9">
-            <h3 class="border-bottom border-1 pb-3">{{ post.chapo }}</h3>
+        <article class="mb-4 col-10">
+            <h3 class="border-bottom border-1 pb-3">{{ post.chapo|capitalize }}</h3>
             <div class="">
                 <div class="">
-                    <p>{{ post.content }}</p>
+                    <p>{{ post.content|capitalize }}</p>
                 </div>
             </div>
+            {% if session.username %}
+                <div class="border-top border-1 w-50 m-auto"></div>
+                {% for commment in comments %}
+                    <div>
+                        <div>{{ comment.content }}</div>
+                        <div>{{ comment.username }} - {{ comment.published_at }}</div>
+                    </div>
+                {% endfor %}
+                <form action="/add-comment?{{ post.post_id }}" method="post">
+                    <div class="pt-3  w-75 m-auto">
+                        <label for="" class="form-label d-block text-center">Commentaire</label>
+                        <textarea class="form-control rounded" name="content" rows="4"
+                                  maxlength="200" required></textarea>
+                        <div class="blockquote fst-italic fw-lighter fs-6">
+                            * Tout commentaire est soumis à validitation avant d'être publié.
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <input type="submit" VALUE="Valider" class="btn btn-primary rounded shadow"
+                               id="form-submit-contact">
+                    </div>
+                </form>
+            {% endif %}
         </article>
     </div>
 {% endblock %}

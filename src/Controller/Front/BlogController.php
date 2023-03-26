@@ -5,7 +5,9 @@ namespace Controller\Front;
 use Config\Config;
 use Exception;
 use Manager\PostsManager;
+use Manager\CommentsManager;
 use Repository\PostsRepository;
+use Repository\CommentsRepository;
 use Twig;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -18,6 +20,8 @@ class BlogController
     private array $session;
     private PostsManager $postsManager;
     private PostsRepository $postsRepository;
+    private CommentsManager $commentsManager;
+    private CommentsRepository $commentsRepository;
 
     public function __construct()
     {
@@ -25,6 +29,8 @@ class BlogController
         $this->twig = new Twig\Environment($loader);
         $this->postsRepository = new PostsRepository();
         $this->postsManager = new PostsManager();
+        $this->commentsRepository = new CommentsRepository();
+        $this->commentsManager = new CommentsManager();
         $this->session = $_SESSION;
     }
 
@@ -67,12 +73,14 @@ class BlogController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function post(int $post_id): void
+    public function post(int $postId): void
     {
-        $post = $this->postsRepository->getPostById($post_id);
+        $post = $this->postsRepository->getPostById($postId);
+        $comments = $this->commentsRepository->getValidatedCommentByPostId($postId);
 
         echo $this->twig->render('front/pages/blog/post.html.twig', [
             'post' => $post,
+            'comments' => $comments,
             'session' => $this->session,
         ]);
     }
@@ -101,9 +109,9 @@ class BlogController
      * @throws LoaderError
      * @throws Exception
      */
-    public function addPost(array $post): void
+    public function addPost(array $formPost): void
     {
-        $result = $this->postsManager->addPost($post);
+        $result = $this->postsManager->addPost($formPost);
 
         if ($result['isAdd']){
             header("Location: blog?page=1&message=postIsCreate");
@@ -115,4 +123,26 @@ class BlogController
             ]);
         }
     }
+
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     * @throws Exception
+     */
+    public function addComment(int $postId, array $formPost): void
+    {
+        $result = $this->commentsManager->addComment($postId, $formPost);
+
+        $post = $this->postsRepository->getPostById($postId);
+        $comments = $this->commentsRepository->getValidatedCommentByPostId($postId);
+
+        echo $this->twig->render('front/pages/blog/post.html.twig', [
+            'session' => $this->session,
+            'message' => $result,
+            'post' => $post,
+            'comments' => $comments,
+        ]);
+    }
+
 }
