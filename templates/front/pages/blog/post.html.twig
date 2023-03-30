@@ -20,21 +20,24 @@
         <article class="mb-4 col-10">
             <h3 class="border-bottom border-1 pb-3">{{ post.chapo|capitalize }}</h3>
             <div class="">
-                <div class="">
+                <div class="px-4">
                     <p>{{ post.content|capitalize }}</p>
                 </div>
             </div>
-            {% if session.username %}
-                <div class="border-top border-1 w-50 m-auto"></div>
-                {% for commment in comments %}
-                    <div>
-                        <div>{{ comment.content }}</div>
-                        <div>{{ comment.username }} - {{ comment.published_at }}</div>
+            {% if not (comments is empty) %}
+                <div class="mt-5">Commentaire</div>
+            {% endif %}
+            {% for comment in comments %}
+                <div class="my-3 px-3 py-2 border border-1 rounded ">
+                    <div class="fs-6">{{ comment.content }}</div>
+                    <div class="text-end">
+                        <div class="d-inline signature border-top border-1">{{ comment.username }} - {{ comment.published_at|date("m/d/Y") }}</div>
                     </div>
+                </div>
                 {% endfor %}
+            {% if session.username %}
                 <form action="/add-comment?{{ post.post_id }}" method="post">
                     <div class="pt-3  w-75 m-auto">
-                        <label for="" class="form-label d-block text-center">Commentaire</label>
                         <textarea class="form-control rounded" name="content" rows="4"
                                   maxlength="200" required></textarea>
                         <div class="blockquote fst-italic fw-lighter fs-6">

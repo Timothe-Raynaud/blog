@@ -8,6 +8,7 @@ use Controller\Front\FrontController;
 use Controller\Front\UserController;
 use Controller\Back\BackUsersController;
 use Controller\Back\BackPostsController;
+use Controller\Back\BackCommentsController;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
@@ -22,6 +23,7 @@ class RooterManager
     // Back Controller
     private BackUsersController $BackUsersController;
     private BackPostsController $BackPostsController;
+    private BackCommentsController $BackCommentsController;
 
     public function __construct()
     {
@@ -30,12 +32,15 @@ class RooterManager
         $this->userController = new UserController();
         $this->BackUsersController = new BackUsersController();
         $this->BackPostsController = new BackPostsController();
+        $this->BackCommentsController = new BackCommentsController();
     }
 
     /**
-     * @throws SyntaxError
-     * @throws RuntimeError
      * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws \PHPMailer\PHPMailer\Exception
+     * @throws Exception
      */
     public function rooting() : void
     {
@@ -44,6 +49,9 @@ class RooterManager
         $url = explode('?', $request);
 
         match ($url[0]) {
+
+            /************************* FRONT ********************************/
+
             // Main Controller
             '/' => $this->frontController->index($_POST),
             '/sendmail' => $this->frontController->sendMail($_POST),
@@ -69,16 +77,23 @@ class RooterManager
             '/is-username-exist' => $this->userController->isUsernameExist($url[1]),
             '/send-reset-password' => $this->userController->mailResetPassword($_POST),
 
-            // BackUsers Controller
+            /************************* BACK ********************************/
+
+            // Users Controller
             '/admin-users' => $this->BackUsersController->users(),
             '/update-role' => $this->BackUsersController->updateRole($_POST),
             '/admin-user-validated' => $this->BackUsersController->userValidation($url[1]),
             '/admin-user-block' => $this->BackUsersController->userBlockation($url[1]),
 
-            // BackPosts Controller
+            // Back Posts Controller
             '/admin-posts' => $this->BackPostsController->posts(),
             '/admin-post-validated' => $this->BackPostsController->postValidation($url[1]),
             '/admin-post-block' => $this->BackPostsController->postBlockation($url[1]),
+
+            // Back Comments Controller
+            '/admin-comments' => $this->BackCommentsController->comments(),
+            '/admin-comment-validated' => $this->BackCommentsController->commentValidation($url[1]),
+            '/admin-comment-block' => $this->BackCommentsController->commentBlockation($url[1]),
 
             // Default
             default => $this->frontController->error404(),

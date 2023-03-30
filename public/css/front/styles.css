@@ -11298,3 +11298,10 @@ header.masthead .site-heading .h1 {
   left:0;
   color:#fdfdfe;
 }
+
+.signature{
+  color: #4f5050;
+  font-style: italic;
+  font-weight: lighter;
+  font-size: 0.7em;
+}

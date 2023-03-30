@@ -17,10 +17,14 @@ class CommentsRepository
     public function getAllComments() : ?array
     {
         $sql = '
-            SELECT *
+            SELECT com.*
+                , p.title as postTitle
+                , u.*
+                , con.*
             FROM comments com
             INNER JOIN users u ON u.user_id = com.user_id
             INNER JOIN contacts con ON con.contact_id = u.contact_id
+            INNER JOIN posts p ON p.post_id = com.post_id
         ';
         $statement = $this->database->pdo()->prepare($sql);
         $statement->execute();
@@ -31,7 +35,9 @@ class CommentsRepository
     public function getValidatedCommentByPostId(int $id) : ?array
     {
         $sql = '
-            SELECT *
+            SELECT com.*
+                , u.*
+                , con.*
             FROM comments com
             INNER JOIN users u ON u.user_id = com.user_id
             INNER JOIN contacts con ON con.contact_id = u.contact_id
@@ -43,6 +49,21 @@ class CommentsRepository
         $statement->execute();
 
         return $statement->fetchAll();
+    }
+
+    public function countValidatedCommentByPostId() : ?array
+    {
+        $sql = '
+            SELECT COUNT(*) as validatedComments
+            FROM comments com
+            INNER JOIN users u ON u.user_id = com.user_id
+            INNER JOIN contacts con ON con.contact_id = u.contact_id
+            WHERE is_validated = 1
+        ';
+        $statement = $this->database->pdo()->prepare($sql);
+        $statement->execute();
+
+        return $statement->fetch();
     }
 
     public function setIsAvailable(int $commentId): void

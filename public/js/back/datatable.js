@@ -73,7 +73,40 @@ $(document).ready(function () {
             { responsivePriority: 2, targets: 5},
             { responsivePriority: 1, targets: 6},
             { responsivePriority: 1, targets: 7},
-        ]
+        ],
     });
 
 });
+
+
+// Comments Datatable
+$(document).ready(function () {
+    $('#comments-datatable').DataTable({
+        language: {
+            search: "Rechercher&nbsp;:",
+            lengthMenu:    "Afficher _MENU_ comments",
+            info:           "Affichage des comments _START_ &agrave; _END_ sur _TOTAL_ comments",
+            infoEmpty:      "Affichage des comments 0 &agrave; 0 sur 0 comments",
+            infoFiltered:   "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
+            paginate: {
+                first: "Premier",
+                previous: "Pr&eacute;c&eacute;dent",
+                next: "Suivant",
+                last: "Dernier"
+            },
+        },
+        "columnDefs": [
+
+            {
+                "width": "0",
+                "targets": 3
+            },
+            {
+                "width": "0",
+                "targets": 4
+            },
+        ],
+    });
+
+});
+
