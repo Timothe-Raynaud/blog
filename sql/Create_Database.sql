@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : local_dev_8-db:3306
--- Généré le : dim. 19 mars 2023 à 11:14
--- Version du serveur : 5.7.40
+-- Généré le : jeu. 30 mars 2023 à 19:56
+-- Version du serveur : 5.7.41
 -- Version de PHP : 8.0.19
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -30,11 +30,9 @@ SET time_zone = "+00:00";
 CREATE TABLE `comments` (
                             `comment_id` int(11) NOT NULL,
                             `post_id` int(11) NOT NULL,
+                            `user_id` int(11) NOT NULL,
                             `content` varchar(500) NOT NULL,
-                            `published_by` int(11) NOT NULL,
-                            `updated_by` int(11) DEFAULT NULL,
                             `published_at` datetime NOT NULL,
-                            `updated_at` datetime DEFAULT NULL,
                             `is_validated` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -46,8 +44,8 @@ CREATE TABLE `comments` (
 
 CREATE TABLE `contacts` (
                             `contact_id` int(11) NOT NULL,
-                            `username` varchar(100) NOT NULL,
-                            `email` varchar(100) NOT NULL
+                            `username` varchar(200) NOT NULL,
+                            `email` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -59,6 +57,7 @@ CREATE TABLE `contacts` (
 CREATE TABLE `posts` (
                          `post_id` int(11) NOT NULL,
                          `title` varchar(100) NOT NULL,
+                         `chapo` varchar(80) NOT NULL,
                          `content` varchar(1000) NOT NULL,
                          `created_by` int(11) NOT NULL,
                          `updated_by` int(11) DEFAULT NULL,
@@ -74,7 +73,7 @@ CREATE TABLE `posts` (
 --
 
 CREATE TABLE `reset_password` (
-                                  `token` varchar(255) NOT NULL,
+                                  `token` varchar(200) NOT NULL,
                                   `user_id` int(11) NOT NULL,
                                   `is_used` tinyint(1) NOT NULL,
                                   `expiration_date` datetime NOT NULL
@@ -88,8 +87,17 @@ CREATE TABLE `reset_password` (
 
 CREATE TABLE `roles` (
                          `role_id` int(11) NOT NULL,
-                         `role` varchar(100) NOT NULL
+                         `role` varchar(55) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `roles`
+--
+
+INSERT INTO `roles` (`role_id`, `role`) VALUES
+                                            (1, 'DEFAULT'),
+                                            (2, 'CREATOR'),
+                                            (3, 'ADMIN');
 
 -- --------------------------------------------------------
 
@@ -99,10 +107,10 @@ CREATE TABLE `roles` (
 
 CREATE TABLE `users` (
                          `user_id` int(11) NOT NULL,
-                         `login` varchar(150) NOT NULL,
-                         `password` varchar(150) NOT NULL,
-                         `role_id` int(11) NOT NULL,
-                         `contact_id` int(11) NOT NULL,
+                         `login` varchar(50) NOT NULL,
+                         `password` varchar(200) NOT NULL,
+                         `role_id` int(50) NOT NULL,
+                         `contact_id` int(11) DEFAULT NULL,
                          `is_available` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -115,8 +123,8 @@ CREATE TABLE `users` (
 --
 ALTER TABLE `comments`
     ADD PRIMARY KEY (`comment_id`),
-  ADD KEY `published_by` (`published_by`),
-  ADD KEY `updated_by` (`updated_by`);
+    ADD KEY `post_id` (`post_id`),
+    ADD KEY `user_id` (`user_id`);
 
 --
 -- Index pour la table `contacts`
@@ -129,15 +137,15 @@ ALTER TABLE `contacts`
 --
 ALTER TABLE `posts`
     ADD PRIMARY KEY (`post_id`),
-  ADD KEY `created_by` (`created_by`),
-  ADD KEY `updated_by` (`updated_by`);
+    ADD KEY `created_by` (`created_by`),
+    ADD KEY `updated_by` (`updated_by`);
 
 --
 -- Index pour la table `reset_password`
 --
 ALTER TABLE `reset_password`
     ADD PRIMARY KEY (`token`),
-  ADD KEY `user_id` (`user_id`);
+    ADD KEY `user_id` (`user_id`);
 
 --
 -- Index pour la table `roles`
@@ -150,8 +158,9 @@ ALTER TABLE `roles`
 --
 ALTER TABLE `users`
     ADD PRIMARY KEY (`user_id`),
-  ADD KEY `contact_id` (`contact_id`),
-  ADD KEY `role_id` (`role_id`);
+    ADD UNIQUE KEY `login` (`login`),
+    ADD KEY `contact_id` (`contact_id`),
+    ADD KEY `role` (`role_id`);
 
 --
 -- AUTO_INCREMENT pour les tables déchargées
@@ -179,7 +188,7 @@ ALTER TABLE `posts`
 -- AUTO_INCREMENT pour la table `roles`
 --
 ALTER TABLE `roles`
-    MODIFY `role_id` int(11) NOT NULL AUTO_INCREMENT;
+    MODIFY `role_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `users`
@@ -195,15 +204,15 @@ ALTER TABLE `users`
 -- Contraintes pour la table `comments`
 --
 ALTER TABLE `comments`
-    ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`published_by`) REFERENCES `users` (`user_id`),
-  ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`updated_by`) REFERENCES `users` (`user_id`);
+    ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`),
+    ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
 --
 -- Contraintes pour la table `posts`
 --
 ALTER TABLE `posts`
     ADD CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`created_by`) REFERENCES `users` (`user_id`),
-  ADD CONSTRAINT `posts_ibfk_2` FOREIGN KEY (`updated_by`) REFERENCES `users` (`user_id`);
+    ADD CONSTRAINT `posts_ibfk_2` FOREIGN KEY (`updated_by`) REFERENCES `users` (`user_id`);
 
 --
 -- Contraintes pour la table `reset_password`
@@ -216,7 +225,7 @@ ALTER TABLE `reset_password`
 --
 ALTER TABLE `users`
     ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`contact_id`) REFERENCES `contacts` (`contact_id`),
-  ADD CONSTRAINT `users_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`);
+    ADD CONSTRAINT `users_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
