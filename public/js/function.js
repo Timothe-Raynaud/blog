@@ -59,3 +59,33 @@ function testDisponibilityOfField(element, name, targetValidationId) {
         })
         .catch(error => console.error(error))
 }
+
+function testAvailabilityOfPassword(fieldName, availabilityName, formSubmitName){
+
+    const passwordField = document.getElementById(fieldName)
+
+    passwordField.addEventListener("input", (event) =>{
+        const formSubmit = document.getElementById(formSubmitName)
+        const value = passwordField.value
+        const availability = document.getElementById(availabilityName)
+
+        if (value === '') {
+            passwordField.style.backgroundColor = '#fff'
+            availability.innerText = ''
+            formSubmit.disabled = true
+        } else if (value.length < 8) {
+            passwordField.style.backgroundColor = 'rgba(159, 0, 0, 0.13)'
+            availability.innerText = 'Votre mots de passe doit contenir au moins 8 character.'
+            formSubmit.disabled = true
+        } else if (!(/\d/.test(value))){
+            passwordField.style.backgroundColor = 'rgba(159, 0, 0, 0.13)'
+            availability.innerText = 'Votre mots de passe doit contenir au moins 1 chractére numérique.'
+            formSubmit.disabled = true
+        } else{
+            passwordField.style.backgroundColor = 'rgba(0, 169, 96, 0.13)'
+            availability.innerText = ''
+            formSubmit.disabled = false
+        }
+    })
+
+}
