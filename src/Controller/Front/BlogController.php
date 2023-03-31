@@ -167,7 +167,7 @@ class BlogController
      * @throws LoaderError
      * @throws Exception
      */
-    public function updatedPost(int $postId, $formPost): void
+    public function updatedPost(int $postId,array $formPost): void
     {
         $result = $this->postsManager->updatedPost($postId, $formPost);
 
