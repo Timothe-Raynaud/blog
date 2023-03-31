@@ -58,7 +58,7 @@ CREATE TABLE `posts` (
                          `post_id` int(11) NOT NULL,
                          `title` varchar(100) NOT NULL,
                          `chapo` varchar(80) NOT NULL,
-                         `content` varchar(1000) NOT NULL,
+                         `content` varchar(5000) NOT NULL,
                          `created_by` int(11) NOT NULL,
                          `updated_by` int(11) DEFAULT NULL,
                          `published_at` datetime NOT NULL,
