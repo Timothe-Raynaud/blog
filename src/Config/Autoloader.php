@@ -11,7 +11,7 @@ class Autoloader
             $fileName = '';
             $namespace = '';
 
-            $includePath = dirname(__DIR__) . '/src';
+            $includePath = dirname(__DIR__) . '/';
 
             if (false !== ($lastNsPos = strripos($className, '\\'))) {
                 $namespace = substr($className, 0, $lastNsPos);
@@ -22,7 +22,7 @@ class Autoloader
             $fullFileName = $includePath . DIRECTORY_SEPARATOR . $fileName;
 
             require $fullFileName;
-        } catch (Exception $exception){
+        } catch (Exception $exception) {
             throw new Exception($exception);
         }
     }
