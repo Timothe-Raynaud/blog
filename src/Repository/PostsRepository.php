@@ -65,7 +65,8 @@ class PostsRepository
         $sql = '
             SELECT * 
             FROM posts p
-            INNER JOIN contacts c ON c.contact_id = p.created_by 
+            INNER JOIN users u ON u.user_id = p.created_by
+            INNER JOIN contacts c ON c.contact_id = u.contact_id
             WHERE post_id = :id
         ';
         $statement = $this->database->pdo()->prepare($sql);
@@ -135,19 +136,29 @@ class PostsRepository
         }
     }
 
-    public function updatePost(int $id, string $content, int $userId, DateTime $updatedAt) : void
+    /**
+     * @throws Exception
+     */
+    public function updatePost(int $id, string $title, string $chapo, string $content, int $userId) : ?bool
     {
-        $sql = '
-            UPDATE posts 
-            SET content = :content, updated_by = :userId ,updated_at = :updatedAt 
-            WHERE post_id = :id
-        ';
-        $statement = $this->database->pdo()->prepare($sql);
-        $statement->bindValue(':id', $id);
-        $statement->bindValue(':content', $content);
-        $statement->bindValue(':userId', $userId);
-        $statement->bindValue(':updatedAt', $updatedAt);
-        $statement->execute();
+        try{
+            $sql = '
+                UPDATE posts 
+                SET title = :title, chapo = :chapo, content = :content, updated_by = :userId ,updated_at = NOW()
+                WHERE post_id = :id
+            ';
+            $statement = $this->database->pdo()->prepare($sql);
+            $statement->bindValue(':id', $id);
+            $statement->bindValue(':title', $title);
+            $statement->bindValue(':chapo', $chapo);
+            $statement->bindValue(':content', $content);
+            $statement->bindValue(':userId', $userId);
+            $statement->execute();
+
+            return true;
+        } catch (Exception $exception){
+            throw new $exception;
+        }
     }
 
     public function deletePost(int $id) : void

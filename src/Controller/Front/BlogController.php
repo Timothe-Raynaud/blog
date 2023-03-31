@@ -145,4 +145,41 @@ class BlogController
         ]);
     }
 
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     * @throws Exception
+     */
+    public function modifyPost(int $postId): void
+    {
+        $post = $this->postsRepository->getPostById($postId);
+
+        echo $this->twig->render('front/pages/blog/modify_post.html.twig', [
+            'session' => $this->session,
+            'post' => $post,
+        ]);
+    }
+
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     * @throws Exception
+     */
+    public function updatedPost(int $postId, $formPost): void
+    {
+        $result = $this->postsManager->updatedPost($postId, $formPost);
+
+        if ($result['isUpdated']){
+            header("Location: blog?page=1&message=postIsUpdated");
+        } else {
+            $result['type'] = 'danger';
+            echo $this->twig->render('front/pages/blog/create_post.html.twig', [
+                'session' => $this->session,
+                'message' => $result,
+            ]);
+        }
+    }
+
 }

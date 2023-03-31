@@ -35,7 +35,7 @@ class PostsManager
 
         $title = $post['title'];
         $chapo = $post['chapo'];
-        $content = $post['content'];
+        $content = nl2br($post['content']);
 
         if ($this->postsRepository->addPost($title, $chapo, $content, $this->session['userId'])){
             $result['isAdd'] = true;
@@ -48,10 +48,41 @@ class PostsManager
         return $result;
     }
 
+    /**
+     * @throws Exception
+     */
+    public function updatedPost(int $postId, array $post): array
+    {
+        $result['isUpdated'] = false;
+        $result['message'] = 'Une erreur est survenue.';
+
+        if (empty($this->session['userId'])){
+            $result['message'] = 'Vous devez être connecté';
+            return $result;
+        }
+
+        if (empty($post)) {
+            return $result;
+        }
+
+        $title = $post['title'];
+        $chapo = $post['chapo'];
+        $content = nl2br($post['content']);
+
+        if ($this->postsRepository->updatePost($postId, $title, $chapo, $content, $this->session['userId'])){
+            $result['isUpdated'] = true;
+
+            return $result;
+        }
+
+        return $result;
+    }
+
     public function getMessage(string $type) : ?array
     {
         return match ($type){
             'postIsCreate' => ['type' => 'success', 'message' => 'Votre post à bien été fait.'],
+            'postIsUpdated' => ['type' => 'success', 'message' => 'Votre post à été mis à jour'],
             default => null,
         };
     }

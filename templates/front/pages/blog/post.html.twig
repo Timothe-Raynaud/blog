@@ -18,10 +18,17 @@
             </a>
         </div>
         <article class="mb-4 col-10">
-            <h3 class="border-bottom border-1 pb-3">{{ post.chapo|capitalize }}</h3>
+            <div class="border-bottom border-1 pb-1 d-flex justify-content-between">
+                <h3>{{ post.chapo|capitalize }}</h3>
+                {% if post.username == session.username %}
+                    <a href="/modify-post?{{ post.post_id }}" class="text-end">
+                        <i class="fa-solid fa-gear"></i>
+                    </a>
+                {% endif %}
+            </div>
             <div class="">
                 <div class="px-4">
-                    <p>{{ post.content|capitalize }}</p>
+                    <p>{{ post.content|raw }}</p>
                 </div>
             </div>
             {% if not (comments is empty) %}
@@ -29,7 +36,7 @@
             {% endif %}
             {% for comment in comments %}
                 <div class="my-3 px-3 py-2 border border-1 rounded ">
-                    <div class="fs-6">{{ comment.content }}</div>
+                    <div class="fs-6">{{ comment.content|raw }}</div>
                     <div class="text-end">
                         <div class="d-inline signature border-top border-1">{{ comment.username }} - {{ comment.published_at|date("m/d/Y") }}</div>
                     </div>

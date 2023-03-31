@@ -1,0 +1,48 @@
+{% extends "front/layouts/layout.html.twig" %}
+
+{% block title %}{{ post.title }}{% endblock %}
+{% block header %}
+    {% include 'front/layouts/_header.html.twig' with {
+        'bandeau' : 'img/front/bandeau_home.jpg',
+        'page_title' : 'Nouveau post',
+        'subtitle_page' : '',
+        'meta_title' : now|date("d/m/Y")
+    } %}
+{% endblock %}
+
+{% block main %}
+    <main class="container mb-4">
+        <div class="mb-4">
+            <a href="/blog">
+                <div class="d-inline"><i class="fa-solid fa-arrow-left"></i> Retour</div>
+            </a>
+        </div>
+        <form action="/updated-post?{{ post.post_id }}" method="post">
+            <div class="pb-2">
+                <label for="" class="form-label d-block">Titre</label>
+                <input name="title" type="text" class="w-100 form-control rounded" required value="{{ post.title }}">
+            </div>
+            <div class="pb-2">
+                <label for="" class="form-label d-block">Chapô</label>
+                <input name="chapo" type="text" class="w-100 form-control rounded" required value="{{ post.chapo }}">
+            </div>
+            <div class="pb-3">
+                <label for="" class="form-label d-block">Contenu</label>
+                <textarea class="form-control rounded w-100" name="content" rows="15" cols="50"
+                          maxlength="5000" required>{{ post.content }}</textarea>
+            </div>
+            <div class="text-center">
+                <input type="submit" VALUE="Mettre à jour" class="btn btn-primary rounded shadow" id="form-submit-contact">
+            </div>
+        </form>
+    </main>
+
+    <div id="create-posts-flash" class="d-none"></div>
+
+    <script>
+        {% if message.type is defined %}
+            const message = '{{ message.message }}'
+            showFlashMessage('create-posts-flash', message, '{{ message.type }}')
+        {% endif %}
+    </script>
+{% endblock %}

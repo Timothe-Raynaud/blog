@@ -62,6 +62,8 @@ class RooterManager
             '/create-post' => $this->blogController->createPost(),
             '/add-post' => $this->blogController->addPost($_POST),
             '/add-comment' => $this->blogController->addComment($url[1], $_POST),
+            '/modify-post' => $this->blogController->modifyPost($url[1]),
+            '/updated-post' => $this->blogController->updatedPost($url[1], $_POST),
 
             // User Controller
             '/reset' => $this->userController->renderResetPassword($url[1]),
