@@ -40,27 +40,25 @@ class MailsManager
         $result['isSend'] = false;
         $result['message'] = '';
 
-        if (!empty($post)) {
-            $template = $this->twig->load('email/contact.html.twig');
-            $body = $template->render([
-                'message' => $post['message']
-            ]);
-            $this->phpMailer->setFrom($post['email']);
-            $this->phpMailer->addAddress(Config::$MAIL_TO);
-            $this->phpMailer->Subject = $post['subject'];
-            $this->phpMailer->Body = $body;
-
-            if ($this->phpMailer->send()) {
-                $result['isSend'] = true;
-                $result['message'] = 'Votre mail à bien été envoyé';
-                return $result;
-            }
-
-
+        if (empty($post)) {
             $result['message'] = 'Une erreur est survenue lors de l\'envoi du mail';
             return $result;
         }
 
+        $template = $this->twig->load('email/contact.html.twig');
+        $body = $template->render([
+            'message' => $post['message']
+        ]);
+        $this->phpMailer->setFrom($post['email']);
+        $this->phpMailer->addAddress(Config::$MAIL_TO);
+        $this->phpMailer->Subject = $post['subject'];
+        $this->phpMailer->Body = $body;
+
+        if ($this->phpMailer->send()) {
+            $result['isSend'] = true;
+            $result['message'] = 'Votre mail à bien été envoyé';
+            return $result;
+        }
 
         return $result;
     }
