@@ -2,16 +2,16 @@
 
 namespace Repository;
 
-use Manager;
 use Exception;
+use Manager\DatabaseConnection;
 
 class CommentsRepository
 {
-    private Manager\DatabaseConnection $database;
+    private DatabaseConnection $database;
 
     public function __construct()
     {
-        $this->database = new Manager\DatabaseConnection();
+        $this->database = new DatabaseConnection();
     }
 
     public function getAllComments() : ?array

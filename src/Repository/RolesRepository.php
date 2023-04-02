@@ -2,15 +2,15 @@
 
 namespace Repository;
 
-use Manager;
+use Manager\DatabaseConnection;
 
 class RolesRepository
 {
-    private Manager\DatabaseConnection $database;
+    private DatabaseConnection $database;
 
     public function __construct()
     {
-        $this->database = new Manager\DatabaseConnection();
+        $this->database = new DatabaseConnection();
     }
 
     public function getRoles(): array

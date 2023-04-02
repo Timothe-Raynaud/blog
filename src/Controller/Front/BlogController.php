@@ -153,12 +153,18 @@ class BlogController
      */
     public function modifyPost(int $postId): void
     {
-        $post = $this->postsRepository->getPostById($postId);
+        if (!isset($this->session['role'])) {
+            header("Location: login?2");
+        } else if ($this->session['role'] === 'ADMIN' || $this->session['role'] === 'CREATOR' ) {
+            $post = $this->postsRepository->getPostById($postId);
 
-        echo $this->twig->render('front/pages/blog/modify_post.html.twig', [
-            'session' => $this->session,
-            'post' => $post,
-        ]);
+            echo $this->twig->render('front/pages/blog/modify_post.html.twig', [
+                'session' => $this->session,
+                'post' => $post,
+            ]);
+        } else {
+            header("Location: my-account?2");
+        }
     }
 
     /**
