@@ -13,7 +13,7 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-class RooterManager
+class RouterManager
 {
     // Front Controller
     private FrontController $frontController;
@@ -42,7 +42,7 @@ class RooterManager
      * @throws \PHPMailer\PHPMailer\Exception
      * @throws Exception
      */
-    public function rooting() : void
+    public function routing() : void
     {
         // get url information
         $request = $_SERVER['REQUEST_URI'];

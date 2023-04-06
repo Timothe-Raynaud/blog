@@ -10,7 +10,7 @@ require_once(ROOT . '/src/Config/Autoloader.php');
 
 spl_autoload_register([Autoloader::class, 'loadClass']);
 
-use Manager\RooterManager;
+use Manager\RouterManager;
 
-$rooter = new RooterManager();
-$rooter->rooting();
+$router = new RouterManager();
+$router->routing();
