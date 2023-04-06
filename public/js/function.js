@@ -79,7 +79,7 @@ function testAvailabilityOfPassword(fieldName, availabilityName, formSubmitName)
             formSubmit.disabled = true
         } else if (!(/\d/.test(value))){
             passwordField.style.backgroundColor = 'rgba(159, 0, 0, 0.13)'
-            availability.innerText = 'Votre mots de passe doit contenir au moins 1 chractére numérique.'
+            availability.innerText = 'Votre mots de passe doit contenir au moins 1 charactere numérique.'
             formSubmit.disabled = true
         } else{
             passwordField.style.backgroundColor = 'rgba(0, 169, 96, 0.13)'
