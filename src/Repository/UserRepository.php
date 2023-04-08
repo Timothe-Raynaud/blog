@@ -252,7 +252,7 @@ class UserRepository
     /**
      * @throws Exception
      */
-    public function updateAccount(int $id, string $login, $username, $email): bool
+    public function updateAccount(int $id, string $login, string $username, string $email): bool
     {
         try{
             $sql = '
@@ -274,6 +274,7 @@ class UserRepository
         } catch (Exception $exception){
             throw new Exception($exception);
         }
+
     }
 
     /**
