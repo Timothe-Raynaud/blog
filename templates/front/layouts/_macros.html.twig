@@ -1,13 +1,12 @@
 {% macro render_all_posts(post) %}
     <hr class="my-4"/>
     <div class="post-preview">
-        <a href="/post?{{ post.post_id }}">
-            <h2 class="post-title">{{ post.title }}</h2>
-            <h3 class="post-subtitle">{{ post.subtitle }}</h3>
+        <a href="/post?{{ post.id }}">
+            <h2 class="post-title">{{ post.title|capitalize }}</h2>
         </a>
         <p class="post-meta">
-            Posted by {{ post.creator_username }}
-            on {{ post.published_at|date("d/m/Y") }}
+            Posted by {{ post.createdBy.username }}
+            on {{ post.publishedAt|date("d/m/Y") }}
         </p>
     </div>
 {% endmacro %}

@@ -56,7 +56,7 @@ class RouterManager
             '/' => $this->frontController->index($_POST),
             '/sendmail' => $this->frontController->sendMail($_POST),
 
-            // Blog Controller
+            // Post Controller
             '/blog' => $this->blogController->blog($url[1] ?? null),
             '/post' => $this->blogController->post($url[1]),
             '/create-post' => $this->blogController->createPost(),
@@ -92,7 +92,7 @@ class RouterManager
             '/admin-post-validated' => $this->BackPostsController->postValidation($url[1]),
             '/admin-post-block' => $this->BackPostsController->postBlockation($url[1]),
 
-            // Back Comments Controller
+            // Back Comment Controller
             '/admin-comments' => $this->BackCommentsController->comments(),
             '/admin-comment-validated' => $this->BackCommentsController->commentValidation($url[1]),
             '/admin-comment-block' => $this->BackCommentsController->commentBlockation($url[1]),

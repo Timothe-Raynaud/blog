@@ -21,7 +21,7 @@
             <div class="border-bottom border-1 pb-1 d-flex justify-content-between">
                 <h3>{{ post.chapo|capitalize }}</h3>
                 {% if post.username == session.username %}
-                    <a href="/modify-post?{{ post.post_id }}" class="text-end">
+                    <a href="/modify-post?{{ post.id }}" class="text-end">
                         <i class="fa-solid fa-gear"></i>
                     </a>
                 {% endif %}
@@ -38,12 +38,12 @@
                 <div class="my-3 px-3 py-2 border border-1 rounded ">
                     <div class="fs-6">{{ comment.content|raw }}</div>
                     <div class="text-end">
-                        <div class="d-inline signature border-top border-1">{{ comment.username }} - {{ comment.published_at|date("m/d/Y") }}</div>
+                        <div class="d-inline signature border-top border-1">{{ comment.user.username }} - {{ comment.publishedAt|date("m/d/Y") }}</div>
                     </div>
                 </div>
                 {% endfor %}
             {% if session.username %}
-                <form action="/add-comment?{{ post.post_id }}" method="post">
+                <form action="/add-comment?{{ post.id }}" method="post">
                     <div class="pt-3  w-75 m-auto">
                         <textarea class="form-control rounded" name="content" rows="4"
                                   maxlength="200" required></textarea>

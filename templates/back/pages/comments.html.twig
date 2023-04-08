@@ -64,20 +64,20 @@
                         <tbody>
                         {% for comment in comments %}
                             <tr>
-                                <td>{{ comment.username }}</td>
-                                <td>{{ comment.postTitle }}</td>
+                                <td>{{ comment.user.username }}</td>
+                                <td>{{ comment.post.title }}</td>
                                 <td>{{ comment.content }}</td>
-                                <td>{{ comment.published_at }}</td>
-                                {% if comment.is_validated %}
+                                <td>{{ comment.publishedAt|date("d/m/Y H:i:s") }}</td>
+                                {% if comment.isValidated %}
                                     <td class="text-center">
-                                        <a href="/admin-comment-block?{{ comment.comment_id }}"
+                                        <a href="/admin-comment-block?{{ comment.id }}"
                                            class="btn bg-danger text-white" style="width: 40px; height: 40px;">
                                             <i class="fa-solid fa-xmark"></i>
                                         </a>
                                     </td>
                                 {% else %}
                                     <td class="text-center">
-                                        <a href="/admin-comment-validated?{{ comment.comment_id }}"
+                                        <a href="/admin-comment-validated?{{ comment.id }}"
                                            class="btn bg-success text-white" style="width: 40px; height: 40px;">
                                             <i class="fa-solid fa-check"></i>
                                         </a>

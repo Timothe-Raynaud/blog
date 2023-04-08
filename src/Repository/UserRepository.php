@@ -2,15 +2,18 @@
 
 namespace Repository;
 
+use Entity\User;
 use Exception;
 use Manager\DatabaseConnection;
 
 class UserRepository
 {
     private DatabaseConnection $database;
+    private RolesRepository $rolesRepository;
 
     public function __construct()
     {
+        $this->rolesRepository = new RolesRepository();
         $this->database = new DatabaseConnection();
     }
 
@@ -19,13 +22,27 @@ class UserRepository
         $sql = '
             SELECT * 
             FROM users u
-            INNER JOIN contacts c ON c.contact_id = u.contact_id
-            INNER JOIN roles r ON r.role_id = u.role_id
         ';
         $statement = $this->database->pdo()->prepare($sql);
         $statement->execute();
 
-        return $statement->fetchAll();
+        $resultRequest = $statement->fetchAll();
+
+        $users = [];
+        foreach ($resultRequest as $result){
+            $user = new User(
+                $result['user_id'],
+                $result['login'],
+                $result['password'],
+                $this->rolesRepository->getRoleById($result['role_id']),
+                $result['username'],
+                $result['email'],
+                $result['is_available']
+            );
+            $users[] = $user;
+        }
+
+        return $users;
     }
 
     public function getAvailableUsers(): ?array
@@ -40,68 +57,142 @@ class UserRepository
 
         return $statement->fetch();
     }
-    public function getUserByLogin(string $login): mixed
+
+    public function getUserByLogin(string $login): ?User
     {
         $sql = '
             SELECT * 
             FROM users u
-            INNER JOIN contacts c ON c.contact_id = u.contact_id
-            INNER JOIN roles r ON r.role_id = u.role_id
             WHERE u.login = :login
         ';
         $statement = $this->database->pdo()->prepare($sql);
         $statement->bindValue(':login', $login);
         $statement->execute();
 
-        return $statement->fetch();
+        $result = $statement->fetch();
+        $user = null;
+
+        if ($result){
+            $user = new User(
+                $result['user_id'],
+                $result['login'],
+                $result['password'],
+                $this->rolesRepository->getRoleById($result['role_id']),
+                $result['username'],
+                $result['email'],
+                $result['is_available']
+            );
+        }
+
+        return $user;
     }
 
-    public function getUserByEmail(string $email): mixed
+    public function getUserByEmail(string $email): ?User
     {
         $sql = '
             SELECT * 
             FROM users u
-            INNER JOIN contacts c ON c.contact_id = u.contact_id
-            INNER JOIN roles r ON r.role_id = u.role_id
-            WHERE c.email = :email
+            WHERE u.email = :email
         ';
         $statement = $this->database->pdo()->prepare($sql);
         $statement->bindValue(':email', $email);
         $statement->execute();
 
-        return $statement->fetch();
+        $result = $statement->fetch();
+        $user = null;
+
+        if ($result){
+            $user = new User(
+                $result['user_id'],
+                $result['login'],
+                $result['password'],
+                $this->rolesRepository->getRoleById($result['role_id']),
+                $result['username'],
+                $result['email'],
+                $result['is_available']
+            );
+        }
+
+        return $user;
     }
 
-    public function getUserById(int $id): ?array
+    public function getUserById(?int $id): ?User
     {
+        if ($id === null){
+            return null;
+        }
         $sql = '
             SELECT * 
             FROM users u
-            INNER JOIN contacts c ON c.contact_id = u.contact_id 
-            INNER JOIN roles r ON r.role_id = u.role_id
             WHERE user_id = :id
         ';
         $statement = $this->database->pdo()->prepare($sql);
         $statement->bindValue(':id', $id);
         $statement->execute();
 
-        return $statement->fetch();
+        $result = $statement->fetch();
+        $user = null;
+
+        if ($result){
+            $user = new User(
+                $result['user_id'],
+                $result['login'],
+                $result['password'],
+                $this->rolesRepository->getRoleById($result['role_id']),
+                $result['username'],
+                $result['email'],
+                $result['is_available']
+            );
+        }
+
+        return $user;
+    }
+
+    public function getUserByUsername(string $username): ?User
+    {
+        $sql = '
+            SELECT * 
+            FROM users u
+            INNER JOIN roles r ON r.role_id = u.role_id
+            WHERE username = :username
+        ';
+        $statement = $this->database->pdo()->prepare($sql);
+        $statement->bindValue(':username', $username);
+        $statement->execute();
+
+        $result = $statement->fetch();
+        $user = null;
+
+        if ($result){
+            $user = new User(
+                $result['user_id'],
+                $result['login'],
+                $result['password'],
+                $this->rolesRepository->getRoleById($result['role_id']),
+                $result['username'],
+                $result['email'],
+                $result['is_available']
+            );
+        }
+
+        return $user;
     }
 
     /**
      * @throws Exception
      */
-    public function setUser(string $login, string $password, int $contactId): bool
+    public function setUser(string $login, string $password, string $username, string $email): bool
     {
         try {
             $sql = '
-                INSERT INTO users (login, password, role_id, contact_id, is_available) 
-                VALUES (:login, :password,  1, :contactId, 1)
+                INSERT INTO users (login, password, role_id, username, email, is_available) 
+                VALUES (:login, :password,  1, :username, :email, 1)
             ';
             $statement = $this->database->pdo()->prepare($sql);
             $statement->bindValue(':login', $login);
             $statement->bindValue(':password', $password);
-            $statement->bindValue(':contactId', $contactId);
+            $statement->bindValue(':username', $username);
+            $statement->bindValue(':email', $email);
             $statement->execute();
 
             return true;
@@ -161,17 +252,67 @@ class UserRepository
     /**
      * @throws Exception
      */
-    public function updateAccount(int $id, string $login): bool
+    public function updateAccount(int $id, string $login, $username, $email): bool
     {
         try{
             $sql = '
                 UPDATE users 
                 SET login = :login
+                    , username = :username
+                    , email = :email
                 WHERE user_id = :id
             ';
             $statement = $this->database->pdo()->prepare($sql);
             $statement->bindValue(':id', $id);
             $statement->bindValue(':login', $login);
+            $statement->bindValue(':username', $username);
+            $statement->bindValue(':email', $email);
+            $statement->execute();
+
+            return true;
+
+        } catch (Exception $exception){
+            throw new Exception($exception);
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function updateUsername(int $id, string $username): bool
+    {
+        try{
+            $sql = '
+                UPDATE users 
+                SET username = :username
+                WHERE user_id = :id
+            ';
+            $statement = $this->database->pdo()->prepare($sql);
+            $statement->bindValue(':id', $id);
+            $statement->bindValue(':username', $username);
+            $statement->execute();
+
+            return true;
+
+        } catch (Exception $exception){
+            throw new Exception($exception);
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function updateEmail(int $id, string $email): bool
+    {
+        try{
+            $sql = '
+                UPDATE users 
+                SET email = :email
+                WHERE user_id = :id
+            ';
+            $statement = $this->database->pdo()->prepare($sql);
+            $statement->bindValue(':id', $id);
+            $statement->bindValue(':email', $email);
             $statement->execute();
 
             return true;

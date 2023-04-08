@@ -2,77 +2,115 @@
 
 namespace Repository;
 
+use DateTime;
+use Entity\Post;
 use Exception;
 use Manager\DatabaseConnection;
 
 class PostsRepository
 {
     private DatabaseConnection $database;
+    private UserRepository $userRepository;
 
     public function __construct()
     {
         $this->database = new DatabaseConnection();
+        $this->userRepository = new UserRepository();
     }
 
+    /**
+     * @throws Exception
+     */
     public function getAllPosts() : ?array
     {
         $sql = '
-            SELECT p.*
-                , u.login as creator_login
-                , c.username as creator_username
-                , c.email as creator_email
-                , up.login as updator_login
-                , cp.username as updator_username
-                , cp.email as updator_email
+            SELECT *
             FROM posts p
-            INNER JOIN users u ON u.user_id = p.created_by
-            INNER JOIN contacts c ON c.contact_id = u.contact_id
-            LEFT JOIN users up ON up.user_id = p.updated_by
-            LEFT JOIN contacts cp ON cp.contact_id = up.contact_id
         ';
         $statement = $this->database->pdo()->prepare($sql);
         $statement->execute();
 
-        return $statement->fetchAll();
+        $resultRequest = $statement->fetchAll();
+
+        $posts = [];
+        foreach ($resultRequest as $result){
+            $post = new Post(
+                $result['post_id'],
+                $result['title'],
+                $result['chapo'],
+                $result['content'],
+                $this->userRepository->getUserById($result['created_by']),
+                $this->userRepository->getUserById($result['updated_by']) ?? null,
+                new DateTime($result['published_at']),
+                isset($result['updated_at']) ? new DateTime($result['updated_at']) : null,
+                $result['is_validated'],
+            );
+
+            $posts[] = $post;
+        }
+
+        return $posts;
     }
 
     public function getValidatedPosts() : ?array
     {
         $sql = '
-            SELECT p.*
-                , u.login as creator_login
-                , c.username as creator_username
-                , c.email as creator_email
-                , up.login as updator_login
-                , cp.username as updator_username
-                , cp.email as updator_email
-            FROM posts p
-            INNER JOIN users u ON u.user_id = p.created_by
-            INNER JOIN contacts c ON c.contact_id = u.contact_id
-            LEFT JOIN users up ON up.user_id = p.updated_by
-            LEFT JOIN contacts cp ON cp.contact_id = up.contact_id
+            SELECT *
+            FROM posts 
             WHERE is_validated = 1
         ';
         $statement = $this->database->pdo()->prepare($sql);
         $statement->execute();
 
-        return $statement->fetchAll();
+        $resultRequest = $statement->fetchAll();
+
+        $posts = [];
+        foreach ($resultRequest as $result){
+            $post = new Post(
+                $result['post_id'],
+                $result['title'],
+                $result['chapo'],
+                $result['content'],
+                $this->userRepository->getUserById($result['created_by']),
+                $this->userRepository->getUserById($result['updated_by']) ?? null,
+                new DateTime($result['published_at']),
+                isset($result['updated_at']) ? new DateTime($result['updated_at']) : null,
+                $result['is_validated'],
+            );
+
+            $posts[] = $post;
+        }
+
+        return $posts;
     }
 
-    public function getPostById(int $id) : ?array
+    /**
+     * @throws Exception
+     */
+    public function getPostById(int $id) : ?Post
     {
         $sql = '
             SELECT * 
-            FROM posts p
-            INNER JOIN users u ON u.user_id = p.created_by
-            INNER JOIN contacts c ON c.contact_id = u.contact_id
+            FROM posts 
             WHERE post_id = :id
         ';
         $statement = $this->database->pdo()->prepare($sql);
         $statement->bindValue(':id', $id);
         $statement->execute();
 
-        return $statement->fetch();
+        $result = $statement->fetch();
+
+        return new Post(
+            $result['post_id'],
+            $result['title'],
+            $result['chapo'],
+            $result['content'],
+            $this->userRepository->getUserById($result['created_by']),
+            $this->userRepository->getUserById($result['updated_by']) ?? null,
+            new DateTime($result['published_at']),
+            isset($result['updated_at']) ? new DateTime($result['updated_at']) : null,
+            $result['is_validated'],
+        );
     }
 
     public function setIsAvailable(int $postId): void

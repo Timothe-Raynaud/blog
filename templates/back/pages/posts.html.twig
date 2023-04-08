@@ -70,23 +70,23 @@
                                 <td>{{ post.title }}</td>
                                 <td>{{ post.chapo }}</td>
                                 <td>
-                                    {{ post.creator_username }}
-                                    <span class="font-italic">( {{ post.creator_email }} )</span>
+                                    {{ post.createdBy.username }}
+                                    <span class="font-italic">( {{ post.createdBy.email }} )</span>
                                 </td>
-                                <td>{{ post.published_at}} </td>
+                                <td>{{ post.publishedAt|date("d/m/Y H:i:s") }} </td>
                                 <td>
-                                    {{ post.updator_username }}<br>
-                                    <span>{{ post.updator_email }}</span>
+                                    {{ post.UpdatedBy.username }}<br>
+                                    <span>{{ post.UpdatedBy.email }}</span>
                                 </td>
-                                <td>{{ post.updated_at }}</td>
+                                <td>{{ post.updatedAt|date("d/m/Y H:i:s") }}</td>
                                 <td class="text-center">
-                                    {% if post.is_validated == 1 %}
-                                        <a href="/admin-post-block?{{ post.post_id }}"
+                                    {% if post.isValidated %}
+                                        <a href="/admin-post-block?{{ post.id }}"
                                            class="btn bg-danger text-white" style="width: 40px; height: 40px;">
                                             <i class="fa-solid fa-xmark"></i>
                                         </a>
                                     {% else %}
-                                        <a href="/admin-post-validated?{{ post.post_id }}"
+                                        <a href="/admin-post-validated?{{ post.id }}"
                                            class="btn bg-success text-white" style="width: 40px; height: 40px;">
                                             <i class="fa-solid fa-check"></i>
                                         </a>

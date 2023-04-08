@@ -79,7 +79,7 @@ $(document).ready(function () {
 });
 
 
-// Comments Datatable
+// Comment Datatable
 $(document).ready(function () {
     $('#comments-datatable').DataTable({
         language: {

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : local_dev_8-db:3306
--- Généré le : jeu. 30 mars 2023 à 19:56
+-- Généré le : sam. 08 avr. 2023 à 12:28
 -- Version du serveur : 5.7.41
 -- Version de PHP : 8.0.19
 
@@ -34,18 +34,6 @@ CREATE TABLE `comments` (
                             `content` varchar(500) NOT NULL,
                             `published_at` datetime NOT NULL,
                             `is_validated` tinyint(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `contacts`
---
-
-CREATE TABLE `contacts` (
-                            `contact_id` int(11) NOT NULL,
-                            `username` varchar(200) NOT NULL,
-                            `email` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -110,7 +98,8 @@ CREATE TABLE `users` (
                          `login` varchar(50) NOT NULL,
                          `password` varchar(200) NOT NULL,
                          `role_id` int(50) NOT NULL,
-                         `contact_id` int(11) DEFAULT NULL,
+                         `email` varchar(255) NOT NULL,
+                         `username` varchar(255) NOT NULL,
                          `is_available` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -125,12 +114,6 @@ ALTER TABLE `comments`
     ADD PRIMARY KEY (`comment_id`),
     ADD KEY `post_id` (`post_id`),
     ADD KEY `user_id` (`user_id`);
-
---
--- Index pour la table `contacts`
---
-ALTER TABLE `contacts`
-    ADD PRIMARY KEY (`contact_id`);
 
 --
 -- Index pour la table `posts`
@@ -159,7 +142,6 @@ ALTER TABLE `roles`
 ALTER TABLE `users`
     ADD PRIMARY KEY (`user_id`),
     ADD UNIQUE KEY `login` (`login`),
-    ADD KEY `contact_id` (`contact_id`),
     ADD KEY `role` (`role_id`);
 
 --
@@ -171,12 +153,6 @@ ALTER TABLE `users`
 --
 ALTER TABLE `comments`
     MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT pour la table `contacts`
---
-ALTER TABLE `contacts`
-    MODIFY `contact_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `posts`
@@ -224,7 +200,6 @@ ALTER TABLE `reset_password`
 -- Contraintes pour la table `users`
 --
 ALTER TABLE `users`
-    ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`contact_id`) REFERENCES `contacts` (`contact_id`),
     ADD CONSTRAINT `users_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`);
 COMMIT;
 

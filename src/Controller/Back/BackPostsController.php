@@ -4,6 +4,7 @@ namespace Controller\Back;
 
 use Config\Config;
 use Exception;
+use Entity\Post;
 use Repository\PostsRepository;
 use Twig\Environment;
 use Twig\Error\LoaderError;

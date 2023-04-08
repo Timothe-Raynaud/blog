@@ -3,21 +3,19 @@
 namespace Manager;
 
 use Exception;
+use Entity\User;
 use Repository\UserRepository;
-use Repository\ContactRepository;
 use Repository\ResetPasswordRepository;
 
 class UserManager
 {
     private UserRepository $userRepository;
-    private ContactRepository $contactRepository;
     private MailsManager $mailsManager;
     private ResetPasswordRepository $resetPasswordRepository;
 
     public function __construct()
     {
         $this->userRepository = new UserRepository();
-        $this->contactRepository = new ContactRepository();
         $this->mailsManager = new MailsManager();
         $this->resetPasswordRepository = new ResetPasswordRepository();
     }
@@ -38,7 +36,7 @@ class UserManager
                 $password = $post['password'];
 
                 // Test input
-                if ($this->contactRepository->getContactsByUsername($username)) {
+                if ($this->userRepository->getUserByUsername($username)) {
                     $result['message'] = 'Le nom d\'utilisateur est déja pris.';
                     return $result;
                 }
@@ -46,21 +44,18 @@ class UserManager
                     $result['message'] = 'Ce login est déja pris';
                     return $result;
                 }
-                if ($this->contactRepository->getContactsByEmail($email)) {
+                if ($this->userRepository->getUserByEmail($email)) {
                     $result['message'] = 'Cet adresse email est déjà utilisé';
                     return $result;
                 }
 
                 // Ok - Create User
-                if ($this->contactRepository->setContact($username, $email)) {
-                    $contact = $this->contactRepository->getContactsByUsername($username);
-                    $password = password_hash($password, PASSWORD_DEFAULT);
+                $password = password_hash($password, PASSWORD_DEFAULT);
 
-                    if ($this->userRepository->setUser($login, $password, $contact['contact_id'])) {
-                        $result['isAdd'] = true;
-                        $result['message'] = 'Le compte à bien été créer';
-                        return $result;
-                    }
+                if ($this->userRepository->setUser($login, $password, $username, $email)) {
+                    $result['isAdd'] = true;
+                    $result['message'] = 'Le compte à bien été créer';
+                    return $result;
                 }
             }
         } catch (Exception $exception) {
@@ -89,11 +84,11 @@ class UserManager
                     $result['message'] = 'Login incorect';
                     return $result;
                 }
-                if (!password_verify($password, $user['password'])) {
+                if (!password_verify($password, $user->getPassword())) {
                     $result['message'] = 'Mot de passe incorect';
                     return $result;
                 }
-                if($user['is_available'] === 0){
+                if(!$user->getIsAvailable()){
                     $result['message'] = 'Ce compte n\'est pas encore activé';
                     return $result;
                 }
@@ -101,7 +96,7 @@ class UserManager
                 // Ok - Create session
                 $this->createSession($user);
                 $result['isConnecting'] = true;
-                $result['message'] = 'Bienvenu ' . $user['username'] . ' !';
+                $result['message'] = 'Bienvenu ' . $user->getUsername() . ' !';
 
                 return $result;
             }
@@ -130,7 +125,7 @@ class UserManager
                     $result['message'] = 'Email incorect';
                     return $result;
                 }
-                if ($user['is_available'] === 0) {
+                if (!$user->getIsAvailable()) {
                     $result['message'] = 'Votre compte n\'est pas activé';
                 }
 
@@ -138,8 +133,8 @@ class UserManager
                 $token = bin2hex(random_bytes(32));
                 $link = $_SERVER['HTTP_HOST'] . '/reset?' . $token;
 
-                if ($this->mailsManager->sendResetMail($email, $link, $user['username'])
-                    && $this->resetPasswordRepository->setResetPassword($token, $user['user_id'])) {
+                if ($this->mailsManager->sendResetMail($email, $link, $user->getUsername())
+                    && $this->resetPasswordRepository->setResetPassword($token, $user->getId())) {
 
                     $result['isSend'] = true;
                     $result['message'] = 'Un mail de reinitialisation vous à été envoyé';
@@ -218,32 +213,31 @@ class UserManager
                 if (!$user) {
                     return $result;
                 }
-                if($username === $user['username']&&$login === $user['login']&&$email === $user['email']){
+                if($username === $user->getUsername() && $login === $user->getLogin() && $email === $user->getEmail()){
                     $result['message'] = 'Votre profil est déjà à jour';
                     return $result;
                 }
-                if ($username != $user['username']){
-                    if ($this->contactRepository->getContactsByUsername($username)) {
+                if ($username != $user->getUsername()){
+                    if ($this->userRepository->getUserByUsername($username)) {
                         $result['message'] = 'Le nom d\'utilisateur est déja pris.';
                         return $result;
                     }
                 }
-                if ($login != $user['login']){
+                if ($login != $user->getLogin()){
                     if ($this->userRepository->getUserByLogin($login)) {
                         $result['message'] = 'Ce login est déja pris';
                         return $result;
                     }
                 }
-                if ($email != $user['email']){
-                    if ($this->contactRepository->getContactsByEmail($email)) {
+                if ($email != $user->getEmail()){
+                    if ($this->userRepository->getUserByEmail($email)) {
                         $result['message'] = 'Cet adresse email est déjà utilisé';
                         return $result;
                     }
                 }
 
                 // Ok - Update account
-                $contactId = $user['contact_id'];
-                if ($this->userRepository->updateAccount($userId, $login)&&$this->contactRepository->updateContact($contactId, $username, $email)){
+                if ($this->userRepository->updateAccount($userId, $login, $username, $email)){
                     $result['message'] = 'Votre compte à bien été mis à jour.';
                     $result['isUpdate'] = true;
 
@@ -286,7 +280,7 @@ class UserManager
                     $result['message'] = 'Les mots de passe doivent être identiques';
                     return $result;
                 }
-                if (!password_verify($password, $user['password'])) {
+                if (!password_verify($password, $user->getPassword())) {
                     $result['message'] = 'Mot de passe incorect';
                     return $result;
                 }
@@ -326,13 +320,13 @@ class UserManager
                 if (!$user) {
                     return $result;
                 }
-                if ($user['role_id'] === (int)$role){
-                    $result['message'] = 'Le role est déja définis sur ' . $user['role'] . ' .';
+                if ($user->getRole()->getId() === (int)$role){
+                    $result['message'] = 'Le role est déja définis sur ' . $user->getRole()->getRole() . ' .';
                     return $result;
                 }
 
                 // Ok - Update password
-                if ($this->userRepository->updateRole($user['user_id'], $role)){
+                if ($this->userRepository->updateRole($user->getId(), $role)){
                     $result['isUpdate'] = true;
                     $result['message'] = 'Le role de l\'utilisateur à bien été modifié.';
 
@@ -350,18 +344,18 @@ class UserManager
     public function getUserByResetToken(string $token) : ?array
     {
         $now = date('Y-m-d h:i:s');
-        $user = $this->resetPasswordRepository->getResetUserByToken($token);
-        if (empty($user)){
+        $resetPassword = $this->resetPasswordRepository->getResetPasswordByToken($token);
+        if (empty($resetPassword)){
             return null;
         }
-        if ($user['is_used']){
+        if ($resetPassword['is_used']){
             return null;
         }
-        if ($user['expiration_date'] < $now){
+        if ($resetPassword['expiration_date'] < $now){
             return null;
         }
 
-        return $user;
+        return $resetPassword;
     }
 
     public function isLoginExist(string $login): bool
@@ -374,19 +368,19 @@ class UserManager
 
     public function isUsernameExist(string $username): bool
     {
-        if ($this->contactRepository->getContactsByUsername($username)){
+        if ($this->userRepository->getUserByUsername($username)){
             return true;
         }
         return false;
     }
 
-    public function createSession(array $user): void
+    public function createSession(User $user): void
     {
-        $_SESSION['username'] = $user['username'];
-        $_SESSION['login'] = $user['login'];
-        $_SESSION['userId'] = $user['user_id'];
-        $_SESSION['email'] = $user['email'];
-        $_SESSION['role'] = $user['role'];
+        $_SESSION['username'] = $user->getUsername();
+        $_SESSION['login'] = $user->getLogin();
+        $_SESSION['userId'] = $user->getId();
+        $_SESSION['email'] = $user->getEmail();
+        $_SESSION['role'] = $user->getRole()->getRole();
     }
 
     public function removeSession(): void

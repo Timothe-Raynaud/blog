@@ -4,6 +4,7 @@ namespace Controller\Back;
 
 use Config\Config;
 use Exception;
+use Entity\User;
 use Manager\UserManager;
 use Repository\UserRepository;
 use Repository\RolesRepository;
@@ -45,6 +46,7 @@ class BackUsersController
             header("Location: my-account?1");
         } else {
             $users = $this->userRepository->getAllUsers();
+
             $availableUsers = $this->userRepository->getAvailableUsers();
             $roles = $this->rolesRepository->getRoles();
 

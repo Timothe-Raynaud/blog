@@ -2,45 +2,56 @@
 
 namespace Repository;
 
+use DateTime;
 use Exception;
+use Entity\Comment;
 use Manager\DatabaseConnection;
 
 class CommentsRepository
 {
     private DatabaseConnection $database;
+    private PostsRepository $postsRepository;
+    private UserRepository $usersRepository;
 
     public function __construct()
     {
+        $this->usersRepository = new UserRepository();
+        $this->postsRepository = new PostsRepository();
         $this->database = new DatabaseConnection();
     }
 
     public function getAllComments() : ?array
     {
         $sql = '
-            SELECT com.*
-                , p.title as postTitle
-                , u.*
-                , con.*
-            FROM comments com
-            INNER JOIN users u ON u.user_id = com.user_id
-            INNER JOIN contacts con ON con.contact_id = u.contact_id
-            INNER JOIN posts p ON p.post_id = com.post_id
+            SELECT *
+            FROM comments 
         ';
         $statement = $this->database->pdo()->prepare($sql);
         $statement->execute();
 
-        return $statement->fetchAll();
+        $resultRequest = $statement->fetchAll();
+
+        $comments = [];
+        foreach ($resultRequest as $result){
+            $comment = new Comment(
+                $result['comment_id'],
+                $this->postsRepository->getPostById($result['post_id']),
+                $this->usersRepository->getUserById($result['user_id']),
+                $result['content'],
+                new DateTime($result['published_at']),
+                $result['is_validated'],
+            );
+            $comments[] = $comment;
+        }
+
+        return $comments;
     }
 
     public function getValidatedCommentByPostId(int $id) : ?array
     {
         $sql = '
-            SELECT com.*
-                , u.*
-                , con.*
-            FROM comments com
-            INNER JOIN users u ON u.user_id = com.user_id
-            INNER JOIN contacts con ON con.contact_id = u.contact_id
+            SELECT *
+            FROM comments 
             WHERE post_id = :id
             AND is_validated = 1
         ';
@@ -48,7 +59,22 @@ class CommentsRepository
         $statement->bindValue(':id', $id);
         $statement->execute();
 
-        return $statement->fetchAll();
+        $resultRequest = $statement->fetchAll();
+
+        $comments = [];
+        foreach ($resultRequest as $result){
+            $comment = new Comment(
+                $result['comment_id'],
+                $this->postsRepository->getPostById($result['post_id']),
+                $this->usersRepository->getUserById($result['user_id']),
+                $result['content'],
+                new DateTime($result['published_at']),
+                $result['is_validated'],
+            );
+            $comments[] = $comment;
+        }
+
+        return $comments;
     }
 
     public function countValidatedCommentByPostId() : ?array
@@ -57,7 +83,6 @@ class CommentsRepository
             SELECT COUNT(*) as validatedComments
             FROM comments com
             INNER JOIN users u ON u.user_id = com.user_id
-            INNER JOIN contacts con ON con.contact_id = u.contact_id
             WHERE is_validated = 1
         ';
         $statement = $this->database->pdo()->prepare($sql);

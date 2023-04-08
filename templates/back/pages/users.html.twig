@@ -68,25 +68,25 @@
                                 <td>{{ user.username }}</td>
                                 <td>{{ user.login }}</td>
                                 <td>{{ user.email }}</td>
-                                <td id="role-{{ user.login }}">{{ user.role }}</td>
-                                {% if user.role == 'ADMIN' %}
+                                <td id="role-{{ user.login }}">{{ user.role.role }}</td>
+                                {% if user.role.role == 'ADMIN' %}
                                     <td> </td>
-                                {% elseif user.is_available %}
+                                {% elseif user.isAvailable %}
                                     <td class="text-center">
-                                        <a href="/admin-user-block?{{ user.user_id }}"
+                                        <a href="/admin-user-block?{{ user.id }}"
                                            class="btn bg-danger text-white" style="width: 40px; height: 40px;">
                                             <i class="fa-solid fa-xmark"></i>
                                         </a>
                                     </td>
                                 {% else %}
                                     <td class="text-center">
-                                        <a href="/admin-user-validated?{{ user.user_id }}"
+                                        <a href="/admin-user-validated?{{ user.id }}"
                                            class="btn bg-success text-white" style="width: 40px; height: 40px;">
                                             <i class="fa-solid fa-check"></i>
                                         </a>
                                     </td>
                                 {% endif %}
-                                {% if user.role == 'ADMIN' %}
+                                {% if user.role.role == 'ADMIN' %}
                                     <td></td>
                                 {% else %}
                                     <td class="text-center">
@@ -97,7 +97,7 @@
                                                 data-bs-username= {{ user.username }}
                                                 data-bs-login= {{ user.login }}
                                                 data-bs-email= {{ user.email }}
-                                                data-bs-role= {{ user.role_id }}
+                                                data-bs-role= {{ user.role.id }}
                                         >
                                             <i class="fa-solid fa-pen"></i>
                                         </button>
@@ -141,7 +141,7 @@
                             <label class="form-label">Role :</label>
                             <select class="form-control modal-role" id="roleSelector" name="role">
                                 {% for role in roles %}
-                                    <option value="{{ role.role_id }}">{{ role.role }}</option>
+                                    <option value="{{ role.id }}">{{ role.role }}</option>
                                 {% endfor %}
                             </select>
                         </div>

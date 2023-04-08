@@ -16,7 +16,7 @@ class ResetPasswordRepository
         $this->database = new DatabaseConnection();
     }
 
-    public function getResetUserByToken(string $token): mixed
+    public function getResetPasswordByToken(string $token): mixed
     {
         $sql = '
             SELECT * 
